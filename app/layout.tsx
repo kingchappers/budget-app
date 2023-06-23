@@ -1,5 +1,6 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
+import Link from 'next/link'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -13,9 +14,28 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  return (
+  return (    
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <head>
+       <title>budget-app</title>
+      </head>
+      
+      <body className={inter.className}>
+        <header>
+          <ul className="flex justify-center text-3xl mt-5">
+            <li className="mx-9">
+              <Link href="/">Home</Link>
+            </li>
+            <li className="mx-9">
+              <Link href="/rootTest">Root Test</Link>
+            </li>
+          </ul>
+        </header>
+      
+        <main>
+          {children}
+        </main>
+      </body>
     </html>
   )
 }
