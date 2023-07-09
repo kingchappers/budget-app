@@ -3,6 +3,8 @@ import { Inter } from 'next/font/google'
 import Link from 'next/link'
 import Head from 'next/head';
 import Image from 'next/image'
+import { LoginButton, LogoutButton, ProfileButton, RegisterButton, } from './components/buttons.component';
+
 
 const inter = Inter({ subsets: ['latin'] })
 export const metadata = {
@@ -42,6 +44,18 @@ export default function RootLayout({
               </li>
               <li className="mx-9">
                 <Link href="/help">Help</Link>
+              </li>
+              <li>
+                <LoginButton />
+              </li>
+              <li>
+                <RegisterButton />
+              </li>
+              <li>
+                <LogoutButton />
+              </li>
+              <li>
+                <ProfileButton />
               </li>
             </ul>
           </div>
