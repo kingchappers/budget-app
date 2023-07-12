@@ -1,9 +1,11 @@
 import NextAuth from "next-auth"
 import type { NextAuthOptions } from "next-auth";
 
+import Auth0Provider from "next-auth/providers/auth0";
 import GithubProvider from "next-auth/providers/github"
 
-const { GITHUB_ID = '', GITHUB_SECRET = '' } = process.env;
+
+const { AUTH0_CLIENT_ID = '', AUTH0_CLIENT_SECRET = '', AUTH0_ISSUER ='', GITHUB_ID = '', GITHUB_SECRET = '' } = process.env;
 
 export const authOptions: NextAuthOptions = {
     session: {
@@ -14,6 +16,11 @@ export const authOptions: NextAuthOptions = {
             clientId: GITHUB_ID,
             clientSecret: GITHUB_SECRET,
         }),
+        Auth0Provider({
+            clientId: AUTH0_CLIENT_ID,
+            clientSecret: AUTH0_CLIENT_SECRET,
+            issuer: AUTH0_ISSUER
+          }),
     ],
     callbacks: {
         session: ({ session, token }) => {
