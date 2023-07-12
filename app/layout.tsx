@@ -57,6 +57,9 @@ export default function RootLayout({
               <li>
                 <ProfileButton />
               </li>
+              <li className="mx-9">
+                <Link href="/api/session">Get Session Info</Link>
+              </li>
             </ul>
           </div>
         </header>
