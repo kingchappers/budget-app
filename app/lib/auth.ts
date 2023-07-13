@@ -2,8 +2,9 @@ import NextAuth from "next-auth"
 import type { NextAuthOptions } from "next-auth";
 
 import Auth0Provider from "next-auth/providers/auth0";
-import GithubProvider from "next-auth/providers/github"
 import DiscordProvider from "next-auth/providers/discord";
+import FacebookProvider from "next-auth/providers/facebook";
+import GithubProvider from "next-auth/providers/github"
 import RedditProvider from "next-auth/providers/reddit";
 
 const { 
@@ -12,6 +13,8 @@ const {
     AUTH0_ISSUER = '', 
     DISCORD_CLIENT_ID = '', 
     DISCORD_CLIENT_SECRET = '', 
+    FACEBOOK_CLIENT_ID = '',
+    FACEBOOK_CLIENT_SECRET = '',
     GITHUB_ID = '',  
     GITHUB_SECRET = '', 
     REDDIT_CLIENT_ID = '',
@@ -32,6 +35,10 @@ export const authOptions: NextAuthOptions = {
             clientId: DISCORD_CLIENT_ID,
             clientSecret: DISCORD_CLIENT_SECRET
         }),
+        FacebookProvider({
+            clientId: FACEBOOK_CLIENT_ID,
+            clientSecret: FACEBOOK_CLIENT_SECRET
+          }),
         GithubProvider({
             clientId: GITHUB_ID,
             clientSecret: GITHUB_SECRET,
@@ -40,11 +47,11 @@ export const authOptions: NextAuthOptions = {
             clientId: REDDIT_CLIENT_ID,
             clientSecret: REDDIT_CLIENT_SECRET,
             authorization: {
-              params: {
-                duration: 'permanent',
-              },
+                params: {
+                    duration: 'permanent',
+                },
             },
-          }),
+        }),
     ],
     callbacks: {
         session: ({ session, token }) => {
