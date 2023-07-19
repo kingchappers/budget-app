@@ -6,6 +6,7 @@ import DiscordProvider from "next-auth/providers/discord";
 import FacebookProvider from "next-auth/providers/facebook";
 import GithubProvider from "next-auth/providers/github"
 import RedditProvider from "next-auth/providers/reddit";
+import GoogleProvider from "next-auth/providers/google";
 
 const { 
     AUTH0_CLIENT_ID = '', 
@@ -17,6 +18,8 @@ const {
     FACEBOOK_CLIENT_SECRET = '',
     GITHUB_ID = '',  
     GITHUB_SECRET = '', 
+    GOOGLE_CLIENT_ID = '',
+    GOOGLE_CLIENT_SECRET = '',
     REDDIT_CLIENT_ID = '',
     REDDIT_CLIENT_SECRET = '',
 } = process.env;
@@ -43,6 +46,10 @@ export const authOptions: NextAuthOptions = {
             clientId: GITHUB_ID,
             clientSecret: GITHUB_SECRET,
         }),
+        GoogleProvider({
+            clientId: GOOGLE_CLIENT_ID,
+            clientSecret: GOOGLE_CLIENT_SECRET
+          }),
         RedditProvider({
             clientId: REDDIT_CLIENT_ID,
             clientSecret: REDDIT_CLIENT_SECRET,
