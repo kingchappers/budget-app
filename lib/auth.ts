@@ -1,4 +1,3 @@
-import NextAuth from "next-auth"
 import type { NextAuthOptions } from "next-auth";
 
 import Auth0Provider from "next-auth/providers/auth0";
@@ -68,7 +67,6 @@ export const authOptions: NextAuthOptions = {
                 user: {
                   ...session.user,
                   id: token.id,
-                  randomKey: token.randomKey,
                 },
             };
         },
@@ -79,7 +77,6 @@ export const authOptions: NextAuthOptions = {
                 return {
                     ...token,
                     id: u.id,
-                    randomKey: u.randomKey,
                 };
             }
             return token;
