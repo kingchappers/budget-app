@@ -1,4 +1,4 @@
-import TransactionFormServerComponent from "@/app/components/transaction-form-server";
+import TransactionFormServerComponent from "../components/transaction-form-server";
 import TransactionItemServerComponent from "../components/transaction-item-server";
 import { getTransactions } from "../lib/transaction-db";
 
