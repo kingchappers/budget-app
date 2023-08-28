@@ -30,11 +30,18 @@ export async function getTransactions(filter: TransactionFilter = {}) {
     }
 }
 
-export async function createTransaction(title: string) {
+export async function createTransaction(
+    transactionDate: string, 
+    transactionVendor: string, 
+    transactionValue: number, 
+    transactionCategory: string, 
+    transactionItems: string, 
+    transcationNotes: string
+) {
     try {
         await connectDB();
 
-        const transaction = await Transaction.create({ title });
+        const transaction = await Transaction.create({ transactionDate, transactionVendor, transactionValue, transactionCategory, transactionItems, transcationNotes });
 
         return {
             transaction,
@@ -69,7 +76,7 @@ export async function getTransaction(id: string) {
   
 export async function updateTransaction(
     id: string,
-    { title, completed }: { title?: string; completed?: boolean }
+    { transactionDate, transactionVendor, transactionValue, transactionCategory, transactionItems, transcationNotes }: { transactionDate?: string; transactionVendor?: string, transactionValue?: number, transactionCategory?: string, transactionItems?: string, transcationNotes?: string}
 ) {
     try {
         await connectDB();
@@ -82,7 +89,7 @@ export async function updateTransaction(
   
         const transaction = await Transaction.findByIdAndUpdate(
             parsedId,
-            { title, completed },
+            { transactionDate, transactionVendor, transactionValue, transactionCategory, transactionItems, transcationNotes },
             { new: true }
         )
         .lean()
