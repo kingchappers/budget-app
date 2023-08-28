@@ -6,7 +6,7 @@ import {
     post,
     prop,
 } from "@typegoose/typegoose"
-import mongoose, { Date } from "mongoose"
+import mongoose from "mongoose"
 
 @post<TransactionClass>("save", function (doc) {
     if (doc) {
