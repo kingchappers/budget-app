@@ -6,7 +6,7 @@ import {
     post,
     prop,
 } from "@typegoose/typegoose"
-import mongoose from "mongoose"
+import mongoose, { Date } from "mongoose"
 
 @post<TransactionClass>("save", function (doc) {
     if (doc) {
@@ -32,14 +32,32 @@ import mongoose from "mongoose"
         allowMixed: Severity.ALLOW,
     },
 })
-@index({ title: 1})
+@index({ transactionVendor: 1})
 class TransactionClass {
-    @prop({ required: true, unique: true })
-    title: string;
+    // @prop({ required: true, unique: true })
+    // title: string;
 
-    @prop({ default: false })
-    completed: boolean;
+    // @prop({ default: false })
+    // completed: boolean;
 
+    @prop({required: true})
+    transactionDate: string;
+    
+    @prop({required: true})
+    transactionVendor: string;
+
+    @prop({required: true })
+    transactionValue: number;
+
+    @prop({required: true, default: "Miscellaneous"})
+    transactionCategory: string;
+
+    @prop({required: false})
+    transactionItems: string;
+
+    @prop({required: false})
+    transcationNotes: string;
+    
     _id: mongoose.Types.ObjectId | string;
 
     id: string;
