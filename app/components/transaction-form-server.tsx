@@ -1,9 +1,6 @@
 import { type } from "os";
 import { createTransactionAction } from "../_actions";
 
-
-
-
 export default function TransactionForm() {
     async function action(data: FormData) {
         "use server";
