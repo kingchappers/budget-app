@@ -8,22 +8,22 @@ import { revalidatePath } from "next/cache";
  */
 export async function createTransactionAction({
     transactionDate,
-    transactionVendor,
-    transactionValue,
-    transactionCategory,
-    transactionItems,
-    transcationNotes,
+    vendor,
+    value,
+    category,
+    items,
+    notes,
     path,
 }: {
     transactionDate: string; 
-    transactionVendor: string; 
-    transactionValue: number; 
-    transactionCategory: string; 
-    transactionItems: string; 
-    transcationNotes: string;
+    vendor: string; 
+    value: number; 
+    category: string; 
+    items: string; 
+    notes: string;
     path: string;
 }) {
-    await createTransaction(transactionDate, transactionVendor, transactionValue, transactionCategory, transactionItems, transcationNotes);
+    await createTransaction(transactionDate, vendor, value, category, items, notes);
     revalidatePath(path);
 }
 
@@ -32,7 +32,7 @@ export async function createTransactionAction({
  */
 export async function updateTransactionAction(
     id: string,
-    update: { transactionDate?: string; transactionVendor?: string; transactionValue?: number; transactionCategory?: string; transactionItems?: string; transcationNotes?: string; },
+    update: { transactionDate?: string; vendor?: string; value?: number; completed?: boolean; }, 
     path: string
 ) {
     await updateTransaction(id, update);

@@ -32,31 +32,29 @@ import mongoose from "mongoose"
         allowMixed: Severity.ALLOW,
     },
 })
-@index({ transactionVendor: 1})
+@index({ vendor: 1 })
 class TransactionClass {
-    // @prop({ required: true, unique: true })
-    // title: string;
 
-    // @prop({ default: false })
-    // completed: boolean;
+    @prop({ default: false })
+    completed: boolean;
 
     @prop({required: true})
     transactionDate: string;
     
     @prop({required: true})
-    transactionVendor: string;
+    vendor: string;
 
     @prop({required: true })
-    transactionValue: number;
+    value: number;
 
     @prop({required: true, default: "Miscellaneous"})
-    transactionCategory: string;
+    category: string;
 
     @prop({required: false})
-    transactionItems: string;
+    items: string;
 
     @prop({required: false})
-    transcationNotes: string;
+    notes: string;
     
     _id: mongoose.Types.ObjectId | string;
 

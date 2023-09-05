@@ -32,19 +32,19 @@ export async function getTransactions(filter: TransactionFilter = {}) {
 
 export async function createTransaction(
     transactionDate: string, 
-    transactionVendor: string, 
-    transactionValue: number, 
-    transactionCategory: string, 
-    transactionItems: string, 
-    transcationNotes: string
+    vendor: string, 
+    value: number, 
+    category: string, 
+    items: string, 
+    notes: string
 ) {
     try {
         await connectDB();
 
-        const transaction = await Transaction.create({ transactionDate, transactionVendor, transactionValue, transactionCategory, transactionItems, transcationNotes });
+        const transaction = await Transaction.create({ transactionDate, vendor, value, category, items, notes }); 
 
         return {
-            transaction,
+            transaction
         };
     } catch (error) {
         return { error };
@@ -76,7 +76,7 @@ export async function getTransaction(id: string) {
   
 export async function updateTransaction(
     id: string,
-    { transactionDate, transactionVendor, transactionValue, transactionCategory, transactionItems, transcationNotes }: { transactionDate?: string; transactionVendor?: string, transactionValue?: number, transactionCategory?: string, transactionItems?: string, transcationNotes?: string}
+    { transactionDate, vendor, value, category, items, notes, completed } : { transactionDate?: string; vendor?: string; value?: number; category?: string, items?: string, notes?: string; completed?: boolean; } 
 ) {
     try {
         await connectDB();
@@ -89,7 +89,7 @@ export async function updateTransaction(
   
         const transaction = await Transaction.findByIdAndUpdate(
             parsedId,
-            { transactionDate, transactionVendor, transactionValue, transactionCategory, transactionItems, transcationNotes },
+            { transactionDate, vendor, value, category, items, notes, completed }, 
             { new: true }
         )
         .lean()
