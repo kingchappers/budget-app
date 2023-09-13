@@ -1,10 +1,11 @@
 import { createTransactionAction } from "../_actions";
+import DatePicker from "./datePicker";
 
 export default function TransactionForm() {
     async function action(data: FormData) {
         "use server";
 
-        const transactionDate = data.get("transactionDate");
+        const transactionDate = data.get("pickedDate");
         if (!transactionDate || typeof transactionDate !== "string"){
             return;
         }
@@ -36,6 +37,7 @@ export default function TransactionForm() {
             return;
         }
 
+
         //For testing / Troubleshooting
         // console.log(typeof value)
 
@@ -43,9 +45,9 @@ export default function TransactionForm() {
         await createTransactionAction({ transactionDate, vendor, value, category, items, notes, path: "/" }); 
     }
 
-    return(
+    return(          
         <form action={action} key={Math.random()} className="flex items-center space-x-2 mb-4">
-            <input type="text" name="transactionDate" className="border rounded px-1 py-1 flex-1"/>
+            <DatePicker/>
             <input type="text" name="vendor" className="border rounded px-1 py-1 flex-1"/>
             <input type="number" name="value" className="border rounded px-1 py-1 flex-1"/>
             <input type="text" name="category" className="border rounded px-1 py-1 flex-1"/>
