@@ -76,7 +76,7 @@ export async function getTransaction(id: string) {
   
 export async function updateTransaction(
     id: string,
-    { transactionDate, vendor, value, category, items, notes, completed } : { transactionDate?: string; vendor?: string; value?: number; category?: string, items?: string, notes?: string; completed?: boolean; } 
+    { transactionDate, vendor, value, category, items, notes, checked } : { transactionDate?: string; vendor?: string; value?: number; category?: string, items?: string, notes?: string; checked?: boolean; } 
 ) {
     try {
         await connectDB();
@@ -89,7 +89,7 @@ export async function updateTransaction(
   
         const transaction = await Transaction.findByIdAndUpdate(
             parsedId,
-            { transactionDate, vendor, value, category, items, notes, completed }, 
+            { transactionDate, vendor, value, category, items, notes, checked }, 
             { new: true }
         )
         .lean()

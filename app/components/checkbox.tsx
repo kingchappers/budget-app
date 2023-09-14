@@ -14,13 +14,13 @@ export default function CheckBox({ transaction }: CheckBoxProps) {
   return (
     <input
       type="checkbox"
-      checked={transaction.completed}
-      name="completed"
+      checked={transaction.checked}
+      name="checked"
       onChange={() =>
         startTransition(() =>
           updateTransactionAction(
             transaction.id,
-            { completed: !transaction.completed },
+            { checked: !transaction.checked },
             "/with-server-actions"
           )
         )

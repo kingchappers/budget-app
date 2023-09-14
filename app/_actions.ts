@@ -32,7 +32,7 @@ export async function createTransactionAction({
  */
 export async function updateTransactionAction(
     id: string,
-    update: { transactionDate?: string; vendor?: string; value?: number; completed?: boolean; }, 
+    update: { transactionDate?: string; vendor?: string; value?: number; checked?: boolean; }, 
     path: string
 ) {
     await updateTransaction(id, update);

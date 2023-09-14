@@ -36,7 +36,7 @@ import mongoose from "mongoose"
 class TransactionClass {
 
     @prop({ default: false })
-    completed: boolean;
+    checked: boolean;
 
     @prop({required: true})
     transactionDate: string;
