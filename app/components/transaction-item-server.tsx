@@ -23,7 +23,7 @@ const TransactionItem: React.FC<TransactionItemProps> = ({ transaction }) => {
                     <td className="px-5">{transaction.category}</td>
                     <td className="px-5">{transaction.items}</td>
                     <td className="px-5">{transaction.notes}</td>
-                    <td className="px-5">{transaction.id}</td>
+                    {/* <td className="px-5">{transaction.id}</td> */}
                     <td><DeleteTransaction transaction={transaction}/></td>
             </tr>
         </tbody>

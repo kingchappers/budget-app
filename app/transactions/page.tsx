@@ -6,20 +6,20 @@ export default async function Home() {
     const { transactions, results } = await getTransactions();
 
     return(
-        <div className="container max-w-md p-4">
+        <div className="container mx-auto max-w-screen-2xl p-4">
 
             <TransactionFormServerComponent />
 
             <h1 className="text-2xl font-bold mb-4">Transaction List</h1>
-            <table className="divide-y-2 table-auto">
-                <thead className="table-header-group">
-                    <tr className="table-row text-left text-1xl">
-                        <th className="px-5">Date</th>
-                        <th className="px-5">Vendor</th>
-                        <th className="px-5">Value</th>
-                        <th className="px-5">Category</th>
-                        <th className="px-5">Items</th>
-                        <th>Notes</th>
+            <table className="divide-y-2 table-fixed">
+                <thead>
+                    <tr className="text-left text-1xl">
+                        <th className="px-5 w-10">Date</th>
+                        <th className="px-5 w-72">Vendor</th>
+                        <th className="px-5 w-10">Value</th>
+                        <th className="px-5 w-48">Category</th>
+                        <th className="px-5 w-48">Items</th>
+                        <th className="w-80">Notes</th>
                     </tr>
                 </thead>       
 
