@@ -47,12 +47,12 @@ export default function TransactionForm() {
 
     return(          
         <form action={action} key={Math.random()} className="flex items-center space-x-2 mb-4">
-            <DatePicker/>
-            <input type="text" name="vendor" className="border rounded px-1 py-1 flex-1"/>
-            <input type="number" name="value" className="border rounded px-1 py-1 flex-1"/>
-            <input type="text" name="category" className="border rounded px-1 py-1 flex-1"/>
-            <input type="text" name="items" className="border rounded px-1 py-1 flex-1"/>
-            <input type="text" name="notes" className="border rounded px-1 py-1 flex-1"/>
+            <DatePicker />
+            <input type="text" name="vendor" className="border rounded px-1 py-1 flex-1 w-28"/>
+            <input type="number" name="value" className="border rounded px-1 py-1 flex-1 w-28"/>
+            <input type="text" name="category" className="border rounded px-1 py-1 flex-1 w-28"/>
+            <input type="text" name="items" className="border rounded px-1 py-1 flex-1 w-28"/>
+            <input type="text" name="notes" className="border rounded px-1 py-1 flex-1 w-28"/>
             <button className="px-4 py-1 text-white rounded bg-green-500">Add</button>
         </form>
     );

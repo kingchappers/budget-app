@@ -6,7 +6,7 @@ export default async function Home() {
     const { transactions, results } = await getTransactions();
 
     return(
-        <div className="container mx-auto max-w-md p-4">
+        <div className="container max-w-md p-4">
 
             <TransactionFormServerComponent />
 

@@ -8,11 +8,12 @@ import "react-datetime/css/react-datetime.css"
 export default function DatePicker() {
     let inputProps = {
         name: 'pickedDate',
+        size: 5,
     };
 
     return (
         <div>
-            <Datetime inputProps={ inputProps } initialValue={new Date()} timeFormat={false} className="bg-white border rounded px-1 py-1 flex-1"/>
+            <Datetime inputProps={ inputProps } initialValue={new Date()} timeFormat={false} className="bg-white border rounded px-1 py-1 flex-1" /> {/* w-28"/>  */}
         </div>
     )
 }
