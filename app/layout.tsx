@@ -25,7 +25,7 @@ export default function RootLayout({
       
       <body className={inter.className}>
         <header>
-          <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+          <div className="max-w-screen-2xl flex flex-wrap items-center justify-between mx-auto p-4">
           <Link className="mr-1" href="/">
             <Image 
               src="/../public/images/fin-wide.png"
