@@ -45,7 +45,7 @@ class IncomeClass {
     ammount: number;
 
     @prop({required: true, default: "Miscellaneous"})
-    IncomeCategory: string;
+    incomeCategory: string;
 
     @prop({required: false})
     notes: string;
