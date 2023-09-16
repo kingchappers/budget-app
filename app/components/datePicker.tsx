@@ -17,5 +17,3 @@ export default function DatePicker() {
         </div>
     )
 }
-
-//w-60 appearance-none shadow border rounded py-3 px-2 text-gray-darker

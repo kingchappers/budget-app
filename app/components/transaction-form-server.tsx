@@ -37,7 +37,6 @@ export default function TransactionForm() {
             return;
         }
 
-
         //For testing / Troubleshooting
         // console.log(typeof value)
 
