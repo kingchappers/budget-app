@@ -1,7 +1,7 @@
 "use client";
 
 import { test } from "node:test";
-import { deleteTransactionAction } from "../_actions";
+import { deleteTransactionAction } from "../_transactionActions";
 import { TransactionClass } from "../models/Transaction";
 import { useTransition } from "react";
 

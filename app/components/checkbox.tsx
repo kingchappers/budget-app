@@ -1,6 +1,6 @@
 "use client";
 
-import { updateTransactionAction } from "../_actions";
+import { updateTransactionAction } from "../_transactionActions";
 import { TransactionClass } from "../models/Transaction";
 import { useTransition } from "react";
 
