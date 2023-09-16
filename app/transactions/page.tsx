@@ -15,7 +15,7 @@ export default async function Home() {
                 <thead>
                     <tr className="text-left text-1xl">
                         <th className="px-5 w-10">Date</th>
-                        <th className="px-5 w-72">Vendor</th>
+                        <th className="px-5 w-52">Vendor</th>
                         <th className="px-5 w-10">Value</th>
                         <th className="px-5 w-48">Category</th>
                         <th className="px-5 w-48">Items</th>
