@@ -28,12 +28,12 @@ export default function TransactionForm() {
         }
 
         const items = data.get("items");
-        if (!items || typeof items !== "string"){
+        if (typeof items !== "string"){
             return;
         }
 
         const notes = data.get("notes");
-        if (!notes || typeof notes !== "string"){
+        if (typeof notes !== "string"){
             return;
         }
 
