@@ -8,7 +8,7 @@ import "react-datetime/css/react-datetime.css"
 export default function DatePicker() {
     let inputProps = {
         name: 'pickedDate',
-        size: 5,
+        size: 6,
     };
 
     return (
