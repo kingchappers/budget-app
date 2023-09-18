@@ -15,7 +15,7 @@ export async function getIncomes(filter: IncomeFilter = {}) {
         const limit = filter.limit ?? 10;
         const skip = (page - 1) * limit;
 
-        const incomes = await Income.find().skip(skip).limit(limit).lean().exec();
+        const incomes = await Income.find().skip(skip).sort({ incomeDate: -1 }).limit(limit).lean().exec();
 
         const results = incomes.length;
 
