@@ -36,11 +36,31 @@ export async function POST(request: Request) {
 
         const body = await request.json();
 
-        if (!body.title){
-            return createErrorResponse("Transaction must have a title", 400);
+        if (!body.transactionDate){
+            return createErrorResponse("Transaction must have a transactions date", 400);
         }
 
-        const { transaction, error } = await createTransaction(body.title);
+        if (!body.vendor){
+            return createErrorResponse("Transaction must have a vendor", 400);
+        }
+
+        if (!body.value){
+            return createErrorResponse("Transaction must have a value", 400);
+        }
+
+        if (!body.category){
+            return createErrorResponse("Transaction must have a catagory", 400);
+        }
+
+        if (!body.items){
+            return createErrorResponse("Transaction must have a item or empty string", 400);
+        }
+
+        if (!body.category){
+            return createErrorResponse("Transaction must have a notes or empty string", 400);
+        }
+
+        const { transaction, error } = await createTransaction(body.transactionDate, body.vendor, body.value, body.category, body.items, body.notes);
         if (error) {
             throw error;
         }
