@@ -32,8 +32,8 @@ export async function getCategories(filter: CategoryFilter = {}) {
 
 export async function createCategory(
     label: string, 
-    transactionCategory: string, 
-    incomeCategory: string, 
+    transactionCategory: boolean, 
+    incomeCategory: boolean, 
 ) {
     try {
         await connectDB();
@@ -73,7 +73,7 @@ export async function getCategroy(id: string) {
   
 export async function updateCategory(
     id: string,
-    { label, transactionCategory, incomeCategory } : { label?: string; transactionCategory?: string; incomeCategory?: string } 
+    { label, transactionCategory, incomeCategory } : { label?: string; transactionCategory?: boolean; incomeCategory?: boolean } 
 ) {
     try {
         await connectDB();
