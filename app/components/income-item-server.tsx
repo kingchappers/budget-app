@@ -20,10 +20,9 @@ const IncomeItem: React.FC<IncomeItemProps> = ({ income }) => {
                     <td className="px-5">{income.ammount}</td>
                     <td className="px-5">{income.incomeCategory}</td>
                     <td className="px-5">{income.notes}</td>
-                    <td><DeleteIncome transaction={income}/></td>
+                    <td><DeleteIncome income={income}/></td>
             </tr>
         </tbody>
-
     );
 };
 
