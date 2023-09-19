@@ -42,7 +42,7 @@ export default function IncomeForm() {
         <form action={action} key={Math.random()} className="flex items-center space-x-3 mb-4">
             <DatePicker />
             <input type="text" name="company" placeholder="Company" className="border rounded px-1 py-1 w-52"/>
-            <input type="number" name="amount" placeholder="Amount" className="border rounded px-1 py-1 w-20"/>
+            <input type="number" name="amount" placeholder="Amount" className="border rounded px-1 py-1 w-24"/>
             <input type="text" name="incomeCategory" placeholder="Category" className="border rounded px-1 py-1 w-44"/>
             <input type="text" name="notes" placeholder="Notes" className="border rounded px-1 py-1 w-80"/>
             <button className="px-4 py-1 text-white rounded bg-green-500">Add</button>
