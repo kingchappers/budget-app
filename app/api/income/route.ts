@@ -1,5 +1,5 @@
 import connectDB from "@/app/lib/connect-db";
-import { createTransaction, getTransactions } from "@/app/lib/transaction-db";
+import { createIncome, getIncomes } from "@/app/lib/income-db";
 import { createErrorResponse } from "@/app/lib/utils";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
         const page = page_str ? parseInt(page_str, 10) : 1;
         const limit = limit_str ? parseInt(limit_str, 10) : 10;
 
-        const { transactions, results, error } = await getTransactions({ page, limit });
+        const { incomes, results, error } = await getIncomes({ page, limit });
 
         if (error) {
             throw error;
@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
         let json_response = {
             status: "success",
             results,
-            transactions,
+            incomes,
         };
         return NextResponse.json(json_response);
     } catch (error: any) {
@@ -36,31 +36,27 @@ export async function POST(request: Request) {
 
         const body = await request.json();
 
-        if (!body.transactionDate){
-            return createErrorResponse("Transaction must have a transactions date", 400);
+        if (!body.incomeDate){
+            return createErrorResponse("Incomes must have an income date", 400);
         }
 
-        if (!body.vendor){
-            return createErrorResponse("Transaction must have a vendor", 400);
+        if (!body.company){
+            return createErrorResponse("Incomes must have a company", 400);
         }
 
-        if (!body.value){
-            return createErrorResponse("Transaction must have a value", 400);
+        if (!body.amount){
+            return createErrorResponse("Incomes must have an amount", 400);
         }
 
-        if (!body.category){
-            return createErrorResponse("Transaction must have a catagory", 400);
-        }
-
-        if (!body.items){
-            return createErrorResponse("Transaction must have a item or empty string", 400);
+        if (!body.incomeCategory){
+            return createErrorResponse("Incomes must have an income category", 400);
         }
 
         if (!body.notes){
             return createErrorResponse("Transaction must have a notes or empty string", 400);
         }
 
-        const { transaction, error } = await createTransaction(body.transactionDate, body.vendor, body.value, body.category, body.items, body.notes);
+        const { income, error } = await createIncome(body.incomeDate, body.company, body.amount, body.incomeCategory, body.notes);
         if (error) {
             throw error;
         }
@@ -68,7 +64,7 @@ export async function POST(request: Request) {
         let json_response = {
             status: "success",
             data: {
-                transaction,
+                income,
             },
         };
         return new NextResponse(JSON.stringify(json_response), {
@@ -77,7 +73,7 @@ export async function POST(request: Request) {
         }) 
     } catch (error: any) {
         if (error.code === 11000) {
-            return createErrorResponse("Transaction with title already exists", 409);
+            return createErrorResponse("Income with title already exists", 409);
         }
      return createErrorResponse(error.message, 500);
     }

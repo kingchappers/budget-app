@@ -33,14 +33,14 @@ export async function getIncomes(filter: IncomeFilter = {}) {
 export async function createIncome(
     incomeDate: string, 
     company: string, 
-    ammount: number, 
+    amount: number, 
     incomeCategory: string, 
     notes: string
 ) {
     try {
         await connectDB();
 
-        const income = await Income.create({ incomeDate, company, ammount, incomeCategory, notes }); 
+        const income = await Income.create({ incomeDate, company, amount, incomeCategory, notes }); 
 
         return {
             income
@@ -75,7 +75,7 @@ export async function getIncome(id: string) {
   
 export async function updateIncome(
     id: string,
-    { incomeDate, company, ammount, incomeCategory, notes } : { incomeDate?: string; company?: string; ammount?: number; incomeCategory?: string, notes?: string; } 
+    { incomeDate, company, amount, incomeCategory, notes } : { incomeDate?: string; company?: string; amount?: number; incomeCategory?: string, notes?: string; } 
 ) {
     try {
         await connectDB();
@@ -88,7 +88,7 @@ export async function updateIncome(
   
         const income = await Income.findByIdAndUpdate(
             parsedId,
-            { incomeDate, company, ammount, incomeCategory, notes }, 
+            { incomeDate, company, amount, incomeCategory, notes }, 
             { new: true }
         )
         .lean()

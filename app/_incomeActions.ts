@@ -9,19 +9,19 @@ import { revalidatePath } from "next/cache";
 export async function createIncomeAction({
     incomeDate,
     company,
-    ammount,
+    amount,
     incomeCategory,
     notes,
     path,
 }: {
     incomeDate: string; 
     company: string; 
-    ammount: number; 
+    amount: number; 
     incomeCategory: string; 
     notes: string;
     path: string;
 }) {
-    await createIncome(incomeDate, company, ammount, incomeCategory, notes);
+    await createIncome(incomeDate, company, amount, incomeCategory, notes);
     revalidatePath(path);
 }
 
@@ -30,7 +30,7 @@ export async function createIncomeAction({
  */
 export async function updateIncomeAction(
     id: string,
-    update: { incomeDate?: string; company?: string; ammount?: number; }, 
+    update: { incomeDate?: string; company?: string; amount?: number; }, 
     path: string
 ) {
     await updateIncome(id, update);
