@@ -10,18 +10,18 @@ export async function createIncomeAction({
     incomeDate,
     company,
     ammount,
-    IncomeCategory,
+    incomeCategory,
     notes,
     path,
 }: {
     incomeDate: string; 
     company: string; 
     ammount: number; 
-    IncomeCategory: string; 
+    incomeCategory: string; 
     notes: string;
     path: string;
 }) {
-    await createIncome(incomeDate, company, ammount, IncomeCategory, notes);
+    await createIncome(incomeDate, company, ammount, incomeCategory, notes);
     revalidatePath(path);
 }
 
