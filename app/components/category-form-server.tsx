@@ -1,5 +1,6 @@
-import { createCategoryAction
- } from "../_categoryActions";
+import { createCategoryAction } from "../_categoryActions";
+import { Category } from "../models/Category";
+import { IncomeCategoryCheckBox, TransactionCategoryCheckBox } from "./checkboxes";
 export default function IncomeForm() {
     async function action(data: FormData) {
         "use server";
@@ -30,8 +31,8 @@ export default function IncomeForm() {
 
         <form action={action} key={Math.random()} className="flex items-center space-x-3 mb-4">
             <input type="text" name="label" placeholder="Category" className="border rounded px-1 py-1 w-52"/>
-            <input type="text" name="incomeCategory" placeholder="Category" className="border rounded px-1 py-1 w-44"/>
-            <input type="text" name="notes" placeholder="Notes" className="border rounded px-1 py-1 w-80"/>
+            <input type="checkbox" checked={true} name="transactionCategory" className="h-6 w-6 border-gray-300 disabled:bg-gray-300 disabled:border-gray-300 disabled:cursor-not-allowed"/>
+            <input type="checkbox" checked={true} name="incomeCategory" className="h-6 w-6 border-gray-300 disabled:bg-gray-300 disabled:border-gray-300 disabled:cursor-not-allowed"/>
             <button className="px-4 py-1 text-white rounded bg-green-500">Add</button>
         </form>
     );
