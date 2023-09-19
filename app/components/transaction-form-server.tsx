@@ -17,8 +17,6 @@ export default function TransactionForm() {
 
         const value = Number(data.get("value"));
         if (!value || typeof value !== "number"){
-            const test = typeof value
-            console.log(typeof test)
             return;
         }
         
