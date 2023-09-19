@@ -51,6 +51,9 @@ export default function RootLayout({
               <li className="mx-9">
                 <Link href="/income">Income</Link>
               </li>
+              <li className="mx-9">
+                <Link href="/category">Configure Categories</Link>
+              </li>
               <li>
                 <LoginButton />
               </li>
