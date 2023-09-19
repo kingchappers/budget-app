@@ -1,6 +1,5 @@
 import { createCategoryAction } from "../_categoryActions";
-import { Category } from "../models/Category";
-import { IncomeCategoryCheckBox, TransactionCategoryCheckBox } from "./checkboxes";
+
 export default function IncomeForm() {
     async function action(data: FormData) {
         "use server";

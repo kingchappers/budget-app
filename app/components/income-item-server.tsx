@@ -1,5 +1,3 @@
-import { deleteIncomeAction, updateIncomeAction } from "../_incomeActions"
-import { TransactionCheckBox } from "./checkboxes";
 import { IncomeClass } from "../models/Income";
 import DeleteIncome from "./delete-income-item-server";
 
