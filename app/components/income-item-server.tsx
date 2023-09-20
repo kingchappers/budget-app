@@ -6,10 +6,6 @@ interface IncomeItemProps {
 }
 
 const IncomeItem: React.FC<IncomeItemProps> = ({ income }) => {
-    function handleClick() {
-        console.log('increment like count');
-      }
-
     return(
         <tbody>
             <tr>

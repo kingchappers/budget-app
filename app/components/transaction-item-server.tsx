@@ -8,10 +8,6 @@ interface TransactionItemProps {
 }
 
 const TransactionItem: React.FC<TransactionItemProps> = ({ transaction }) => {
-    function handleClick() {
-        console.log('increment like count');
-      }
-
     return(
         <tbody>
             <tr>
