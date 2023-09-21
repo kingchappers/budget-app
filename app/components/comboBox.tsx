@@ -6,11 +6,15 @@ import { getCategories } from '../lib/categories-db';
 import { getCategoriesAction } from '../_categoryActions';
 import { CategoryClass } from '../models/Category';
 
-type CategoryComboBoxProps = {
-    category: CategoryClass
-}
+// type CategoryComboBoxProps = {
+//     category: CategoryClass
+// }
 
-export function CategoryComboBox({category}: CategoryComboBoxProps) {
+interface CategoriesComboProps {
+  categories: CategoryClass[];
+};
+
+export function CategoryComboBox({categories}: CategoriesComboProps) {
     const [isPending, startTransition] = useTransition();
     //const { categories, results } = getCategoriesAction
 
@@ -22,10 +26,22 @@ export function CategoryComboBox({category}: CategoryComboBoxProps) {
     //     selectedCategory: null,
     //   });
 
-      const options = categories?.map((category: { id: any; label: any; }) => ({
+    // const options = categories?.map((category: { id: any; label: any; }) => ({
+    //     value: category.id,
+    //     label: category.label,
+    //   }));
+    for(const category of categories) {
+      console.log("j")
+      const options = {
         value: category.id,
-        label: category.label,
-      }));
+        label: category.label
+      }
+    }
+
+    const foo = categories.map((category) => ({
+      value: category.id,
+      label: category.label
+    }))
 
       return(
         <Select
@@ -36,7 +52,7 @@ export function CategoryComboBox({category}: CategoryComboBoxProps) {
         // }}
         // getOptionLabel={(category: CategoryClass) => category.label}
         // getOptionValue={(category: CategoryClass) => category.label}
-        options={options}
+        options={foo}
         isClearable={true}
         backspaceRemovesValue={true}
       />

@@ -10,7 +10,7 @@ import { CategoryClass } from "../models/Category";
 
 export default async function Home() {
     const { incomes, results } = await getIncomes();
-    const categories = await getCategories();
+    let categories: object = await getCategories();
 
     // const categoryList = [];
     //     for (const category of categories) {
@@ -21,14 +21,17 @@ export default async function Home() {
 
     //         categoryList.push(newCategory)
     //     }
-
+    console.log("This is from the the categories variable")
+    console.log(categories.categories)
     const listOfCategories = categories.categories
+
+
     console.log("This is from the pages file")
     // console.log(categories.categories)
     // console.log(typeof categories.categories)
 
     console.log("this is the test variable")
-    console.log(listOfCategories.length)
+    //console.log(listOfCategories.length)
     if(listOfCategories?.length){
         console.log(listOfCategories[1]) 
     }

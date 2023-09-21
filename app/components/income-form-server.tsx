@@ -4,16 +4,32 @@ import DatePicker from "./datePicker";
 import { getCategories } from "../lib/categories-db";
 import { CategoryClass } from "../models/Category";
 
-type CategoriesComboProps = {
-    categories: CategoryClass;
-  };
+// type CategoriesComboProps = [
+//     categories: CategoryClass
+// ];
 
-export default function IncomeForm(categories: any) {
+interface CategoriesComboProps {
+    categories: CategoryClass[];
+};
+// { transaction }: TransactionCheckBoxProps
+
+export default function IncomeForm({categories}: CategoriesComboProps) {
 // export default function IncomeForm() {
-    console.log("This is from the income-form-server")
-
-    console.log(categories)
+    console.log("This is from the income-form-server:")
+    console.log(categories[1])
     console.log(typeof categories)
+    
+    // for (const category of categories) {
+    //         const newCategory = {
+    //             id: category._id,
+    //             label: category.label,
+    //         }
+            
+    //         // categoryList.push(newCategory)
+    //         }
+    for(const category of categories) {
+        console.log("j")
+    }
 
     async function action(data: FormData) {
         "use server";
@@ -56,7 +72,7 @@ export default function IncomeForm(categories: any) {
             <input type="text" name="company" placeholder="Company" className="border rounded px-1 py-1 w-52"/>
             <input type="number" name="amount" placeholder="Amount" className="border rounded px-1 py-1 w-24"/>
             <input type="text" name="incomeCategory" placeholder="Category" className="border rounded px-1 py-1 w-44"/>
-            {/* <CategoryComboBox categories={categories} /> */}
+            <CategoryComboBox categories={categories} />
             <input type="text" name="notes" placeholder="Notes" className="border rounded px-1 py-1 w-80"/>
             <button className="px-4 py-1 text-white rounded bg-green-500">Add</button>
         </form>
