@@ -30,15 +30,15 @@ export function CategoryComboBox({categories}: CategoriesComboProps) {
     //     value: category.id,
     //     label: category.label,
     //   }));
-    for(const category of categories) {
-      console.log("j")
-      const options = {
-        value: category.id,
-        label: category.label
-      }
-    }
+    // for(const category of categories) {
+    //   console.log("j")
+    //   const options = {
+    //     value: category.id,
+    //     label: category.label
+    //   }
+    // }
 
-    const foo = categories.map((category) => ({
+    const categoryList = categories.map((category) => ({
       value: category.id,
       label: category.label
     }))
@@ -52,7 +52,7 @@ export function CategoryComboBox({categories}: CategoriesComboProps) {
         // }}
         // getOptionLabel={(category: CategoryClass) => category.label}
         // getOptionValue={(category: CategoryClass) => category.label}
-        options={foo}
+        options={categoryList}
         isClearable={true}
         backspaceRemovesValue={true}
       />
