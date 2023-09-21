@@ -4,32 +4,14 @@ import DatePicker from "./datePicker";
 import { getCategories } from "../lib/categories-db";
 import { CategoryClass } from "../models/Category";
 
-// type CategoriesComboProps = [
-//     categories: CategoryClass
-// ];
-
 interface CategoriesComboProps {
     categories: CategoryClass[];
 };
-// { transaction }: TransactionCheckBoxProps
 
 export default function IncomeForm({categories}: CategoriesComboProps) {
-// export default function IncomeForm() {
     console.log("This is from the income-form-server:")
     console.log(categories[1])
     console.log(typeof categories)
-    
-    // for (const category of categories) {
-    //         const newCategory = {
-    //             id: category._id,
-    //             label: category.label,
-    //         }
-            
-    //         // categoryList.push(newCategory)
-    //         }
-    for(const category of categories) {
-        console.log("j")
-    }
 
     async function action(data: FormData) {
         "use server";

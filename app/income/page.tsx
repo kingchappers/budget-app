@@ -4,47 +4,19 @@ import { getCategories } from "../lib/categories-db";
 import { getIncomes } from "../lib/income-db";
 import { CategoryClass } from "../models/Category";
 
-// type CategoriesComboProps = {
-//     categories: CategoryClass;
-//   };
+interface CategoriesComboProps {
+    categories: CategoryClass[];
+};
 
 export default async function Home() {
     const { incomes, results } = await getIncomes();
-    let categories: object = await getCategories();
-
-    // const categoryList = [];
-    //     for (const category of categories) {
-    //         const newCategory = {
-    //             id: category._id,
-    //             label: category.label,
-    //         }
-
-    //         categoryList.push(newCategory)
-    //     }
-    console.log("This is from the the categories variable")
-    console.log(categories.categories)
+    let categories: CategoriesComboProps = await getCategories() as CategoriesComboProps;
     const listOfCategories = categories.categories
-
-
-    console.log("This is from the pages file")
-    // console.log(categories.categories)
-    // console.log(typeof categories.categories)
-
-    console.log("this is the test variable")
-    //console.log(listOfCategories.length)
-    if(listOfCategories?.length){
-        console.log(listOfCategories[1]) 
-    }
-    //console.log(listOfCategories[0])
-
-    // console.log(categoryList)
-    // console.log(typeof categoryList)
 
     return(
         <div className="container mx-auto max-w-screen-2xl p-4">
 
             <IncomeFormServerComponent categories={listOfCategories} />
-            {/* <IncomeFormServerComponent/> */}
 
             <h1 className="text-2xl font-bold mb-4">Income List</h1>
             <table className="divide-y-2 table-fixed">
