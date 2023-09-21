@@ -1,7 +1,20 @@
 import { createIncomeAction } from "../_incomeActions";
+import { CategoryComboBox } from "./comboBox";
 import DatePicker from "./datePicker";
+import { getCategories } from "../lib/categories-db";
+import { CategoryClass } from "../models/Category";
 
-export default function IncomeForm() {
+type CategoriesComboProps = {
+    categories: CategoryClass;
+  };
+
+export default function IncomeForm(categories: any) {
+// export default function IncomeForm() {
+    console.log("This is from the income-form-server")
+
+    console.log(categories)
+    console.log(typeof categories)
+
     async function action(data: FormData) {
         "use server";
 
@@ -38,12 +51,12 @@ export default function IncomeForm() {
     }
 
     return(      
-
         <form action={action} key={Math.random()} className="flex items-center space-x-3 mb-4">
             <DatePicker />
             <input type="text" name="company" placeholder="Company" className="border rounded px-1 py-1 w-52"/>
             <input type="number" name="amount" placeholder="Amount" className="border rounded px-1 py-1 w-24"/>
             <input type="text" name="incomeCategory" placeholder="Category" className="border rounded px-1 py-1 w-44"/>
+            {/* <CategoryComboBox categories={categories} /> */}
             <input type="text" name="notes" placeholder="Notes" className="border rounded px-1 py-1 w-80"/>
             <button className="px-4 py-1 text-white rounded bg-green-500">Add</button>
         </form>
