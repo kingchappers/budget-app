@@ -1,7 +1,7 @@
 import IncomeFormServerComponent from "../components/income-form-server";
 import IncomeItemServerComponent from "../components/income-item-server";
-import { getCategories } from "../lib/categories-db";
 import { getIncomes } from "../lib/income-db";
+import { getCategories } from "../lib/categories-db";
 import { CategoryClass } from "../models/Category";
 
 interface CategoriesComboProps {
@@ -16,7 +16,7 @@ export default async function Home() {
     return(
         <div className="container mx-auto max-w-screen-2xl p-4">
 
-            <IncomeFormServerComponent categories={listOfCategories} />
+            <IncomeFormServerComponent categories={listOfCategories}/>
 
             <h1 className="text-2xl font-bold mb-4">Income List</h1>
             <table className="divide-y-2 table-fixed">

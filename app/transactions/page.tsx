@@ -1,14 +1,22 @@
 import TransactionFormServerComponent from "../components/transaction-form-server";
 import TransactionItemServerComponent from "../components/transaction-item-server";
 import { getTransactions } from "../lib/transaction-db";
+import { getCategories } from "../lib/categories-db";
+import { CategoryClass } from "../models/Category";
+
+interface CategoriesComboProps {
+    categories: CategoryClass[];
+};
 
 export default async function Home() {
     const { transactions, results } = await getTransactions();
+    let categories: CategoriesComboProps = await getCategories() as CategoriesComboProps;
+    const listOfCategories = categories.categories
 
     return(
         <div className="container mx-auto max-w-screen-2xl p-4">
 
-            <TransactionFormServerComponent />
+            <TransactionFormServerComponent categories={listOfCategories}/>
 
             <h1 className="text-2xl font-bold mb-4">Transaction List</h1>
             <table className="divide-y-2 table-fixed">

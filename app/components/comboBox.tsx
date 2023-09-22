@@ -20,7 +20,7 @@ export function CategoryComboBox({categories}: CategoriesComboProps) {
 
       return(
         <Select
-        name = "CategoryCombobox"
+        name = "categoryCombobox"
         options={categoryList}
         isClearable={true}
         backspaceRemovesValue={true}

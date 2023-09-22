@@ -1,7 +1,13 @@
 import { createTransactionAction } from "../_transactionActions";
 import DatePicker from "./datePicker";
+import { CategoryComboBox } from "./comboBox";
+import { CategoryClass } from "../models/Category";
 
-export default function TransactionForm() {
+interface CategoriesComboProps {
+    categories: CategoryClass[];
+};
+
+export default function TransactionForm({categories}: CategoriesComboProps) {
     async function action(data: FormData) {
         "use server";
 
@@ -20,7 +26,7 @@ export default function TransactionForm() {
             return;
         }
         
-        const category = data.get("category");
+        const category = data.get("categoryCombobox");
         if (!category || typeof category !== "string"){
             return;
         }
@@ -47,8 +53,8 @@ export default function TransactionForm() {
         <form action={action} key={Math.random()} className="flex items-center space-x-3 mb-4">
             <DatePicker />
             <input type="text" name="vendor" placeholder="Vendor" className="border rounded px-1 py-1 w-52"/>
-            <input type="number" name="value" placeholder="Value" className="border rounded px-1 py-1 w-20"/>
-            <input type="text" name="category" placeholder="Category" className="border rounded px-1 py-1 w-44"/>
+            <input type="number" step="any" name="value" placeholder="Value" className="border rounded px-1 py-1 w-20"/>
+            <CategoryComboBox categories={categories} />
             <input type="text" name="items" placeholder="Items" className="border rounded px-1 py-1 w-44"/>
             <input type="text" name="notes" placeholder="Notes" className="border rounded px-1 py-1 w-80"/>
             <button className="px-4 py-1 text-white rounded bg-green-500">Add</button>
