@@ -39,7 +39,7 @@ export function CategoryComboBox({categories}: CategoriesComboProps) {
     // }
 
     const categoryList = categories.map((category) => ({
-      value: category.id,
+      value: category.label,
       label: category.label
     }))
 
@@ -52,6 +52,7 @@ export function CategoryComboBox({categories}: CategoriesComboProps) {
         // }}
         // getOptionLabel={(category: CategoryClass) => category.label}
         // getOptionValue={(category: CategoryClass) => category.label}
+        name = "CategoryCombobox"
         options={categoryList}
         isClearable={true}
         backspaceRemovesValue={true}

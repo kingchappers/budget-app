@@ -31,13 +31,18 @@ export default function IncomeForm({categories}: CategoriesComboProps) {
             return;
         }
         
-        const incomeCategory = data.get("incomeCategory");
-        if (!incomeCategory || typeof incomeCategory !== "string"){
-            return;
-        }
+        // const incomeCategory = data.get("incomeCategory");
+        // if (!incomeCategory || typeof incomeCategory !== "string"){
+        //     return;
+        // }
 
         const notes = data.get("notes");
         if (typeof notes !== "string"){
+            return;
+        }
+
+        const incomeCategory = data.get("CategoryCombobox");
+        if (!incomeCategory || typeof incomeCategory !== "string"){
             return;
         }
 
@@ -53,7 +58,6 @@ export default function IncomeForm({categories}: CategoriesComboProps) {
             <DatePicker />
             <input type="text" name="company" placeholder="Company" className="border rounded px-1 py-1 w-52"/>
             <input type="number" name="amount" placeholder="Amount" className="border rounded px-1 py-1 w-24"/>
-            <input type="text" name="incomeCategory" placeholder="Category" className="border rounded px-1 py-1 w-44"/>
             <CategoryComboBox categories={categories} />
             <input type="text" name="notes" placeholder="Notes" className="border rounded px-1 py-1 w-80"/>
             <button className="px-4 py-1 text-white rounded bg-green-500">Add</button>
