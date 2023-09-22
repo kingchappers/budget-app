@@ -56,6 +56,7 @@ export function CategoryComboBox({categories}: CategoriesComboProps) {
         options={categoryList}
         isClearable={true}
         backspaceRemovesValue={true}
+        classNames={{control: () => "w-44"}}
       />
       )
 }
