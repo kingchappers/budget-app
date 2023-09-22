@@ -1,6 +1,6 @@
 "use server";
 
-import { createCategory, deleteCategory, updateCategory, getCategories} from "./lib/categories-db";
+import { createCategory, deleteCategory, updateCategory, getCategories, CategoryFilter} from "./lib/categories-db";
 import { revalidatePath } from "next/cache";
 
 /**
@@ -48,7 +48,8 @@ export async function deleteCategoryAction({
 }
 
 export async function getCategoriesAction(){
-    const categories = await getCategories();
+    let filter: CategoryFilter = {}
+    const categories = await getCategories(filter);
     return(
         categories
     )

@@ -6,7 +6,7 @@ import { getCategories } from '../lib/categories-db';
 import { getCategoriesAction } from '../_categoryActions';
 import { CategoryClass } from '../models/Category';
 
-interface CategoriesComboProps {
+export interface CategoriesComboProps {
   categories: CategoryClass[];
 };
 

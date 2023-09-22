@@ -1,16 +1,17 @@
 import TransactionFormServerComponent from "../components/transaction-form-server";
 import TransactionItemServerComponent from "../components/transaction-item-server";
 import { getTransactions } from "../lib/transaction-db";
-import { getCategories } from "../lib/categories-db";
-import { CategoryClass } from "../models/Category";
-
-interface CategoriesComboProps {
-    categories: CategoryClass[];
-};
+import { getCategories, CategoryFilter } from "../lib/categories-db";
+import { CategoriesComboProps } from "../components/comboBox";
 
 export default async function Home() {
+    const filter: CategoryFilter = {
+        limit: 30,
+        type: "transaction"
+    }
+
     const { transactions, results } = await getTransactions();
-    let categories: CategoriesComboProps = await getCategories() as CategoriesComboProps;
+    let categories: CategoriesComboProps = await getCategories(filter) as CategoriesComboProps;
     const listOfCategories = categories.categories
 
     return(

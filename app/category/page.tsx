@@ -1,9 +1,12 @@
 import CategoryFormServerComponent from "../components/category-form-server";
 import CategoryItemServerComponent from "../components/category-item-server";
-import { getCategories } from "../lib/categories-db";
+import { getCategories, CategoryFilter } from "../lib/categories-db";
 
 export default async function Home() {
-    const { categories, results } = await getCategories();
+    let filter: CategoryFilter = {
+        limit: 50
+    }
+    const { categories, results } = await getCategories(filter);
 
     return(
         <div className="container mx-auto max-w-screen-2xl p-4">
@@ -27,7 +30,6 @@ export default async function Home() {
                     <CategoryItemServerComponent key={category.id} category={category} />
                 ))
             )}
-
             </table>
         </div>
         

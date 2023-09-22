@@ -2,20 +2,30 @@ import { Category } from "../models/Category";
 import connectDB from "./connect-db";
 import { stringToObjectId } from "./utils";
 
-interface CategoryFilter {
+export interface CategoryFilter {
     page?: number;
     limit?: number;
+    type?: string;
 }
 
-export async function getCategories(filter: CategoryFilter = {}) {
+export async function getCategories(filter: CategoryFilter) {
     try {
         await connectDB();
-
+        
         const page = filter.page ?? 1;
         const limit = filter.limit ?? 10;
+        const type = filter.type ?? "";
+    
         const skip = (page - 1) * limit;
+        let categories;
 
-        const categories = await Category.find().skip(skip).sort({ label: 1 }).limit(limit).lean().exec();
+        if(type === "income"){
+            categories = await Category.find({ incomeCategory: true }).skip(skip).sort({ label: 1 }).limit(limit).lean().exec();
+        } else if (type === "transaction"){
+            categories = await Category.find({ transactionCategory: true }).skip(skip).sort({ label: 1 }).limit(limit).lean().exec();
+        } else {
+            categories = await Category.find().skip(skip).sort({ label: 1 }).limit(limit).lean().exec();
+        }   
 
         const results = categories.length;
 

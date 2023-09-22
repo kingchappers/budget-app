@@ -1,16 +1,17 @@
 import IncomeFormServerComponent from "../components/income-form-server";
 import IncomeItemServerComponent from "../components/income-item-server";
 import { getIncomes } from "../lib/income-db";
-import { getCategories } from "../lib/categories-db";
-import { CategoryClass } from "../models/Category";
-
-interface CategoriesComboProps {
-    categories: CategoryClass[];
-};
+import { getCategories, CategoryFilter } from "../lib/categories-db";
+import { CategoriesComboProps } from "../components/comboBox";
 
 export default async function Home() {
+    const filter: CategoryFilter = {
+        limit: 30,
+        type: "income"
+    }
+
     const { incomes, results } = await getIncomes();
-    let categories: CategoriesComboProps = await getCategories() as CategoriesComboProps;
+    let categories: CategoriesComboProps = await getCategories(filter) as CategoriesComboProps;
     const listOfCategories = categories.categories
 
     return(
