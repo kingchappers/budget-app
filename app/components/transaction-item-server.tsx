@@ -1,5 +1,3 @@
-import { deleteTransactionAction, updateTransactionAction } from "../_transactionActions";
-import { TransactionCheckBox } from "./checkboxes";
 import { TransactionClass } from "../models/Transaction";
 import DeleteTransaction from "./delete-transaction-item-server";
 
