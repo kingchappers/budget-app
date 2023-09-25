@@ -1,6 +1,6 @@
 import { createCategoryAction } from "../_categoryActions";
 
-export default function IncomeForm() {
+export default function CategoryForm() {
     async function action(data: FormData) {
         "use server";
 
