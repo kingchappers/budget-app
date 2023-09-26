@@ -35,7 +35,7 @@ import mongoose from "mongoose"
 @index({ vendor: 1 })
 class TransactionClass {
 
-    @prop({ default: false })
+    @prop({default: false})
     checked: boolean;
 
     @prop({required: true})

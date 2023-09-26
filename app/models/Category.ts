@@ -38,10 +38,10 @@ class CategoryClass {
     @prop({required: true, unique: true})
     label: string;
     
-    @prop({ default: true })
+    @prop({default: true})
     transactionCategory: boolean;
 
-    @prop({ default: true })
+    @prop({default: true})
     incomeCategory: boolean;
     
     _id: mongoose.Types.ObjectId | string;
