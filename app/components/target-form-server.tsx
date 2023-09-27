@@ -1,4 +1,5 @@
 import { TargetClass } from "../models/Target";
+import React, { useState } from "react";
 import DeleteCategory from "./delete-category-item-server";
 
 interface TargetItemProps {
@@ -6,11 +7,12 @@ interface TargetItemProps {
 }
 
 const CategoryItem: React.FC<TargetItemProps> = ({ target }) => {
+    const targetId: any = target.id
     return(
-        <form>
+        <div>
             <label htmlFor="target">{target.categoryName}: </label>
-            <input type="text" name="target" value={target.targetAmount} className="border rounded px-1 py-1 w-52" />
-        </form>
+            <input type="number" name={target.id} defaultValue={target.targetAmount} className="border rounded px-1 py-1 w-52" />
+        </div>
     );
 };
 
