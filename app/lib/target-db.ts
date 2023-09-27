@@ -38,6 +38,15 @@ export async function createTarget(
     try {
         await connectDB();
 
+        const existingTarget = await Target.findOne({
+            categoryName: categoryName,
+            expenseTarget: expenseTarget
+        });
+
+        if (existingTarget){
+            return { error: "Target with this name and type already exists" };
+        }
+
         const target = await Target.create({ categoryName, targetAmount, expenseTarget }); 
 
         return {
