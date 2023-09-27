@@ -1,4 +1,5 @@
 import { createCategoryAction } from "../_categoryActions";
+import { createTargetAction } from "../_targetActions";
 import { Category } from "../models/Category";
 
 export default function DefaulttCategoriesButton() {
@@ -169,6 +170,11 @@ export default function DefaulttCategoriesButton() {
             const transactionCategory = category.transactionCategory
             const incomeCategory = category.incomeCategory
             await createCategoryAction({ label, transactionCategory, incomeCategory, path: "/" }); 
+            await createTargetAction({ categoryName: label, targetAmount: 0, expenseTarget: transactionCategory, path: "/"})
+            if (category.incomeCategory == true && category.transactionCategory == true){
+                await createTargetAction({ categoryName: label, targetAmount: 0, expenseTarget: false, path: "/"})
+            }
+            
         });
     }
 
