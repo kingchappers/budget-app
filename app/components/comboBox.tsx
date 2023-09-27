@@ -2,8 +2,6 @@
 
 import React, { useTransition } from 'react';
 import Select from 'react-select';
-import { getCategories } from '../lib/categories-db';
-import { getCategoriesAction } from '../_categoryActions';
 import { CategoryClass } from '../models/Category';
 
 export interface CategoriesComboProps {
