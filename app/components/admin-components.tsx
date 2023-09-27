@@ -1,6 +1,5 @@
 import { createCategoryAction } from "../_categoryActions";
 import { createTargetAction } from "../_targetActions";
-import { Category } from "../models/Category";
 
 export default function DefaulttCategoriesButton() {
     async function action() {
