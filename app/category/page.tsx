@@ -6,6 +6,7 @@ export default async function Home() {
     let filter: CategoryFilter = {
         limit: 50
     }
+    
     const { categories, results } = await getCategories(filter);
 
     return(

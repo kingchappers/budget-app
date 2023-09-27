@@ -6,7 +6,7 @@ interface CategoryItemProps {
     category: CategoryClass
 }
 
-const IncomeItem: React.FC<CategoryItemProps> = ({ category }) => {
+const CategoryItem: React.FC<CategoryItemProps> = ({ category }) => {
     return(
         <tbody>
             <tr>
@@ -19,4 +19,4 @@ const IncomeItem: React.FC<CategoryItemProps> = ({ category }) => {
     );
 };
 
-export default IncomeItem;
+export default CategoryItem;
