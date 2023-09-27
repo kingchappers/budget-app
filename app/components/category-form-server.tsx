@@ -1,4 +1,5 @@
 import { createCategoryAction } from "../_categoryActions";
+import { createTargetAction } from "../_targetActions";
 
 export default function CategoryForm() {
     async function action(data: FormData) {
@@ -31,8 +32,14 @@ export default function CategoryForm() {
         // console.log(typeof incomeCategory)
         // console.log(incomeCategory)
 
-        // Invoke server action to add new transaction
+        // Invoke server action to add new category
         await createCategoryAction({ label, transactionCategory, incomeCategory, path: "/" }); 
+        
+        // Invoke server action to add new target
+        await createTargetAction({ categoryName: label, targetAmount: 0, expenseTarget: transactionCategory, path: "/"})
+        if (incomeCategory == true && transactionCategory == true){
+            await createTargetAction({ categoryName: label, targetAmount: 0, expenseTarget: false, path: "/"})
+        } 
     }
 
     return(      

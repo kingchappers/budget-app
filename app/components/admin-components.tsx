@@ -173,8 +173,7 @@ export default function DefaulttCategoriesButton() {
             await createTargetAction({ categoryName: label, targetAmount: 0, expenseTarget: transactionCategory, path: "/"})
             if (category.incomeCategory == true && category.transactionCategory == true){
                 await createTargetAction({ categoryName: label, targetAmount: 0, expenseTarget: false, path: "/"})
-            }
-            
+            }      
         });
     }
 
