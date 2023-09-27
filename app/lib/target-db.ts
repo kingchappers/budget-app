@@ -2,12 +2,12 @@ import { Target } from "../models/Target";
 import connectDB from "./connect-db";
 import { stringToObjectId } from "./utils";
 
-interface TargetFilter {
+export interface TargetFilter {
     page?: number;
     limit?: number;
 }
 
-export async function getTargets(filter: TargetFilter = {}) {
+export async function getTargets(filter: TargetFilter) {
     try {
         await connectDB();
 
