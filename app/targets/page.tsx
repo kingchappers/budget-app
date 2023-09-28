@@ -32,27 +32,32 @@ export default async function Home() {
         <div className="container mx-auto max-w-screen-2xl p-4"> 
 
             <h1 className="text-2xl font-bold mb-4">Expense Targets</h1>
-            <form action={action} key={Math.random()} className="items-center space-x-3 mb-4">
-                {expenseResults === 0 ? (
-                    <p className="text-center">No Expense Targets Found</p>
-                ) : (
-                    expenseTargets?.map((expenseTarget) => (
-                        <TargetFormServerComponent key={expenseTarget.id} target={expenseTarget} />
-                    ))
-                )}
-                <button className="px-4 py-1 text-white rounded bg-green-500">Save</button>
+            <form action={action} key={Math.random()} >
+                <div className="grid grid-cols-3">
+                    {expenseResults === 0 ? (
+                        <p className="text-center">No Expense Targets Found</p>
+                    ) : (
+                        expenseTargets?.map((expenseTarget) => (
+                            <TargetFormServerComponent key={expenseTarget.id} target={expenseTarget} />
+                        ))
+                    )}
+                </div>
+                <button className="mt-5 ml-10 px-4 py-1 text-white rounded bg-green-500">Save</button>
+
             </form>
             
-            <h1 className="text-2xl font-bold mb-4">Income Targets</h1>
-            <form action={action} key={Math.random()} className="items-center space-x-3 mb-4">
-                {incomeResults === 0 ? (
-                    <p className="text-center">No Income Targets Found</p>
-                ) : (
-                    incomeTargets?.map((incomeTarget) => (
-                        <TargetFormServerComponent key={incomeTarget.id} target={incomeTarget} />
-                    ))
-                )}
-                <button className="px-4 py-1 text-white rounded bg-green-500">Save</button>
+            <h1 className="text-2xl font-bold mt-5 mb-3">Income Targets</h1>
+            <form action={action} key={Math.random()}>
+                <div className="grid grid-cols-1">
+                    {incomeResults === 0 ? (
+                        <p className="text-center">No Income Targets Found</p>
+                    ) : (
+                        incomeTargets?.map((incomeTarget) => (
+                            <TargetFormServerComponent key={incomeTarget.id} target={incomeTarget} />
+                        ))
+                    )}
+            </div>
+                <button className="mt-5 ml-10 px-4 py-1 text-white rounded bg-green-500">Save</button>
             </form>
 
         </div>
