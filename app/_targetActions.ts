@@ -1,8 +1,9 @@
 "use server";
 
 import { create } from "domain";
-import { createTarget, deleteTarget, updateTarget } from "./lib/target-db";
+import { TargetFilter, createTarget, deleteTarget, getTargetsByName, updateTarget } from "./lib/target-db";
 import { revalidatePath } from "next/cache";
+import { CategoryClass } from "./models/Category";
 
 /**
  * Server Action: Create a new target
@@ -47,3 +48,22 @@ export async function deleteTargetAction({
     await deleteTarget(id);
     revalidatePath(path);
 }
+
+export async function deleteTargetsByNameAction(category: CategoryClass){
+    let filter: TargetFilter = {
+      limit: 50
+    }
+  
+    const test = category.label.toString()
+  
+    let { targets, results } = await getTargetsByName(filter, category.label)
+  
+    if(results === 0){
+      return;
+    } else {
+      targets?.map((target) => {
+         deleteTargetAction({ id: target.id, path: "/" })
+      });
+    }
+  
+  }

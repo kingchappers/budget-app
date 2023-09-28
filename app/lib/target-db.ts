@@ -40,6 +40,29 @@ export async function getTargets(filter: TargetFilter) {
     }
 }
 
+export async function getTargetsByName(filter: TargetFilter, targetName: string) {
+    try {
+        await connectDB();
+
+        const page = filter.page ?? 1;
+        const limit = filter.limit ?? 10;
+        const skip = (page - 1) * limit;
+
+        let targets = await Target.find({ categoryName: targetName }).skip(skip).sort({ categoryName: 1 }).limit(limit).lean().exec();
+
+        const results = targets.length;
+
+        return {
+            targets: targets,
+            page,
+            limit,
+            results
+        };
+    } catch (error) {
+        return { error };
+    }
+}
+
 export async function createTarget(
     categoryName: string, 
     targetAmount: number, 

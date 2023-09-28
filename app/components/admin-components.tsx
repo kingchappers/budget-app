@@ -25,7 +25,7 @@ export default function DefaulttCategoriesButton() {
             {
                 label: "Childcare",
                 transactionCategory: true,
-                incomeCategory: true,
+                incomeCategory: false,
             },
             {
                 label: "Clothing",
