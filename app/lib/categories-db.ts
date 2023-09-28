@@ -15,8 +15,8 @@ export async function getCategories(filter: CategoryFilter) {
         const page = filter.page ?? 1;
         const limit = filter.limit ?? 10;
         const type = filter.type ?? "";
-    
         const skip = (page - 1) * limit;
+
         let categories;
 
         if(type === "income"){

@@ -5,6 +5,7 @@ import { stringToObjectId } from "./utils";
 export interface TargetFilter {
     page?: number;
     limit?: number;
+    type?: string;
 }
 
 export async function getTargets(filter: TargetFilter) {
@@ -14,8 +15,17 @@ export async function getTargets(filter: TargetFilter) {
         const page = filter.page ?? 1;
         const limit = filter.limit ?? 10;
         const skip = (page - 1) * limit;
+        const type = filter.type ?? "";
 
-        const targets = await Target.find().skip(skip).sort({ categoryName: 1 }).limit(limit).lean().exec();
+        let targets;
+
+        if(type === "expense"){
+            targets = await Target.find({ expenseTarget: true }).skip(skip).sort({ categoryName: 1 }).limit(limit).lean().exec();
+        } else if (type === "income"){
+            targets = await Target.find({ expenseTarget: false }).skip(skip).sort({ categoryName: 1 }).limit(limit).lean().exec();
+        } else {
+            targets = await Target.find().skip(skip).sort({ categoryName: 1 }).limit(limit).lean().exec();
+        } 
 
         const results = targets.length;
 
