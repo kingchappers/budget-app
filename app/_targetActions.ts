@@ -101,15 +101,4 @@ export async function updateTargetsByNameAction(category: CategoryClass, changed
             })
         }
     }
-
-    if(results === 0){
-        return;
-    } else {
-        targets?.map((target) => {
-            updateTargetAction( target.id, { expenseTarget: category.transactionCategory }, "/with-server-actions" )
-            if(category.incomeCategory == true && category.transactionCategory == true){
-
-            }
-        });
-    }
 }

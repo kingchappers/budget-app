@@ -1,4 +1,5 @@
 import { updateTargetAction } from "../_targetActions";
+import { calculateTotal } from "../components/target-calculation-functions";
 import TargetFormServerComponent from "../components/target-form-server";
 import { TargetFilter, getTargets } from "../lib/target-db";
 
@@ -16,6 +17,9 @@ export default async function Home() {
     let { targets: expenseTargets, results: expenseResults } = await getTargets(ExpenseFilter)
     let { targets: incomeTargets, results: incomeResults } = await getTargets(IncomeFilter)
 
+    let expenseTotal = calculateTotal(expenseTargets)
+    let incomeTotal = calculateTotal(incomeTargets)
+
     async function action(data: FormData){
         "use server"
 
@@ -31,7 +35,7 @@ export default async function Home() {
     return(
         <div className="container mx-auto max-w-screen-2xl p-4"> 
 
-            <h1 className="text-2xl font-bold mb-4">Expense Targets</h1>
+            <h1 className="text-2xl font-bold mb-4">Monthly Expense Targets</h1>
             <form action={action} key={Math.random()} >
                 <div className="grid grid-cols-3">
                     {expenseResults === 0 ? (
@@ -43,10 +47,12 @@ export default async function Home() {
                     )}
                 </div>
                 <button className="mt-5 ml-10 px-4 py-1 text-white rounded bg-green-500">Save</button>
-
             </form>
+
+            <h1 className="text-1xl font-bold mt-4 mb-4">Total Monthly Expense Target:</h1>
+            <p>{expenseTotal}</p>
             
-            <h1 className="text-2xl font-bold mt-5 mb-3">Income Targets</h1>
+            <h1 className="text-2xl font-bold mt-5 mb-3">Monthly Income Targets</h1>
             <form action={action} key={Math.random()}>
                 <div className="grid grid-cols-1">
                     {incomeResults === 0 ? (
@@ -59,6 +65,9 @@ export default async function Home() {
             </div>
                 <button className="mt-5 ml-10 px-4 py-1 text-white rounded bg-green-500">Save</button>
             </form>
+
+            <h1 className="text-1xl font-bold mt-4 mb-4">Total Monthly Expense Target:</h1>
+            <p>{incomeTotal}</p>
 
         </div>
     );
