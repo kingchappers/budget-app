@@ -5,6 +5,7 @@ import { TransactionClass } from "../models/Transaction";
 import { CategoryClass } from "../models/Category";
 import { useTransition } from "react";
 import { updateCategoryAction } from "../_categoryActions";
+import { updateTargetsByNameAction } from "../_targetActions";
 
 type TransactionCheckBoxProps = {
   transaction: TransactionClass;
@@ -46,13 +47,10 @@ export function TransactionCategoryCheckBox({ category }: TransactionCategoryChe
       checked={category.transactionCategory}
       name="checked"
       onChange={() =>
-        startTransition(() =>
-          updateCategoryAction(
-            category.id,
-            { transactionCategory: !category.transactionCategory },
-            "/with-server-actions"
-          )
-        )
+        startTransition(() => {
+          updateCategoryAction(category.id, { transactionCategory: !category.transactionCategory }, "/with-server-actions")
+          updateTargetsByNameAction(category, "transaction")
+        })
       }
       disabled={isPending}
       className="h-6 w-6 border-gray-300 disabled:bg-gray-300 disabled:border-gray-300 disabled:cursor-not-allowed"
@@ -73,13 +71,10 @@ export function IncomeCategoryCheckBox({ category }: IncomeCategoryCheckBoxProps
       checked={category.incomeCategory}
       name="checked"
       onChange={() =>
-        startTransition(() =>
-          updateCategoryAction(
-            category.id,
-            { incomeCategory: !category.incomeCategory },
-            "/with-server-actions"
-          )
-        )
+        startTransition(() => {
+          updateCategoryAction(category.id, { incomeCategory: !category.incomeCategory }, "/with-server-actions")
+          updateTargetsByNameAction(category, "income")
+        })
       }
       disabled={isPending}
       className="h-6 w-6 border-gray-300 disabled:bg-gray-300 disabled:border-gray-300 disabled:cursor-not-allowed"

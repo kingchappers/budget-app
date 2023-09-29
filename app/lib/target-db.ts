@@ -16,7 +16,7 @@ export async function getTargets(filter: TargetFilter) {
         const limit = filter.limit ?? 10;
         const skip = (page - 1) * limit;
         const type = filter.type ?? "";
-
+    
         let targets;
 
         if(type === "expense"){
@@ -62,6 +62,30 @@ export async function getTargetsByName(filter: TargetFilter, targetName: string)
         return { error };
     }
 }
+
+export async function getTargetsByNameAndType(filter: TargetFilter, targetName: string, targetType:  boolean) {
+    try {
+        await connectDB();
+
+        const page = filter.page ?? 1;
+        const limit = filter.limit ?? 10;
+        const skip = (page - 1) * limit;
+
+        let targets = await Target.find({ categoryName: targetName, expenseTarget: targetType }).skip(skip).sort({ categoryName: 1 }).limit(limit).lean().exec();
+
+        const results = targets.length;
+
+        return {
+            targets: targets,
+            page,
+            limit,
+            results
+        };
+    } catch (error) {
+        return { error };
+    }
+}
+
 
 export async function createTarget(
     categoryName: string, 
