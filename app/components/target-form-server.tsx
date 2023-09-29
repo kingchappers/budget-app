@@ -1,6 +1,5 @@
 import { TargetClass } from "../models/Target";
-import React, { useState } from "react";
-import DeleteCategory from "./delete-category-item-server";
+import React from "react";
 
 interface TargetItemProps {
     target: TargetClass
