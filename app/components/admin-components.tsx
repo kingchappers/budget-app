@@ -90,7 +90,7 @@ export default function DefaulttCategoriesButton() {
             {
                 label: "Insurance",
                 transactionCategory: true,
-                incomeCategory: true,
+                incomeCategory: false,
             },
             {
                 label: "Medical",

@@ -1,7 +1,8 @@
 import { updateTargetAction } from "../_targetActions";
-import { calculateTotal } from "../components/target-calculation-functions";
+import { calculateTotal, caculateDifference } from "../components/target-calculation-functions";
 import TargetFormServerComponent from "../components/target-form-server";
 import { TargetFilter, getTargets } from "../lib/target-db";
+import { revalidatePath } from 'next/cache'
 
 export default async function Home() {
     let ExpenseFilter: TargetFilter = {
@@ -17,8 +18,9 @@ export default async function Home() {
     let { targets: expenseTargets, results: expenseResults } = await getTargets(ExpenseFilter)
     let { targets: incomeTargets, results: incomeResults } = await getTargets(IncomeFilter)
 
-    let expenseTotal = calculateTotal(expenseTargets)
-    let incomeTotal = calculateTotal(incomeTargets)
+    const monthlyExpenseTotal = calculateTotal(expenseTargets)
+    const monthlyIncomeTotal = calculateTotal(incomeTargets)
+    const impliedMonthlySaving = caculateDifference(monthlyExpenseTotal, monthlyIncomeTotal)
 
     async function action(data: FormData){
         "use server"
@@ -30,7 +32,18 @@ export default async function Home() {
             
             updateTargetAction(key, {targetAmount: Number(value)}, "/with-server-actions")
         });
+
+        //This will refresh the page when a target is set to update the calculated variables.
+        revalidatePath('/')
     }
+
+    // function targetCalculations(expenseTargets: TargetClass, incomeTargets: number){
+    //     const monthlyExpenseTotal = calculateTotal(expenseTargets)
+    //     const monthlyIncomeTotal = calculateTotal(incomeTargets)
+    //     const impliedMonthlySaving = caculateDifference(monthlyExpenseTotal, monthlyIncomeTotal)
+
+    //     return{monthlyExpenseTotal, monthlyIncomeTotal, impliedMonthlySaving}
+    // }
 
     return(
         <div className="container mx-auto max-w-screen-2xl p-4"> 
@@ -50,7 +63,7 @@ export default async function Home() {
             </form>
 
             <h1 className="text-1xl font-bold mt-4 mb-4">Total Monthly Expense Target:</h1>
-            <p>{expenseTotal}</p>
+            <p>{monthlyExpenseTotal}</p>
             
             <h1 className="text-2xl font-bold mt-5 mb-3">Monthly Income Targets</h1>
             <form action={action} key={Math.random()}>
@@ -67,7 +80,12 @@ export default async function Home() {
             </form>
 
             <h1 className="text-1xl font-bold mt-4 mb-4">Total Monthly Expense Target:</h1>
-            <p>{incomeTotal}</p>
+            <p>{monthlyIncomeTotal}</p>
+
+            <h1>Monthly Budget Targets</h1>
+            <p>Target Monthly Expenses: {monthlyExpenseTotal}</p>
+            <p>Target Monthly Income:   {monthlyIncomeTotal}</p>
+            <p>Target Monthly Savings:  {impliedMonthlySaving}</p>
 
         </div>
     );
