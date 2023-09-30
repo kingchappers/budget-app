@@ -18,9 +18,9 @@ export default async function Home() {
     let { targets: expenseTargets, results: expenseResults } = await getTargets(ExpenseFilter)
     let { targets: incomeTargets, results: incomeResults } = await getTargets(IncomeFilter)
 
-    const monthlyExpenseTotal = calculateTotal(expenseTargets)
-    const monthlyIncomeTotal = calculateTotal(incomeTargets)
-    const impliedMonthlySaving = caculateDifference(monthlyExpenseTotal, monthlyIncomeTotal)
+    const targetMonthlyExpenseTotal = calculateTotal(expenseTargets)
+    const targetMonthlyIncomeTotal = calculateTotal(incomeTargets)
+    const targetImpliedMonthlySaving = caculateDifference(targetMonthlyExpenseTotal, targetMonthlyIncomeTotal)
 
     async function action(data: FormData){
         "use server"
@@ -36,14 +36,6 @@ export default async function Home() {
         //This will refresh the page when a target is set to update the calculated variables.
         revalidatePath('/')
     }
-
-    // function targetCalculations(expenseTargets: TargetClass, incomeTargets: number){
-    //     const monthlyExpenseTotal = calculateTotal(expenseTargets)
-    //     const monthlyIncomeTotal = calculateTotal(incomeTargets)
-    //     const impliedMonthlySaving = caculateDifference(monthlyExpenseTotal, monthlyIncomeTotal)
-
-    //     return{monthlyExpenseTotal, monthlyIncomeTotal, impliedMonthlySaving}
-    // }
 
     return(
         <div className="container mx-auto max-w-screen-2xl p-4"> 
@@ -61,9 +53,6 @@ export default async function Home() {
                 </div>
                 <button className="mt-5 ml-10 px-4 py-1 text-white rounded bg-green-500">Save</button>
             </form>
-
-            <h1 className="text-1xl font-bold mt-4 mb-4">Total Monthly Expense Target:</h1>
-            <p>{monthlyExpenseTotal}</p>
             
             <h1 className="text-2xl font-bold mt-5 mb-3">Monthly Income Targets</h1>
             <form action={action} key={Math.random()}>
@@ -79,13 +68,32 @@ export default async function Home() {
                 <button className="mt-5 ml-10 px-4 py-1 text-white rounded bg-green-500">Save</button>
             </form>
 
-            <h1 className="text-1xl font-bold mt-4 mb-4">Total Monthly Expense Target:</h1>
-            <p>{monthlyIncomeTotal}</p>
+            <h1 className="text-2xl font-bold my-4">Monthly Budget Targets</h1>
 
-            <h1>Monthly Budget Targets</h1>
-            <p>Target Monthly Expenses: {monthlyExpenseTotal}</p>
-            <p>Target Monthly Income:   {monthlyIncomeTotal}</p>
-            <p>Target Monthly Savings:  {impliedMonthlySaving}</p>
+            <table className="divide-y-2 table-fixed">
+                <thead>
+                    <tr className="text-left text-1xl">
+                        <th className="w-10"></th>
+                        <th className="pl-5 text-center w-44">Monthly Targets</th>
+                        <th className="px-5 text-center w-44">Actual Data</th>
+                    </tr>
+                </thead>  
+                <tr className="">
+                    <td className="text-right font-bold">Expenses:</td>
+                    <td className="text-center">{targetMonthlyExpenseTotal}</td>
+                    <td className="text-center">Add functionality</td>
+                </tr>
+                <tr className="">
+                    <td className="text-right font-bold">Income:</td>
+                    <td className="text-center">{targetMonthlyIncomeTotal}</td>
+                    <td className="text-center">Add functionality</td>
+                </tr>
+                <tr className="">
+                    <td className="text-right font-bold">Savings:</td>
+                    <td className="text-center">{targetImpliedMonthlySaving}</td>
+                    <td className="text-center">Add functionality</td>
+                </tr>
+            </table>
 
         </div>
     );
