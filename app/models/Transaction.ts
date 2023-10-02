@@ -39,7 +39,7 @@ class TransactionClass {
     checked: boolean;
 
     @prop({required: true})
-    transactionDate: string;
+    transactionDate: Date;
     
     @prop({required: true})
     vendor: string;

@@ -2,6 +2,7 @@
 
 import { createTransaction, deleteTransaction, updateTransaction } from "./lib/transaction-db";
 import { revalidatePath } from "next/cache";
+import { stringToDate } from "./lib/utils";
 
 /**
  * Server Action: Create a new transaction
@@ -23,7 +24,8 @@ export async function createTransactionAction({
     notes: string;
     path: string;
 }) {
-    await createTransaction(transactionDate, vendor, value, category, items, notes);
+    const parsedTransactionDate = stringToDate(transactionDate)
+    await createTransaction(parsedTransactionDate, vendor, value, category, items, notes);
     revalidatePath(path);
 }
 
@@ -32,7 +34,7 @@ export async function createTransactionAction({
  */
 export async function updateTransactionAction(
     id: string,
-    update: { transactionDate?: string; vendor?: string; value?: number; checked?: boolean; }, 
+    update: { transactionDate?: Date; vendor?: string; value?: number; checked?: boolean; }, 
     path: string
 ) {
     await updateTransaction(id, update);

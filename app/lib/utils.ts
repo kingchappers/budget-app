@@ -32,7 +32,7 @@ export function stringToDate(dateString: string){
     return(date)
 }
 
-export function datetoString(date: Date){
+export function dateToString(date: Date){
     const dateString = format(date, "dd/MM/yyyy")
 
     return dateString

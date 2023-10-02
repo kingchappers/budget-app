@@ -3,14 +3,17 @@ import { calculateTotal, caculateDifference } from "../components/target-calcula
 import TargetFormServerComponent from "../components/target-form-server";
 import { TargetFilter, getTargets } from "../lib/target-db";
 import { revalidatePath } from 'next/cache'
+import { getTransactionsBetweenDates } from "../lib/transaction-db";
 
 export default async function Home() {
-    let ExpenseFilter: TargetFilter = {
+    const transactionFilter = {}
+    
+    const ExpenseFilter: TargetFilter = {
         limit: 50,
         type: "expense"
     }
 
-    let IncomeFilter: TargetFilter = {
+    const IncomeFilter: TargetFilter = {
         limit: 50,
         type: "income"
     }
@@ -21,6 +24,9 @@ export default async function Home() {
     const targetMonthlyExpenseTotal = calculateTotal(expenseTargets)
     const targetMonthlyIncomeTotal = calculateTotal(incomeTargets)
     const targetImpliedMonthlySaving = caculateDifference(targetMonthlyExpenseTotal, targetMonthlyIncomeTotal)
+
+    const { transactions: monthTransactions } = await getTransactionsBetweenDates(transactionFilter)
+    console.log(monthTransactions)
 
     async function action(data: FormData){
         "use server"
