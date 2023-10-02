@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 import { NextResponse } from "next/server";
+import { parse, format } from "date-fns"
+import { enGB } from "date-fns/locale";
 
 export function stringToObjectId(id: string): mongoose.Types.ObjectId | null {
     if (mongoose.Types.ObjectId.isValid(id)) {
@@ -22,4 +24,16 @@ export function createErrorResponse(
         status: statusCode,
         headers: { "Contetn-Type": "application/json" },
     });
+}
+
+export function stringToDate(dateString: string){
+    const date: Date = parse(dateString, "dd/MM/yyyy", new Date(), {locale: enGB})
+
+    return(date)
+}
+
+export function datetoString(date: Date){
+    const dateString = format(date, "dd/MM/yyyy")
+
+    return dateString
 }
