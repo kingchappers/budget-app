@@ -1,15 +1,18 @@
 import { IncomeClass } from "../models/Income";
 import DeleteIncome from "./delete-income-item-server";
+import { dateToString } from "../lib/utils";
+
 
 interface IncomeItemProps {
     income: IncomeClass
 }
 
 const IncomeItem: React.FC<IncomeItemProps> = ({ income }) => {
+    const incomeDateString = dateToString(income.incomeDate)
     return(
         <tbody>
             <tr>
-                    <td className="px-5">{income.incomeDate}</td>
+                    <td className="px-5">{incomeDateString}</td>
                     <td className="px-5">{income.company}</td>
                     <td className="px-5">{income.amount}</td>
                     <td className="px-5">{income.incomeCategory}</td>

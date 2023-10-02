@@ -2,6 +2,7 @@
 
 import { createIncome, deleteIncome, updateIncome } from "./lib/income-db";
 import { revalidatePath } from "next/cache";
+import { stringToDate } from "./lib/utils";
 
 /**
  * Server Action: Create a new income
@@ -21,7 +22,8 @@ export async function createIncomeAction({
     notes: string;
     path: string;
 }) {
-    await createIncome(incomeDate, company, amount, incomeCategory, notes);
+    const parsedIncomeDate = stringToDate(incomeDate)
+    await createIncome(parsedIncomeDate, company, amount, incomeCategory, notes);
     revalidatePath(path);
 }
 
@@ -30,7 +32,7 @@ export async function createIncomeAction({
  */
 export async function updateIncomeAction(
     id: string,
-    update: { incomeDate?: string; company?: string; amount?: number; }, 
+    update: { incomeDate?: Date; company?: string; amount?: number; }, 
     path: string
 ) {
     await updateIncome(id, update);

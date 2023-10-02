@@ -4,29 +4,33 @@ import TargetFormServerComponent from "../components/target-form-server";
 import { TargetFilter, getTargets } from "../lib/target-db";
 import { revalidatePath } from 'next/cache'
 import { getTransactionsBetweenDates } from "../lib/transaction-db";
+import { getIncomesBetweenDates } from "../lib/income-db";
 
 export default async function Home() {
     const transactionFilter = {}
+    const incomeFilter = {}
     
-    const ExpenseFilter: TargetFilter = {
+    const targetExpenseFilter: TargetFilter = {
         limit: 50,
         type: "expense"
     }
 
-    const IncomeFilter: TargetFilter = {
+    const targetIncomeFilter: TargetFilter = {
         limit: 50,
         type: "income"
     }
     
-    let { targets: expenseTargets, results: expenseResults } = await getTargets(ExpenseFilter)
-    let { targets: incomeTargets, results: incomeResults } = await getTargets(IncomeFilter)
+    let { targets: expenseTargets, results: expenseResults } = await getTargets(targetExpenseFilter)
+    let { targets: incomeTargets, results: incomeResults } = await getTargets(targetIncomeFilter)
 
     const targetMonthlyExpenseTotal = calculateTotal(expenseTargets)
     const targetMonthlyIncomeTotal = calculateTotal(incomeTargets)
     const targetImpliedMonthlySaving = caculateDifference(targetMonthlyExpenseTotal, targetMonthlyIncomeTotal)
 
     const { transactions: monthTransactions } = await getTransactionsBetweenDates(transactionFilter)
-    console.log(monthTransactions)
+    //console.log(monthTransactions)
+    const { incomes: monthIncomes } = await getIncomesBetweenDates(incomeFilter)
+    console.log(monthIncomes)
 
     async function action(data: FormData){
         "use server"

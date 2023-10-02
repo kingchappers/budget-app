@@ -36,7 +36,7 @@ import mongoose from "mongoose"
 class IncomeClass {
 
     @prop({required: true})
-    incomeDate: string;
+    incomeDate: Date;
     
     @prop({required: true})
     company: string;

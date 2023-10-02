@@ -1,6 +1,7 @@
 import { Income } from "../models/Income";
 import connectDB from "./connect-db";
 import { stringToObjectId } from "./utils";
+import { startOfMonth, endOfMonth } from "date-fns";
 
 interface IncomeFilter {
     page?: number;
@@ -30,8 +31,35 @@ export async function getIncomes(filter: IncomeFilter = {}) {
     }
 }
 
+export async function getIncomesBetweenDates(filter: IncomeFilter = {}, startDate?: Date, endDate?: Date){
+    try {
+        connectDB();
+
+        const page = filter.page ?? 1;
+        const limit = filter.limit ?? 10;
+        const skip = (page - 1) * limit;
+
+        const searchStartDate = startDate ?? startOfMonth(new Date())
+        const searchEndDate = endDate ?? endOfMonth(new Date())
+
+        const incomes = await Income.find({ incomeDate: { $gte: searchStartDate, $lte: searchEndDate  } }).sort({ incomeDate: -1 }).skip(skip).limit(limit).lean().exec();
+ 
+        const results = incomes.length;
+
+        return {
+            incomes: incomes,
+            page,
+            limit,
+            results
+        };
+
+    } catch (error) {
+        return {error};
+    }
+}
+
 export async function createIncome(
-    incomeDate: string, 
+    incomeDate: Date, 
     company: string, 
     amount: number, 
     incomeCategory: string, 
@@ -75,7 +103,7 @@ export async function getIncome(id: string) {
   
 export async function updateIncome(
     id: string,
-    { incomeDate, company, amount, incomeCategory, notes } : { incomeDate?: string; company?: string; amount?: number; incomeCategory?: string, notes?: string; } 
+    { incomeDate, company, amount, incomeCategory, notes } : { incomeDate?: Date; company?: string; amount?: number; incomeCategory?: string, notes?: string; } 
 ) {
     try {
         await connectDB();
