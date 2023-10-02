@@ -1,5 +1,5 @@
 import { updateTargetAction } from "../_targetActions";
-import { calculateTotal, caculateDifference } from "../components/target-calculation-functions";
+import { calculateTargetsTotal, calculateDifference, calculateIncomeTotal, calculateTransactionTotal } from "../components/target-calculation-functions";
 import TargetFormServerComponent from "../components/target-form-server";
 import { TargetFilter, getTargets } from "../lib/target-db";
 import { revalidatePath } from 'next/cache'
@@ -23,14 +23,24 @@ export default async function Home() {
     let { targets: expenseTargets, results: expenseResults } = await getTargets(targetExpenseFilter)
     let { targets: incomeTargets, results: incomeResults } = await getTargets(targetIncomeFilter)
 
-    const targetMonthlyExpenseTotal = calculateTotal(expenseTargets)
-    const targetMonthlyIncomeTotal = calculateTotal(incomeTargets)
-    const targetImpliedMonthlySaving = caculateDifference(targetMonthlyExpenseTotal, targetMonthlyIncomeTotal)
+    const targetMonthlyExpenseTotal = calculateTargetsTotal(expenseTargets)
+    const targetMonthlyIncomeTotal = calculateTargetsTotal(incomeTargets)
+    const impliedMonthlySaving = calculateDifference(targetMonthlyExpenseTotal, targetMonthlyIncomeTotal)
 
     const { transactions: monthTransactions } = await getTransactionsBetweenDates(transactionFilter)
-    //console.log(monthTransactions)
     const { incomes: monthIncomes } = await getIncomesBetweenDates(incomeFilter)
-    console.log(monthIncomes)
+
+    const actualMonthyExpensesTotal = calculateTransactionTotal(monthTransactions)
+    const actualMonthlyIncomeTotal = calculateIncomeTotal(monthIncomes)
+    const actualMonthlySaving = calculateDifference(actualMonthyExpensesTotal, actualMonthlyIncomeTotal)
+
+    const expenseDifference = calculateDifference(actualMonthyExpensesTotal, targetMonthlyExpenseTotal)
+    const incomeDifference = calculateDifference(targetMonthlyIncomeTotal, actualMonthlyIncomeTotal)
+    const savingDifference = calculateDifference(impliedMonthlySaving, actualMonthlySaving)
+
+    const expenseDifferenceColor = textColourClass(expenseDifference)
+    const incomeDifferenceColor = textColourClass(incomeDifference)
+    const savingDifferenceColor = textColourClass(savingDifference)
 
     async function action(data: FormData){
         "use server"
@@ -45,6 +55,16 @@ export default async function Home() {
 
         //This will refresh the page when a target is set to update the calculated variables.
         revalidatePath('/')
+    }
+
+    function textColourClass(value: number){
+        if(value > 0){
+            return "text-center text-green-500"
+        }else if (value < 0){
+            return "text-center text-red-500"
+        }else {
+            return "text-center"
+        }
     }
 
     return(
@@ -86,22 +106,26 @@ export default async function Home() {
                         <th className="w-10"></th>
                         <th className="pl-5 text-center w-44">Monthly Targets</th>
                         <th className="px-5 text-center w-44">Actual Data</th>
+                        <th className="px-5 text-center w-44">Difference</th>
                     </tr>
                 </thead>  
                 <tr className="">
                     <td className="text-right font-bold">Expenses:</td>
                     <td className="text-center">{targetMonthlyExpenseTotal}</td>
-                    <td className="text-center">Add functionality</td>
+                    <td className="text-center">{actualMonthyExpensesTotal}</td>
+                    <td className={ expenseDifferenceColor }>{expenseDifference}</td>
                 </tr>
                 <tr className="">
                     <td className="text-right font-bold">Income:</td>
                     <td className="text-center">{targetMonthlyIncomeTotal}</td>
-                    <td className="text-center">Add functionality</td>
+                    <td className="text-center">{actualMonthlyIncomeTotal}</td>
+                    <td className={ incomeDifferenceColor }>{incomeDifference}</td>
                 </tr>
                 <tr className="">
                     <td className="text-right font-bold">Savings:</td>
-                    <td className="text-center">{targetImpliedMonthlySaving}</td>
-                    <td className="text-center">Add functionality</td>
+                    <td className="text-center">{impliedMonthlySaving}</td>
+                    <td className="text-center">{actualMonthlySaving}</td>
+                    <td className={ savingDifferenceColor }>{savingDifference}</td>
                 </tr>
             </table>
 
