@@ -20,7 +20,6 @@ const TransactionItem: React.FC<TransactionItemProps> = ({ transaction }) => {
                     <td><DeleteTransaction transaction={transaction}/></td>
             </tr>
         </tbody>
-
     );
 };
 

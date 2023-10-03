@@ -3,12 +3,12 @@ import connectDB from "./connect-db";
 import { stringToObjectId } from "./utils";
 import { startOfMonth, endOfMonth } from "date-fns";
 
-interface TransactionFilter {
+export interface TransactionFilter {
     page?: number;
     limit?: number;
 }
 
-export async function getTransactions(filter: TransactionFilter = {}) {
+export async function getTransactions(filter: TransactionFilter) {
     try {
         await connectDB();
 
@@ -31,7 +31,7 @@ export async function getTransactions(filter: TransactionFilter = {}) {
     }
 }
 
-export async function getTransactionsBetweenDates(filter: TransactionFilter = {}, startDate?: Date, endDate?: Date){
+export async function getTransactionsBetweenDates(filter: TransactionFilter, startDate?: Date, endDate?: Date){
     try {
         connectDB();
 
@@ -58,27 +58,6 @@ export async function getTransactionsBetweenDates(filter: TransactionFilter = {}
     }
 }
 
-export async function createTransaction(
-    transactionDate: Date, 
-    vendor: string, 
-    value: number, 
-    category: string, 
-    items: string, 
-    notes: string
-) {
-    try {
-        await connectDB();
-        
-        const transaction = await Transaction.create({ transactionDate, vendor, value, category, items, notes }); 
-
-        return {
-            transaction
-        };
-    } catch (error) {
-        return { error };
-    }
-}
-
 export async function getTransaction(id: string) {
     try {
         await connectDB();
@@ -97,6 +76,27 @@ export async function getTransaction(id: string) {
         } else {
             return { error: "Transaction not found" };
         }
+    } catch (error) {
+        return { error };
+    }
+}
+
+export async function createTransaction(
+    transactionDate: Date, 
+    vendor: string, 
+    value: number, 
+    category: string, 
+    items: string, 
+    notes: string
+) {
+    try {
+        await connectDB();
+        
+        const transaction = await Transaction.create({ transactionDate, vendor, value, category, items, notes }); 
+
+        return {
+            transaction
+        };
     } catch (error) {
         return { error };
     }

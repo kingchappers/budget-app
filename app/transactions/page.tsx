@@ -1,17 +1,23 @@
 import TransactionFormServerComponent from "../components/transaction-form-server";
 import TransactionItemServerComponent from "../components/transaction-item-server";
-import { getTransactions } from "../lib/transaction-db";
+import { TransactionFilter, getTransactions } from "../lib/transaction-db";
 import { getCategories, CategoryFilter } from "../lib/categories-db";
 import { CategoriesComboProps } from "../components/comboBox";
 
 export default async function Home() {
-    const filter: CategoryFilter = {
+    let transactionFilter: TransactionFilter = {
+        page: 1,
+        limit: 300
+    }
+    
+    const categoryFilter: CategoryFilter = {
         limit: 30,
         type: "transaction"
     }
 
-    const { transactions, results } = await getTransactions();
-    let categories: CategoriesComboProps = await getCategories(filter) as CategoriesComboProps;
+    const { transactions, results } = await getTransactions(transactionFilter);
+    
+    let categories: CategoriesComboProps = await getCategories(categoryFilter) as CategoriesComboProps;
     const listOfCategories = categories.categories
 
     return(
@@ -32,14 +38,13 @@ export default async function Home() {
                     </tr>
                 </thead>       
 
-            {results === 0 ? (
-                <p className="text-center">No Transactions Found</p>
-            ) : (
-                transactions?.map((transaction) => (
-                    <TransactionItemServerComponent key={transaction.id} transaction={transaction} />
-                ))
-            )}
-
+                {results === 0 ? (
+                    <p className="text-center">No Transactions Found</p>
+                ) : (
+                    transactions?.map((transaction) => (
+                        <TransactionItemServerComponent key={transaction.id} transaction={transaction} />
+                    ))
+                )}
             </table>
         </div>
         
