@@ -5,6 +5,7 @@ import { TargetFilter, getTargets } from "../lib/target-db";
 import { revalidatePath } from 'next/cache'
 import { getTransactionsBetweenDates } from "../lib/transaction-db";
 import { getIncomesBetweenDates } from "../lib/income-db";
+import TimeButton from "../components/time-button-group"
 
 export default async function Home() {
     const transactionFilter = {}
@@ -27,7 +28,7 @@ export default async function Home() {
     const targetMonthlyIncomeTotal = calculateTargetsTotal(incomeTargets)
     const impliedMonthlySaving = calculateDifference(targetMonthlyExpenseTotal, targetMonthlyIncomeTotal)
 
-    const { transactions: monthTransactions } = await getTransactionsBetweenDates(transactionFilter)
+    const { transactions: monthTransactions } = await getTransactionsBetweenDates()
     const { incomes: monthIncomes } = await getIncomesBetweenDates(incomeFilter)
 
     const actualMonthyExpensesTotal = calculateTransactionTotal(monthTransactions)
@@ -128,6 +129,8 @@ export default async function Home() {
                     <td className={ savingDifferenceColor }>{savingDifference}</td>
                 </tr>
             </table>
+
+            <TimeButton />
 
         </div>
     );

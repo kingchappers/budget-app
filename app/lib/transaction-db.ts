@@ -36,25 +36,19 @@ export async function getTransactions(filter: TransactionFilter) {
     }
 }
 
-export async function getTransactionsBetweenDates(filter: TransactionFilter, startDate?: Date, endDate?: Date){
+export async function getTransactionsBetweenDates(startDate?: Date, endDate?: Date){
     try {
         connectDB();
-
-        const page = filter.page ?? 1;
-        const limit = filter.limit ?? 10;
-        const skip = (page - 1) * limit;
 
         const searchStartDate = startDate ?? startOfMonth(new Date())
         const searchEndDate = endDate ?? endOfMonth(new Date())
 
-        const transactions = await Transaction.find({ transactionDate: { $gte: searchStartDate, $lte: searchEndDate  } }).sort({ transactionDate: -1 }).skip(skip).limit(limit).lean().exec();
+        const transactions = await Transaction.find({ transactionDate: { $gte: searchStartDate, $lte: searchEndDate  } }).sort({ transactionDate: -1 }).lean().exec();
  
         const results = transactions.length;
 
         return {
             transactions: transactions,
-            page,
-            limit,
             results
         };
 
