@@ -20,11 +20,16 @@ export async function getTransactions(filter: TransactionFilter) {
 
         const results = transactions.length;
 
+        const totalDocuments = await Transaction.estimatedDocumentCount()
+        const maxPages = Math.ceil(totalDocuments / limit) ?? 1
+
         return {
             transactions: transactions,
             page,
             limit,
-            results
+            results,
+            totalDocuments,
+            maxPages
         };
     } catch (error) {
         return { error };

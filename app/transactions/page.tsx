@@ -3,11 +3,18 @@ import TransactionItemServerComponent from "../components/transaction-item-serve
 import { TransactionFilter, getTransactions } from "../lib/transaction-db";
 import { getCategories, CategoryFilter } from "../lib/categories-db";
 import { CategoriesComboProps } from "../components/comboBox";
+import Link from "next/link";
+import clsx from "clsx";
 
-export default async function Home() {
+export default async function Home({
+    searchParams
+}:{
+    searchParams: { [key: string]: string | string[] | undefined }
+}) 
+{
     let transactionFilter: TransactionFilter = {
         page: 1,
-        limit: 300
+        limit: 10
     }
     
     const categoryFilter: CategoryFilter = {
@@ -15,7 +22,19 @@ export default async function Home() {
         type: "transaction"
     }
 
-    const { transactions, results } = await getTransactions(transactionFilter);
+    // __________________________________________________________________________________________________________________
+    // __________________________________________________________________________________________________________________
+     
+    let paginatedTransactionFilter: TransactionFilter = {
+        page: typeof searchParams.page === 'string' ? Number(searchParams.page) : 1 ?? 1,
+        limit: typeof searchParams.limit === 'string' ? Number(searchParams.limit) : 10 ?? 10
+    }
+
+    // __________________________________________________________________________________________________________________
+    // __________________________________________________________________________________________________________________
+
+    const { transactions, results, maxPages } = await getTransactions(paginatedTransactionFilter);
+    // console.log(maxPages)
     
     let categories: CategoriesComboProps = await getCategories(categoryFilter) as CategoriesComboProps;
     const listOfCategories = categories.categories
@@ -46,6 +65,12 @@ export default async function Home() {
                     ))
                 )}
             </table>
+            
+            
+            <Link href={`/transactionsPagination?page=${paginatedTransactionFilter.page > 1 ? paginatedTransactionFilter.page - 1 : 1}`} className={clsx('rounded border bg-gray-100 px-3 py-1 text-sm text-gray-800',
+                paginatedTransactionFilter.page <= 1 && 'pointer-events-none opacity-50')}>Previous</Link>
+            <Link href={`/transactionsPagination?page=${paginatedTransactionFilter.page < maxPages ? paginatedTransactionFilter.page + 1 : maxPages}`} className={clsx('rounded border bg-gray-100 px-3 py-1 text-sm text-gray-800',
+                paginatedTransactionFilter.page >= maxPages && 'pointer-events-none opacity-50')}>Next</Link>
         </div>
         
     );
