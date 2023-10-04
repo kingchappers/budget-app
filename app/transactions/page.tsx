@@ -17,25 +17,25 @@ export default async function Home({
         type: "transaction"
     }
     
-    let paginatedTransactionFilter: TransactionFilter = {
+    let tansactionFilter: TransactionFilter = {
         page: typeof searchParams.page === 'string' ? Number(searchParams.page) : 1,
         limit: typeof searchParams.limit === 'string' ? Number(searchParams.limit) : 50
     }
 
-    let { transactions, results, maxPages } = await getTransactions(paginatedTransactionFilter);
+    let { transactions, results, maxPages } = await getTransactions(tansactionFilter);
     let categories: CategoriesComboProps = await getCategories(categoryFilter) as CategoriesComboProps;
-    const listOfCategories = categories.categories
+    const listOfCategories = categories.categories;
 
     if(maxPages == undefined){
-        maxPages = 1
+        maxPages = 1;
     }
 
-    if (paginatedTransactionFilter.page == undefined){
-        paginatedTransactionFilter.page = 1
+    if (tansactionFilter.page == undefined){
+        tansactionFilter.page = 1;
     }
 
-    if (paginatedTransactionFilter.limit == undefined){
-        paginatedTransactionFilter.limit = 50
+    if (tansactionFilter.limit == undefined){
+        tansactionFilter.limit = 50;
     }
 
     return(
@@ -65,9 +65,9 @@ export default async function Home({
                 )}
 
                 <tr>
-                    <td className="pt-4"><Link href={`/transactions?page=${paginatedTransactionFilter.page > 1 ? paginatedTransactionFilter.page - 1 : 1}`} className={clsx('rounded border bg-sky-500 px-3 p-1', paginatedTransactionFilter.page <= 1 && 'pointer-events-none opacity-50')}>Previous</Link></td>
+                    <td className="pt-4"><Link href={`/transactions?page=${tansactionFilter.page > 1 ? tansactionFilter.page - 1 : 1}`} className={clsx('rounded border bg-sky-500 px-3 p-1', tansactionFilter.page <= 1 && 'pointer-events-none opacity-50')}>Previous</Link></td>
                     <td colSpan={5}></td>
-                    <td className="pt-4"><Link href={`/transactions?page=${paginatedTransactionFilter.page < maxPages ? paginatedTransactionFilter.page + 1 : maxPages}`} className={clsx('rounded border bg-sky-500 px-3.5 py-1 float-right',paginatedTransactionFilter.page >= maxPages && 'pointer-events-none opacity-50')}>Next</Link></td>
+                    <td className="pt-4"><Link href={`/transactions?page=${tansactionFilter.page < maxPages ? tansactionFilter.page + 1 : maxPages}`} className={clsx('rounded border bg-sky-500 px-3.5 py-1 float-right', tansactionFilter.page >= maxPages && 'pointer-events-none opacity-50')}>Next</Link></td>
                 </tr>
             </table>
             

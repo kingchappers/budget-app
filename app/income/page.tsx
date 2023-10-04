@@ -1,18 +1,42 @@
 import IncomeFormServerComponent from "../components/income-form-server";
 import IncomeItemServerComponent from "../components/income-item-server";
-import { getIncomes } from "../lib/income-db";
+import { IncomeFilter, getIncomes } from "../lib/income-db";
 import { getCategories, CategoryFilter } from "../lib/categories-db";
 import { CategoriesComboProps } from "../components/comboBox";
+import Link from "next/link";
+import clsx from "clsx";
 
-export default async function Home() {
+export default async function Home({
+    searchParams
+}:{
+    searchParams: { [key: string]: string | string[] | undefined }
+}) {
     const filter: CategoryFilter = {
         limit: 30,
         type: "income"
     }
 
-    const { incomes, results } = await getIncomes();
+    let incomeFilter: IncomeFilter = {
+        page: typeof searchParams.page === 'string' ? Number(searchParams.page) : 1,
+        limit: typeof searchParams.limit === 'string' ? Number(searchParams.limit) : 50
+    }
+
+    let { incomes, results, maxPages } = await getIncomes(incomeFilter);
     let categories: CategoriesComboProps = await getCategories(filter) as CategoriesComboProps;
     const listOfCategories = categories.categories
+
+
+    if(maxPages == undefined){
+        maxPages = 1;
+    }
+
+    if (incomeFilter.page == undefined){
+        incomeFilter.page = 1;
+    }
+
+    if (incomeFilter.limit == undefined){
+        incomeFilter.limit = 50;
+    }
 
     return(
         <div className="container mx-auto max-w-screen-2xl p-4">
@@ -31,14 +55,19 @@ export default async function Home() {
                     </tr>
                 </thead>       
 
-            {results === 0 ? (
-                <p className="text-center">No Incomes Found</p>
-            ) : (
-                incomes?.map((income) => (
-                    <IncomeItemServerComponent key={income.id} income={income} />
-                ))
-            )}
+                {results === 0 ? (
+                    <p className="text-center">No Incomes Found</p>
+                ) : (
+                    incomes?.map((income) => (
+                        <IncomeItemServerComponent key={income.id} income={income} />
+                    ))
+                )}
 
+                <tr>
+                    <td className="pt-4"><Link href={`/income?page=${incomeFilter.page > 1 ? incomeFilter.page - 1 : 1}`} className={clsx('rounded border bg-sky-500 px-3 p-1', incomeFilter.page <= 1 && 'pointer-events-none opacity-50')}>Previous</Link></td>
+                    <td colSpan={5}></td>
+                    <td className="pt-4"><Link href={`/income?page=${incomeFilter.page < maxPages ? incomeFilter.page + 1 : maxPages}`} className={clsx('rounded border bg-sky-500 px-3.5 py-1 float-right', incomeFilter.page >= maxPages && 'pointer-events-none opacity-50')}>Next</Link></td>
+                </tr>
             </table>
         </div>
         

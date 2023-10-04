@@ -3,12 +3,12 @@ import connectDB from "./connect-db";
 import { stringToObjectId } from "./utils";
 import { startOfMonth, endOfMonth } from "date-fns";
 
-interface IncomeFilter {
+export interface IncomeFilter {
     page?: number;
     limit?: number;
 }
 
-export async function getIncomes(filter: IncomeFilter = {}) {
+export async function getIncomes(filter: IncomeFilter) {
     try {
         await connectDB();
 
@@ -20,18 +20,22 @@ export async function getIncomes(filter: IncomeFilter = {}) {
 
         const results = incomes.length;
 
+        const totalDocuments = await Income.estimatedDocumentCount()
+        const maxPages = Math.ceil(totalDocuments / limit) ?? 1
+
         return {
             incomes: incomes,
             page,
             limit,
-            results
+            results, 
+            maxPages
         };
     } catch (error) {
         return { error };
     }
 }
 
-export async function getIncomesBetweenDates(filter: IncomeFilter = {}, startDate?: Date, endDate?: Date){
+export async function getIncomesBetweenDates(filter: IncomeFilter, startDate?: Date, endDate?: Date){
     try {
         connectDB();
 
