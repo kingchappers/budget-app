@@ -18,7 +18,7 @@ export default function DeleteCategory({ category }: deleteButtonProps) {
           await deleteCategoryAction({id: category.id, path: "/"})
           await deleteTargetsByNameAction(category)
         })
-           } className="px-2 py-1 ml-2 text-white rounded bg-red-500">Delete</button>
+           } className="px-2 py-1 ml-2 my-1 text-white rounded bg-red-500">Delete</button>
 
     );
 }

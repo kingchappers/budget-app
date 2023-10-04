@@ -26,12 +26,6 @@ export default function CategoryForm() {
             incomeCategory = false;
         }
 
-        //For testing / Troubleshooting
-        // console.log(typeof transactionCategory)
-        // console.log(transactionCategory)
-        // console.log(typeof incomeCategory)
-        // console.log(incomeCategory)
-
         // Invoke server action to add new category
         await createCategoryAction({ label, transactionCategory, incomeCategory, path: "/" }); 
         
