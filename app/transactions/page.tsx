@@ -11,33 +11,32 @@ export default async function Home({
 }:{
     searchParams: { [key: string]: string | string[] | undefined }
 }) 
-{
-    let transactionFilter: TransactionFilter = {
-        page: 1,
-        limit: 10
-    }
-    
+{    
     const categoryFilter: CategoryFilter = {
         limit: 30,
         type: "transaction"
     }
-
-    // __________________________________________________________________________________________________________________
-    // __________________________________________________________________________________________________________________
-     
+    
     let paginatedTransactionFilter: TransactionFilter = {
-        page: typeof searchParams.page === 'string' ? Number(searchParams.page) : 1 ?? 1,
-        limit: typeof searchParams.limit === 'string' ? Number(searchParams.limit) : 10 ?? 10
+        page: typeof searchParams.page === 'string' ? Number(searchParams.page) : 1,
+        limit: typeof searchParams.limit === 'string' ? Number(searchParams.limit) : 50
     }
 
-    // __________________________________________________________________________________________________________________
-    // __________________________________________________________________________________________________________________
-
-    const { transactions, results, maxPages } = await getTransactions(paginatedTransactionFilter);
-    // console.log(maxPages)
-    
+    let { transactions, results, maxPages } = await getTransactions(paginatedTransactionFilter);
     let categories: CategoriesComboProps = await getCategories(categoryFilter) as CategoriesComboProps;
     const listOfCategories = categories.categories
+
+    if(maxPages == undefined){
+        maxPages = 1
+    }
+
+    if (paginatedTransactionFilter.page == undefined){
+        paginatedTransactionFilter.page = 1
+    }
+
+    if (paginatedTransactionFilter.limit == undefined){
+        paginatedTransactionFilter.limit = 50
+    }
 
     return(
         <div className="container mx-auto max-w-screen-2xl p-4">
@@ -64,13 +63,16 @@ export default async function Home({
                         <TransactionItemServerComponent key={transaction.id} transaction={transaction} />
                     ))
                 )}
+
+                <tr>
+                    <td className="pt-4"><Link href={`/transactions?page=${paginatedTransactionFilter.page > 1 ? paginatedTransactionFilter.page - 1 : 1}`} className={clsx('rounded border bg-sky-500 px-3 p-1', paginatedTransactionFilter.page <= 1 && 'pointer-events-none opacity-50')}>Previous</Link></td>
+                    <td colSpan={5}></td>
+                    <td className="pt-4"><Link href={`/transactions?page=${paginatedTransactionFilter.page < maxPages ? paginatedTransactionFilter.page + 1 : maxPages}`} className={clsx('rounded border bg-sky-500 px-3.5 py-1 float-right',paginatedTransactionFilter.page >= maxPages && 'pointer-events-none opacity-50')}>Next</Link></td>
+                </tr>
             </table>
             
             
-            <Link href={`/transactionsPagination?page=${paginatedTransactionFilter.page > 1 ? paginatedTransactionFilter.page - 1 : 1}`} className={clsx('rounded border bg-gray-100 px-3 py-1 text-sm text-gray-800',
-                paginatedTransactionFilter.page <= 1 && 'pointer-events-none opacity-50')}>Previous</Link>
-            <Link href={`/transactionsPagination?page=${paginatedTransactionFilter.page < maxPages ? paginatedTransactionFilter.page + 1 : maxPages}`} className={clsx('rounded border bg-gray-100 px-3 py-1 text-sm text-gray-800',
-                paginatedTransactionFilter.page >= maxPages && 'pointer-events-none opacity-50')}>Next</Link>
+            
         </div>
         
     );
