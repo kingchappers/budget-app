@@ -14,7 +14,7 @@ const IncomeItem: React.FC<IncomeItemProps> = ({ income }) => {
             <tr>
                     <td className="px-5">{incomeDateString}</td>
                     <td className="px-5">{income.company}</td>
-                    <td className="px-5">{income.amount}</td>
+                    <td className="px-5">£{income.amount.toFixed(2)}</td>
                     <td className="px-5">{income.incomeCategory}</td>
                     <td className="px-5">{income.notes}</td>
                     <td><DeleteIncome income={income}/></td>

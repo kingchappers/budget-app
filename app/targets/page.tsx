@@ -112,21 +112,21 @@ export default async function Home() {
                 </thead>  
                 <tr className="">
                     <td className="text-right font-bold">Expenses:</td>
-                    <td className="text-center">{targetMonthlyExpenseTotal}</td>
-                    <td className="text-center">{actualMonthyExpensesTotal}</td>
-                    <td className={ expenseDifferenceColor }>{expenseDifference}</td>
+                    <td className="text-center">£{targetMonthlyExpenseTotal.toFixed(2)}</td>
+                    <td className="text-center">£{actualMonthyExpensesTotal.toFixed(2)}</td>
+                    <td className={ expenseDifferenceColor }>£{expenseDifference.toFixed(2)}</td>
                 </tr>
                 <tr className="">
                     <td className="text-right font-bold">Income:</td>
-                    <td className="text-center">{targetMonthlyIncomeTotal}</td>
-                    <td className="text-center">{actualMonthlyIncomeTotal}</td>
-                    <td className={ incomeDifferenceColor }>{incomeDifference}</td>
+                    <td className="text-center">£{targetMonthlyIncomeTotal.toFixed(2)}</td>
+                    <td className="text-center">£{actualMonthlyIncomeTotal.toFixed(2)}</td>
+                    <td className={ incomeDifferenceColor }>£{incomeDifference.toFixed(2)}</td>
                 </tr>
                 <tr className="">
                     <td className="text-right font-bold">Savings:</td>
-                    <td className="text-center">{impliedMonthlySaving}</td>
-                    <td className="text-center">{actualMonthlySaving}</td>
-                    <td className={ savingDifferenceColor }>{savingDifference}</td>
+                    <td className="text-center">£{impliedMonthlySaving.toFixed(2)}</td>
+                    <td className="text-center">£{actualMonthlySaving.toFixed(2)}</td>
+                    <td className={ savingDifferenceColor }>£{savingDifference.toFixed(2)}</td>
                 </tr>
             </table>
 
