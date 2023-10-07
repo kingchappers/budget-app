@@ -7,12 +7,15 @@ import { getTransactionsBetweenDatesAction } from '../_transactionActions';
 import { calculateTransactionTotalAction } from '../_targetActions';
 import { useState } from "react";
 
-export default function ColorToggleButton() {
+export default function timeButton() {
+  React.useEffect(() => {
+    setTable("week")
+  },[])
   const [timeTotal, setTimeTotal] = useState(0);
   const [alignment, setAlignment] = React.useState('week');
   var transactionTotal = 0
 
-  setTable("week")
+  // setTable("week")
 
   async function setTable(value: string){
     if(value === "week"){
@@ -21,21 +24,21 @@ export default function ColorToggleButton() {
       endDate = new Date()
       const {transactions, results} = await getTransactionsBetweenDatesAction({startDate, endDate})
       transactionTotal = await calculateTransactionTotalAction({transactions, results}) ?? 0
-  } else if(value === "month"){
+    } else if(value === "month"){
       const date = new Date();
       const startDate = new Date(date.getFullYear(), date.getMonth(), 1);
       const endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
       const {transactions, results} = await getTransactionsBetweenDatesAction({startDate, endDate})
       transactionTotal = await calculateTransactionTotalAction({transactions, results}) ?? 0
-  } else if(value === "year"){
+    } else if(value === "year"){
       const currentYear = new Date().getFullYear();
       const startDate = new Date(currentYear, 0, 1);
       const endDate = new Date(currentYear, 11, 31);
       const {transactions, results} = await getTransactionsBetweenDatesAction({startDate, endDate})
       transactionTotal = await calculateTransactionTotalAction({transactions, results}) ?? 0
-  } else {
+    } else {
       transactionTotal = 0;
-  }
+    }
 
   setTimeTotal(transactionTotal);
   }
@@ -57,12 +60,12 @@ export default function ColorToggleButton() {
         onChange={handleChange}
         aria-label="Platform"
         >
-        <ToggleButton value="week">Week</ToggleButton>
-        <ToggleButton value="month">Month</ToggleButton>
-        <ToggleButton value="year">Year</ToggleButton>
+        <ToggleButton value="week">Last 7-Days</ToggleButton>
+        <ToggleButton value="month">This Month</ToggleButton>
+        <ToggleButton value="year">This Year</ToggleButton>
         </ToggleButtonGroup>
 
-        <p>{timeTotal}</p>
+        <p>£{timeTotal}</p>
     </div>
   );
 }
