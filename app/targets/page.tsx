@@ -40,7 +40,7 @@ export default async function Home() {
     const expenseDifferenceColor = textColourClass(expenseDifference)
     const incomeDifferenceColor = textColourClass(incomeDifference)
     const savingDifferenceColor = textColourClass(savingDifference)
-
+ 
     async function action(data: FormData){
         "use server"
 

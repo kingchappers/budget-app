@@ -13,7 +13,7 @@ export async function getTargets(filter: TargetFilter) {
         await connectDB();
 
         const page = filter.page ?? 1;
-        const limit = filter.limit ?? 10;
+        const limit = filter.limit ?? 100;
         const skip = (page - 1) * limit;
         const type = filter.type ?? "";
     
