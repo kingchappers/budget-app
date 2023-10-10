@@ -5,10 +5,8 @@ import { TargetFilter, getTargets } from "../lib/target-db";
 import { revalidatePath } from 'next/cache'
 import { getTransactionsBetweenDates } from "../lib/transaction-db";
 import { getIncomesBetweenDates } from "../lib/income-db";
-import TimeButton from "../components/time-button-group"
 
 export default async function Home() {
-    const transactionFilter = {}
     const incomeFilter = {}
     
     const targetExpenseFilter: TargetFilter = {
@@ -112,7 +110,7 @@ export default async function Home() {
                 </thead>  
                 <tr className="">
                     <td className="text-right font-bold">Expenses:</td>
-                    <td className="text-center">£{targetMonthlyExpenseTotal.toFixed(2)}</td>
+                    <td className="text-center">£{targetMonthlyExpenseTotal.toFixed(2)}</td> 
                     <td className="text-center">£{actualMonthyExpensesTotal.toFixed(2)}</td>
                     <td className={ expenseDifferenceColor }>£{expenseDifference.toFixed(2)}</td>
                 </tr>
@@ -129,9 +127,6 @@ export default async function Home() {
                     <td className={ savingDifferenceColor }>£{savingDifference.toFixed(2)}</td>
                 </tr>
             </table>
-
-            <TimeButton />
-
         </div>
     );
 }
