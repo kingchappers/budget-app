@@ -1,6 +1,6 @@
 "use server";
 
-import { TargetFilter, createTarget, deleteTarget, getTargetsByName, getTargetsByNameAndType, updateTarget } from "./lib/target-db";
+import { TargetFilter, createTarget, deleteTarget, getTargets, getTargetsByName, getTargetsByNameAndType, updateTarget } from "./lib/target-db";
 import { revalidatePath } from "next/cache";
 import { CategoryClass } from "./models/Category";
 import { IncomeClass } from "./models/Income";
@@ -120,32 +120,11 @@ export async function calculateTransactionTotalAction({
     }
 }
 
+export async function getTargetsAction() {
+    const {targets, results} = await getTargets({})
 
-
-// export function calculateIncomeTotal(incomes: IncomeClass[] | undefined){
-//     let incomeTotal: number = 0
-
-//     if(incomes === undefined){
-//         return(incomeTotal);
-//     } else {
-//         for(const income of incomes){
-//             incomeTotal = incomeTotal + income.amount
-//         }
-//     }
-
-//     return(incomeTotal);
-// }
-
-// export function calculateTransactionTotal(transactions: TransactionClass[] | undefined){
-//     let transactionTotal: number = 0
-
-//     if(transactions === undefined){
-//         return(transactionTotal);
-//     } else {
-//         for(const transaction of transactions){
-//             transactionTotal = transactionTotal + transaction.value
-//         }
-//     }
-
-//     return(transactionTotal);
-// }
+    return {
+        targets: targets,
+        results: results
+    };
+}
