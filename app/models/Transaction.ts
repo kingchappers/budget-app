@@ -35,31 +35,31 @@ import mongoose from "mongoose"
 @index({ vendor: 1 })
 class TransactionClass {
 
-    @prop({default: false})
+    @prop({ default: false })
     checked: boolean;
 
-    @prop({required: true})
+    @prop({ required: true })
     transactionDate: Date;
-    
-    @prop({required: true})
+
+    @prop({ required: true })
     vendor: string;
 
-    @prop({required: true })
+    @prop({ required: true })
     value: number;
 
-    @prop({required: true, default: "Miscellaneous"})
+    @prop({ required: true, default: "Miscellaneous" })
     category: string;
 
-    @prop({required: false})
+    @prop({ required: false })
     items: string;
 
-    @prop({required: false})
+    @prop({ required: false })
     notes: string;
-    
+
     _id: mongoose.Types.ObjectId | string;
 
     id: string;
 }
 
 const Transaction = getModelForClass(TransactionClass);
-export { Transaction, TransactionClass};
+export { Transaction, TransactionClass };

@@ -14,7 +14,7 @@ export async function getTransactionsBetweenDatesAction({
     startDate: Date;
     endDate: Date;
 }) {
-    const {transactions, results} = await getTransactionsBetweenDates(startDate, endDate)
+    const { transactions, results } = await getTransactionsBetweenDates(startDate, endDate)
 
     return {
         transactions: transactions,
@@ -34,11 +34,11 @@ export async function createTransactionAction({
     notes,
     path,
 }: {
-    transactionDate: string; 
-    vendor: string; 
-    value: number; 
-    category: string; 
-    items: string; 
+    transactionDate: string;
+    vendor: string;
+    value: number;
+    category: string;
+    items: string;
     notes: string;
     path: string;
 }) {
@@ -52,7 +52,7 @@ export async function createTransactionAction({
  */
 export async function updateTransactionAction(
     id: string,
-    update: { transactionDate?: Date; vendor?: string; value?: number; checked?: boolean; }, 
+    update: { transactionDate?: Date; vendor?: string; value?: number; checked?: boolean; },
     path: string
 ) {
     await updateTransaction(id, update);

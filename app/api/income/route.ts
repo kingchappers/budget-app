@@ -36,23 +36,23 @@ export async function POST(request: Request) {
 
         const body = await request.json();
 
-        if (!body.incomeDate){
+        if (!body.incomeDate) {
             return createErrorResponse("Incomes must have an income date", 400);
         }
 
-        if (!body.company){
+        if (!body.company) {
             return createErrorResponse("Incomes must have a company", 400);
         }
 
-        if (!body.amount){
+        if (!body.amount) {
             return createErrorResponse("Incomes must have an amount", 400);
         }
 
-        if (!body.incomeCategory){
+        if (!body.incomeCategory) {
             return createErrorResponse("Incomes must have an income category", 400);
         }
 
-        if (!body.notes){
+        if (!body.notes) {
             return createErrorResponse("Transaction must have a notes or empty string", 400);
         }
 
@@ -70,11 +70,11 @@ export async function POST(request: Request) {
         return new NextResponse(JSON.stringify(json_response), {
             status: 201,
             headers: { "Content-Type": "application/json" },
-        }) 
+        })
     } catch (error: any) {
         if (error.code === 11000) {
             return createErrorResponse("Income with title already exists", 409);
         }
-     return createErrorResponse(error.message, 500);
+        return createErrorResponse(error.message, 500);
     }
 }

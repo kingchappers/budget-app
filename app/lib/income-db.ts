@@ -27,7 +27,7 @@ export async function getIncomes(filter: IncomeFilter) {
             incomes: incomes,
             page,
             limit,
-            results, 
+            results,
             maxPages
         };
     } catch (error) {
@@ -35,7 +35,7 @@ export async function getIncomes(filter: IncomeFilter) {
     }
 }
 
-export async function getIncomesBetweenDates(filter: IncomeFilter, startDate?: Date, endDate?: Date){
+export async function getIncomesBetweenDates(filter: IncomeFilter, startDate?: Date, endDate?: Date) {
     try {
         connectDB();
 
@@ -46,8 +46,8 @@ export async function getIncomesBetweenDates(filter: IncomeFilter, startDate?: D
         const searchStartDate = startDate ?? startOfMonth(new Date())
         const searchEndDate = endDate ?? endOfMonth(new Date())
 
-        const incomes = await Income.find({ incomeDate: { $gte: searchStartDate, $lte: searchEndDate  } }).sort({ incomeDate: -1 }).skip(skip).limit(limit).lean().exec();
- 
+        const incomes = await Income.find({ incomeDate: { $gte: searchStartDate, $lte: searchEndDate } }).sort({ incomeDate: -1 }).skip(skip).limit(limit).lean().exec();
+
         const results = incomes.length;
 
         return {
@@ -58,21 +58,21 @@ export async function getIncomesBetweenDates(filter: IncomeFilter, startDate?: D
         };
 
     } catch (error) {
-        return {error};
+        return { error };
     }
 }
 
 export async function createIncome(
-    incomeDate: Date, 
-    company: string, 
-    amount: number, 
-    incomeCategory: string, 
+    incomeDate: Date,
+    company: string,
+    amount: number,
+    incomeCategory: string,
     notes: string
 ) {
     try {
         await connectDB();
 
-        const income = await Income.create({ incomeDate, company, amount, incomeCategory, notes }); 
+        const income = await Income.create({ incomeDate, company, amount, incomeCategory, notes });
 
         return {
             income
@@ -85,14 +85,14 @@ export async function createIncome(
 export async function getIncome(id: string) {
     try {
         await connectDB();
-  
+
         const parsedId = stringToObjectId(id);
-  
+
         if (!parsedId) {
             return { error: "Income not found" };
         }
-  
-      const income = await Income.findById(parsedId).lean().exec();
+
+        const income = await Income.findById(parsedId).lean().exec();
         if (income) {
             return {
                 income,
@@ -104,52 +104,52 @@ export async function getIncome(id: string) {
         return { error };
     }
 }
-  
+
 export async function updateIncome(
     id: string,
-    { incomeDate, company, amount, incomeCategory, notes } : { incomeDate?: Date; company?: string; amount?: number; incomeCategory?: string, notes?: string; } 
+    { incomeDate, company, amount, incomeCategory, notes }: { incomeDate?: Date; company?: string; amount?: number; incomeCategory?: string, notes?: string; }
 ) {
     try {
         await connectDB();
-  
+
         const parsedId = stringToObjectId(id);
-  
+
         if (!parsedId) {
             return { error: "Income not found" };
         }
-  
+
         const income = await Income.findByIdAndUpdate(
             parsedId,
-            { incomeDate, company, amount, incomeCategory, notes }, 
+            { incomeDate, company, amount, incomeCategory, notes },
             { new: true }
         )
-        .lean()
-        .exec();
-  
+            .lean()
+            .exec();
+
         if (income) {
             return {
                 income,
             };
         } else {
             return { error: "Income not found" };
-      }
+        }
     } catch (error) {
         return { error };
     }
 }
-  
-  export async function deleteIncome(id: string) {
+
+export async function deleteIncome(id: string) {
     try {
         await connectDB();
-  
+
         const parsedId = stringToObjectId(id);
-  
+
         if (!parsedId) {
             return { error: "Income not found" };
         }
-  
+
         const income = await Income.findByIdAndDelete(parsedId).exec();
-  
+
         if (income) {
             return {};
         } else {

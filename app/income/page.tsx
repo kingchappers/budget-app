@@ -8,7 +8,7 @@ import clsx from "clsx";
 
 export default async function Home({
     searchParams
-}:{
+}: {
     searchParams: { [key: string]: string | string[] | undefined }
 }) {
     const filter: CategoryFilter = {
@@ -26,22 +26,22 @@ export default async function Home({
     const listOfCategories = categories.categories
 
 
-    if(maxPages == undefined){
+    if (maxPages == undefined) {
         maxPages = 1;
     }
 
-    if (incomeFilter.page == undefined){
+    if (incomeFilter.page == undefined) {
         incomeFilter.page = 1;
     }
 
-    if (incomeFilter.limit == undefined){
+    if (incomeFilter.limit == undefined) {
         incomeFilter.limit = 50;
     }
 
-    return(
+    return (
         <div className="container mx-auto max-w-screen-2xl p-4">
 
-            <IncomeFormServerComponent categories={listOfCategories}/>
+            <IncomeFormServerComponent categories={listOfCategories} />
 
             <h1 className="text-2xl font-bold mb-4">Income List</h1>
             <table className="divide-y-2 table-fixed">
@@ -53,7 +53,7 @@ export default async function Home({
                         <th className="px-5 w-48">Category</th>
                         <th className="px-5 w-80">Notes</th>
                     </tr>
-                </thead>       
+                </thead>
 
                 {results === 0 ? (
                     <p className="text-center">No Incomes Found</p>
@@ -70,6 +70,6 @@ export default async function Home({
                 </tr>
             </table>
         </div>
-        
+
     );
 }

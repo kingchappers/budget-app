@@ -1,6 +1,6 @@
 "use server";
 
-import { createCategory, deleteCategory, updateCategory, getCategories, CategoryFilter} from "./lib/categories-db";
+import { createCategory, deleteCategory, updateCategory, getCategories, CategoryFilter } from "./lib/categories-db";
 import { revalidatePath } from "next/cache";
 
 /**
@@ -12,9 +12,9 @@ export async function createCategoryAction({
     incomeCategory,
     path
 }: {
-    label: string; 
-    transactionCategory: boolean; 
-    incomeCategory: boolean; 
+    label: string;
+    transactionCategory: boolean;
+    incomeCategory: boolean;
     path: string;
 }) {
     await createCategory(label, transactionCategory, incomeCategory);
@@ -26,7 +26,7 @@ export async function createCategoryAction({
  */
 export async function updateCategoryAction(
     id: string,
-    update: { label?: string; transactionCategory?: boolean; incomeCategory?: boolean; }, 
+    update: { label?: string; transactionCategory?: boolean; incomeCategory?: boolean; },
     path: string
 ) {
     await updateCategory(id, update);
@@ -47,10 +47,10 @@ export async function deleteCategoryAction({
     revalidatePath(path);
 }
 
-export async function getCategoriesAction(){
+export async function getCategoriesAction() {
     let filter: CategoryFilter = {}
     const categories = await getCategories(filter);
-    return(
+    return (
         categories
     )
 }

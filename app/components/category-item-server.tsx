@@ -7,13 +7,13 @@ interface CategoryItemProps {
 }
 
 const CategoryItem: React.FC<CategoryItemProps> = ({ category }) => {
-    return(
+    return (
         <tbody>
             <tr>
-                    <td className="px-5">{category.label}</td>
-                    <td><TransactionCategoryCheckBox category={category} /></td>
-                    <td><IncomeCategoryCheckBox category={category} /></td>
-                    <td><DeleteCategory category={category}/></td>
+                <td className="px-5">{category.label}</td>
+                <td><TransactionCategoryCheckBox category={category} /></td>
+                <td><IncomeCategoryCheckBox category={category} /></td>
+                <td><DeleteCategory category={category} /></td>
             </tr>
         </tbody>
     );

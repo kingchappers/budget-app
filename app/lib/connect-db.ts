@@ -1,10 +1,10 @@
 import _mongoose, { connect } from "mongoose";
 
 declare global {
-  var mongoose: {
-    promise: ReturnType<typeof connect> | null;
-    conn: typeof _mongoose | null;
-  };
+    var mongoose: {
+        promise: ReturnType<typeof connect> | null;
+        conn: typeof _mongoose | null;
+    };
 }
 
 const MONGODB_URI = process.env.MONGODB_URI;

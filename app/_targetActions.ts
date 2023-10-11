@@ -3,7 +3,6 @@
 import { TargetFilter, createTarget, deleteTarget, getTargets, getTargetsByName, getTargetsByNameAndType, updateTarget } from "./lib/target-db";
 import { revalidatePath } from "next/cache";
 import { CategoryClass } from "./models/Category";
-import { IncomeClass } from "./models/Income";
 import { TransactionClass } from "./models/Transaction";
 import { calculateTransactionTotal } from "./components/target-calculation-functions";
 
@@ -16,9 +15,9 @@ export async function createTargetAction({
     expenseTarget,
     path
 }: {
-    categoryName: string; 
-    targetAmount: number; 
-    expenseTarget: boolean; 
+    categoryName: string;
+    targetAmount: number;
+    expenseTarget: boolean;
     path: string;
 }) {
     await createTarget(categoryName, targetAmount, expenseTarget);
@@ -30,7 +29,7 @@ export async function createTargetAction({
  */
 export async function updateTargetAction(
     id: string,
-    update: { categoryName?: string; targetAmount?: number; expenseTarget?: boolean; }, 
+    update: { categoryName?: string; targetAmount?: number; expenseTarget?: boolean; },
     path: string
 ) {
     await updateTarget(id, update);
@@ -54,14 +53,14 @@ export async function deleteTargetAction({
 /**
  * Server Action: Delete a target by the category name
  */
-export async function deleteTargetsByNameAction(category: CategoryClass){
+export async function deleteTargetsByNameAction(category: CategoryClass) {
     let filter: TargetFilter = {
-      limit: 50
+        limit: 50
     }
-    
+
     const { targets, results } = await getTargetsByName(filter, category.label)
-  
-    if(results === 0){
+
+    if (results === 0) {
         return;
     } else {
         targets?.map((target) => {
@@ -70,20 +69,20 @@ export async function deleteTargetsByNameAction(category: CategoryClass){
     }
 }
 
-export async function updateTargetsByNameAction(category: CategoryClass, changedValue: string){
+export async function updateTargetsByNameAction(category: CategoryClass, changedValue: string) {
     let filter: TargetFilter = {
         limit: 50
     }
-      
+
     const { targets, results } = await getTargetsByNameAndType(filter, category.label, category.transactionCategory)
 
-    console.log("Targets found: " + {targets})
+    console.log("Targets found: " + { targets })
     console.log("transactionCategory value: " + category.transactionCategory)
     console.log("incomeCategory value: " + category.incomeCategory)
 
-    if(changedValue == "transaction"){
-        if(!category.transactionCategory){
-            await createTarget(category.label, 0 , true);
+    if (changedValue == "transaction") {
+        if (!category.transactionCategory) {
+            await createTarget(category.label, 0, true);
             console.log("Expense target added")
         } else {
             targets?.map(async (target) => {
@@ -93,9 +92,9 @@ export async function updateTargetsByNameAction(category: CategoryClass, changed
         }
     }
 
-    if(changedValue == "income"){
-        if(!category.incomeCategory){
-            await createTarget(category.label, 0 , false);
+    if (changedValue == "income") {
+        if (!category.incomeCategory) {
+            await createTarget(category.label, 0, false);
             console.log("Income target deleted")
         } else {
             targets?.map(async (target) => {
@@ -107,12 +106,13 @@ export async function updateTargetsByNameAction(category: CategoryClass, changed
 }
 
 export async function calculateTransactionTotalAction({
-    transactions, 
+    transactions,
     results
-} : {
+}: {
     transactions: TransactionClass[] | undefined,
-    results: number | undefined}){
-    if(results === 0 || results === undefined){
+    results: number | undefined
+}) {
+    if (results === 0 || results === undefined) {
         return;
     } else {
         const total = await calculateTransactionTotal(transactions);
@@ -121,7 +121,7 @@ export async function calculateTransactionTotalAction({
 }
 
 export async function getTargetsAction() {
-    const {targets, results} = await getTargets({})
+    const { targets, results } = await getTargets({})
 
     return {
         targets: targets,

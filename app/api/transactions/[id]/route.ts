@@ -30,7 +30,7 @@ export async function GET(
         }
 
         return createErrorResponse(error.message, 500)
-    }   
+    }
 }
 
 export async function PATCH(

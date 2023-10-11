@@ -6,52 +6,52 @@ interface TargetItemProps {
     expenseTargets: TargetClass[]
 }
 
-export function calculateTargetsTotal(targets: TargetClass[] | undefined){
+export function calculateTargetsTotal(targets: TargetClass[] | undefined) {
     let targetTotal: number = 0
-    
-    if(targets === undefined){
-        return(targetTotal);
+
+    if (targets === undefined) {
+        return (targetTotal);
     } else {
-        for(const target of targets){
+        for (const target of targets) {
             targetTotal = targetTotal + target.targetAmount
         }
     }
 
-    return(targetTotal);
+    return (targetTotal);
 };
 
-export function calculateDifference(expenseTotal: number, incomeTotal: number){
+export function calculateDifference(expenseTotal: number, incomeTotal: number) {
     let difference: number = 0
 
     difference = incomeTotal - expenseTotal
 
-    return(difference);
+    return (difference);
 };
 
-export function calculateIncomeTotal(incomes: IncomeClass[] | undefined){
+export function calculateIncomeTotal(incomes: IncomeClass[] | undefined) {
     let incomeTotal: number = 0
 
-    if(incomes === undefined){
-        return(incomeTotal);
+    if (incomes === undefined) {
+        return (incomeTotal);
     } else {
-        for(const income of incomes){
+        for (const income of incomes) {
             incomeTotal = incomeTotal + income.amount
         }
     }
 
-    return(incomeTotal);
+    return (incomeTotal);
 }
 
-export function calculateTransactionTotal(transactions: TransactionClass[] | undefined){
+export function calculateTransactionTotal(transactions: TransactionClass[] | undefined) {
     let transactionTotal: number = 0
 
-    if(transactions === undefined){
-        return(transactionTotal);
+    if (transactions === undefined) {
+        return (transactionTotal);
     } else {
-        for(const transaction of transactions){
+        for (const transaction of transactions) {
             transactionTotal = transactionTotal + transaction.value
         }
     }
 
-    return(transactionTotal);
+    return (transactionTotal);
 }

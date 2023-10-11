@@ -36,27 +36,27 @@ export async function POST(request: Request) {
 
         const body = await request.json();
 
-        if (!body.transactionDate){
+        if (!body.transactionDate) {
             return createErrorResponse("Transaction must have a transactions date", 400);
         }
 
-        if (!body.vendor){
+        if (!body.vendor) {
             return createErrorResponse("Transaction must have a vendor", 400);
         }
 
-        if (!body.value){
+        if (!body.value) {
             return createErrorResponse("Transaction must have a value", 400);
         }
 
-        if (!body.category){
+        if (!body.category) {
             return createErrorResponse("Transaction must have a catagory", 400);
         }
 
-        if (!body.items){
+        if (!body.items) {
             return createErrorResponse("Transaction must have a item or empty string", 400);
         }
 
-        if (!body.notes){
+        if (!body.notes) {
             return createErrorResponse("Transaction must have a notes or empty string", 400);
         }
 
@@ -74,11 +74,11 @@ export async function POST(request: Request) {
         return new NextResponse(JSON.stringify(json_response), {
             status: 201,
             headers: { "Content-Type": "application/json" },
-        }) 
+        })
     } catch (error: any) {
         if (error.code === 11000) {
             return createErrorResponse("Transaction with title already exists", 409);
         }
-     return createErrorResponse(error.message, 500);
+        return createErrorResponse(error.message, 500);
     }
 }

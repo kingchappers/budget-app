@@ -9,15 +9,15 @@ interface IncomeItemProps {
 
 const IncomeItem: React.FC<IncomeItemProps> = ({ income }) => {
     const incomeDateString = dateToString(income.incomeDate)
-    return(
+    return (
         <tbody>
             <tr>
-                    <td className="px-5">{incomeDateString}</td>
-                    <td className="px-5">{income.company}</td>
-                    <td className="px-5">£{income.amount.toFixed(2)}</td>
-                    <td className="px-5">{income.incomeCategory}</td>
-                    <td className="px-5">{income.notes}</td>
-                    <td><DeleteIncome income={income}/></td>
+                <td className="px-5">{incomeDateString}</td>
+                <td className="px-5">{income.company}</td>
+                <td className="px-5">£{income.amount.toFixed(2)}</td>
+                <td className="px-5">{income.incomeCategory}</td>
+                <td className="px-5">{income.notes}</td>
+                <td><DeleteIncome income={income} /></td>
             </tr>
         </tbody>
     );

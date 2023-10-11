@@ -1,8 +1,6 @@
 import connectDB from "@/app/lib/connect-db";
 import { deleteIncome, getIncome, updateIncome } from "@/app/lib/income-db";
 import { createErrorResponse } from "@/app/lib/utils";
-import { create } from "domain";
-import { RequestStore } from "next/dist/client/components/request-async-storage";
 import { NextResponse } from "next/server";
 
 export async function GET(
@@ -32,7 +30,7 @@ export async function GET(
         }
 
         return createErrorResponse(error.message, 500)
-    }   
+    }
 }
 
 export async function PATCH(

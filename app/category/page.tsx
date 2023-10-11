@@ -6,10 +6,10 @@ export default async function Home() {
     let filter: CategoryFilter = {
         limit: 50
     }
-    
+
     const { categories, results } = await getCategories(filter);
 
-    return(
+    return (
         <div className="container mx-auto max-w-screen-2xl p-4">
 
             <CategoryFormServerComponent />
@@ -22,17 +22,17 @@ export default async function Home() {
                         <th className="px-5 w-52">Transaction Category</th>
                         <th className="px-5 w-48">Income Category</th>
                     </tr>
-                </thead>       
+                </thead>
 
-            {results === 0 ? (
-                <p className="text-center">No Categories Found</p>
-            ) : (
-                categories?.map((category) => (
-                    <CategoryItemServerComponent key={category.id} category={category} />
-                ))
-            )}
+                {results === 0 ? (
+                    <p className="text-center">No Categories Found</p>
+                ) : (
+                    categories?.map((category) => (
+                        <CategoryItemServerComponent key={category.id} category={category} />
+                    ))
+                )}
             </table>
         </div>
-        
+
     );
 }

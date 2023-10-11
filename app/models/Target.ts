@@ -35,19 +35,19 @@ import mongoose from "mongoose"
 @index({ label: 1 })
 class TargetClass {
 
-    @prop({required: true})
+    @prop({ required: true })
     categoryName: string;
-    
-    @prop({default: true})
+
+    @prop({ default: true })
     targetAmount: number;
 
-    @prop({default: true})
+    @prop({ default: true })
     expenseTarget: boolean;
-    
+
     _id: mongoose.Types.ObjectId | string;
 
     id: string;
 }
 
 const Target = getModelForClass(TargetClass);
-export { Target, TargetClass};
+export { Target, TargetClass };

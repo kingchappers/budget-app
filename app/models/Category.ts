@@ -35,19 +35,19 @@ import mongoose from "mongoose"
 @index({ label: 1 })
 class CategoryClass {
 
-    @prop({required: true, unique: true})
+    @prop({ required: true, unique: true })
     label: string;
-    
-    @prop({default: true})
+
+    @prop({ default: true })
     transactionCategory: boolean;
 
-    @prop({default: true})
+    @prop({ default: true })
     incomeCategory: boolean;
-    
+
     _id: mongoose.Types.ObjectId | string;
 
     id: string;
 }
 
 const Category = getModelForClass(CategoryClass);
-export { Category, CategoryClass};
+export { Category, CategoryClass };

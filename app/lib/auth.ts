@@ -7,16 +7,16 @@ import GithubProvider from "next-auth/providers/github"
 import RedditProvider from "next-auth/providers/reddit";
 import GoogleProvider from "next-auth/providers/google";
 
-const { 
-    AUTH0_CLIENT_ID = '', 
-    AUTH0_CLIENT_SECRET = '', 
-    AUTH0_ISSUER = '', 
-    DISCORD_CLIENT_ID = '', 
-    DISCORD_CLIENT_SECRET = '', 
+const {
+    AUTH0_CLIENT_ID = '',
+    AUTH0_CLIENT_SECRET = '',
+    AUTH0_ISSUER = '',
+    DISCORD_CLIENT_ID = '',
+    DISCORD_CLIENT_SECRET = '',
     FACEBOOK_CLIENT_ID = '',
     FACEBOOK_CLIENT_SECRET = '',
-    GITHUB_ID = '',  
-    GITHUB_SECRET = '', 
+    GITHUB_ID = '',
+    GITHUB_SECRET = '',
     GOOGLE_CLIENT_ID = '',
     GOOGLE_CLIENT_SECRET = '',
     REDDIT_CLIENT_ID = '',
@@ -25,14 +25,14 @@ const {
 
 export const authOptions: NextAuthOptions = {
     session: {
-      strategy: "jwt",
+        strategy: "jwt",
     },
     providers: [
         Auth0Provider({
             clientId: AUTH0_CLIENT_ID,
             clientSecret: AUTH0_CLIENT_SECRET,
             issuer: AUTH0_ISSUER
-          }),
+        }),
         DiscordProvider({
             clientId: DISCORD_CLIENT_ID,
             clientSecret: DISCORD_CLIENT_SECRET
@@ -40,7 +40,7 @@ export const authOptions: NextAuthOptions = {
         FacebookProvider({
             clientId: FACEBOOK_CLIENT_ID,
             clientSecret: FACEBOOK_CLIENT_SECRET
-          }),
+        }),
         GithubProvider({
             clientId: GITHUB_ID,
             clientSecret: GITHUB_SECRET,
@@ -48,7 +48,7 @@ export const authOptions: NextAuthOptions = {
         GoogleProvider({
             clientId: GOOGLE_CLIENT_ID,
             clientSecret: GOOGLE_CLIENT_SECRET
-          }),
+        }),
         RedditProvider({
             clientId: REDDIT_CLIENT_ID,
             clientSecret: REDDIT_CLIENT_SECRET,
@@ -65,8 +65,8 @@ export const authOptions: NextAuthOptions = {
             return {
                 ...session,
                 user: {
-                  ...session.user,
-                  id: token.id,
+                    ...session.user,
+                    id: token.id,
                 },
             };
         },
@@ -82,5 +82,4 @@ export const authOptions: NextAuthOptions = {
             return token;
         },
     },
-  };
-  
+};

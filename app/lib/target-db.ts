@@ -16,16 +16,16 @@ export async function getTargets(filter: TargetFilter) {
         const limit = filter.limit ?? 100;
         const skip = (page - 1) * limit;
         const type = filter.type ?? "";
-    
+
         let targets;
 
-        if(type === "expense"){
+        if (type === "expense") {
             targets = await Target.find({ expenseTarget: true }).skip(skip).sort({ categoryName: 1 }).limit(limit).lean().exec();
-        } else if (type === "income"){
+        } else if (type === "income") {
             targets = await Target.find({ expenseTarget: false }).skip(skip).sort({ categoryName: 1 }).limit(limit).lean().exec();
         } else {
             targets = await Target.find().skip(skip).sort({ categoryName: 1 }).limit(limit).lean().exec();
-        } 
+        }
 
         const results = targets.length;
 
@@ -63,7 +63,7 @@ export async function getTargetsByName(filter: TargetFilter, targetName: string)
     }
 }
 
-export async function getTargetsByNameAndType(filter: TargetFilter, targetName: string, targetType:  boolean) {
+export async function getTargetsByNameAndType(filter: TargetFilter, targetName: string, targetType: boolean) {
     try {
         await connectDB();
 
@@ -88,9 +88,9 @@ export async function getTargetsByNameAndType(filter: TargetFilter, targetName: 
 
 
 export async function createTarget(
-    categoryName: string, 
-    targetAmount: number, 
-    expenseTarget: boolean, 
+    categoryName: string,
+    targetAmount: number,
+    expenseTarget: boolean,
 ) {
     try {
         await connectDB();
@@ -100,11 +100,11 @@ export async function createTarget(
             expenseTarget: expenseTarget
         });
 
-        if (existingTarget){
+        if (existingTarget) {
             return { error: "Target with this name and type already exists" };
         }
 
-        const target = await Target.create({ categoryName, targetAmount, expenseTarget }); 
+        const target = await Target.create({ categoryName, targetAmount, expenseTarget });
 
         return {
             target
@@ -117,14 +117,14 @@ export async function createTarget(
 export async function getTarget(id: string) {
     try {
         await connectDB();
-  
+
         const parsedId = stringToObjectId(id);
-  
+
         if (!parsedId) {
             return { error: "Target not found" };
         }
-  
-      const target = await Target.findById(parsedId).lean().exec();
+
+        const target = await Target.findById(parsedId).lean().exec();
         if (target) {
             return {
                 target,
@@ -136,52 +136,52 @@ export async function getTarget(id: string) {
         return { error };
     }
 }
-  
+
 export async function updateTarget(
     id: string,
-    { categoryName, targetAmount, expenseTarget } : { categoryName?: string; targetAmount?: number; expenseTarget?: boolean; } 
+    { categoryName, targetAmount, expenseTarget }: { categoryName?: string; targetAmount?: number; expenseTarget?: boolean; }
 ) {
     try {
         await connectDB();
-  
+
         const parsedId = stringToObjectId(id);
-  
+
         if (!parsedId) {
             return { error: "Target not found" };
         }
-  
+
         const target = await Target.findByIdAndUpdate(
             parsedId,
-            { categoryName, targetAmount, expenseTarget }, 
+            { categoryName, targetAmount, expenseTarget },
             { new: true }
         )
-        .lean()
-        .exec();
-  
+            .lean()
+            .exec();
+
         if (target) {
             return {
                 target,
             };
         } else {
             return { error: "Target not found" };
-      }
+        }
     } catch (error) {
         return { error };
     }
 }
-  
-  export async function deleteTarget(id: string) {
+
+export async function deleteTarget(id: string) {
     try {
         await connectDB();
-  
+
         const parsedId = stringToObjectId(id);
-  
+
         if (!parsedId) {
             return { error: "Target not found" };
         }
-  
+
         const target = await Target.findByIdAndDelete(parsedId).exec();
-  
+
         if (target) {
             return {};
         } else {

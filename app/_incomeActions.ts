@@ -15,10 +15,10 @@ export async function createIncomeAction({
     notes,
     path,
 }: {
-    incomeDate: string; 
-    company: string; 
-    amount: number; 
-    incomeCategory: string; 
+    incomeDate: string;
+    company: string;
+    amount: number;
+    incomeCategory: string;
     notes: string;
     path: string;
 }) {
@@ -32,7 +32,7 @@ export async function createIncomeAction({
  */
 export async function updateIncomeAction(
     id: string,
-    update: { incomeDate?: Date; company?: string; amount?: number; }, 
+    update: { incomeDate?: Date; company?: string; amount?: number; },
     path: string
 ) {
     await updateIncome(id, update);

@@ -168,17 +168,17 @@ export default function DefaulttCategoriesButton() {
             const label = category.label
             const transactionCategory = category.transactionCategory
             const incomeCategory = category.incomeCategory
-            await createCategoryAction({ label, transactionCategory, incomeCategory, path: "/" }); 
-            await createTargetAction({ categoryName: label, targetAmount: 0, expenseTarget: transactionCategory, path: "/"})
-            if (category.incomeCategory == true && category.transactionCategory == true){
-                await createTargetAction({ categoryName: label, targetAmount: 0, expenseTarget: false, path: "/"})
-            }      
+            await createCategoryAction({ label, transactionCategory, incomeCategory, path: "/" });
+            await createTargetAction({ categoryName: label, targetAmount: 0, expenseTarget: transactionCategory, path: "/" })
+            if (category.incomeCategory == true && category.transactionCategory == true) {
+                await createTargetAction({ categoryName: label, targetAmount: 0, expenseTarget: false, path: "/" })
+            }
         });
     }
 
-    return(     
+    return (
         <form action={action} key={Math.random()} className="flex items-center space-x-3 mb-4">
             <button className="px-4 py-1 text-white rounded bg-green-500">Create Default Categories</button>
-        </form> 
+        </form>
     );
 }

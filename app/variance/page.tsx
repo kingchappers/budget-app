@@ -1,6 +1,5 @@
 import { updateTargetAction } from "../_targetActions";
 import { calculateTargetsTotal, calculateDifference, calculateIncomeTotal, calculateTransactionTotal } from "../components/target-calculation-functions";
-import TargetFormServerComponent from "../components/target-form-server";
 import { TargetFilter, getTargets } from "../lib/target-db";
 import { revalidatePath } from 'next/cache'
 import { getTransactionsBetweenDates } from "../lib/transaction-db";

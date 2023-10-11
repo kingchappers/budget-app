@@ -1,6 +1,6 @@
 "use client"
 
-import React, {useState} from "react"
+import React, { useState } from "react"
 import Datetime from "react-datetime"
 import "react-datetime/css/react-datetime.css"
 
@@ -12,7 +12,7 @@ export default function DatePicker() {
 
     return (
         <div>
-            <Datetime dateFormat="DD/MM/YYYY" inputProps={ inputProps } initialValue={new Date()} timeFormat={false} className="bg-white border rounded px-1 py-1 flex-1" /> {/* w-28"/>  */}
+            <Datetime dateFormat="DD/MM/YYYY" inputProps={inputProps} initialValue={new Date()} timeFormat={false} className="bg-white border rounded px-1 py-1 flex-1" /> {/* w-28"/>  */}
         </div>
     )
 }

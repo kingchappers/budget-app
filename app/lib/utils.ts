@@ -14,7 +14,7 @@ export function stringToObjectId(id: string): mongoose.Types.ObjectId | null {
 export function createErrorResponse(
     message: string,
     statusCode: number
-) : NextResponse {
+): NextResponse {
     const errorResponse = {
         status: statusCode >= 500 ? "error" : "fail",
         message,
@@ -26,13 +26,13 @@ export function createErrorResponse(
     });
 }
 
-export function stringToDate(dateString: string){
-    const date: Date = parse(dateString, "dd/MM/yyyy", new Date(), {locale: enGB})
+export function stringToDate(dateString: string) {
+    const date: Date = parse(dateString, "dd/MM/yyyy", new Date(), { locale: enGB })
 
-    return(date)
+    return (date)
 }
 
-export function dateToString(date: Date){
+export function dateToString(date: Date) {
     const dateString = format(date, "dd/MM/yyyy")
 
     return dateString

@@ -11,7 +11,7 @@ export interface CategoryFilter {
 export async function getCategories(filter: CategoryFilter) {
     try {
         await connectDB();
-        
+
         const page = filter.page ?? 1;
         const limit = filter.limit ?? 10;
         const type = filter.type ?? "";
@@ -19,13 +19,13 @@ export async function getCategories(filter: CategoryFilter) {
 
         let categories;
 
-        if(type === "income"){
+        if (type === "income") {
             categories = await Category.find({ incomeCategory: true }).skip(skip).sort({ label: 1 }).limit(limit).lean().exec();
-        } else if (type === "transaction"){
+        } else if (type === "transaction") {
             categories = await Category.find({ transactionCategory: true }).skip(skip).sort({ label: 1 }).limit(limit).lean().exec();
         } else {
             categories = await Category.find().skip(skip).sort({ label: 1 }).limit(limit).lean().exec();
-        }   
+        }
 
         const results = categories.length;
 
@@ -41,14 +41,14 @@ export async function getCategories(filter: CategoryFilter) {
 }
 
 export async function createCategory(
-    label: string, 
-    transactionCategory: boolean, 
-    incomeCategory: boolean, 
+    label: string,
+    transactionCategory: boolean,
+    incomeCategory: boolean,
 ) {
     try {
         await connectDB();
 
-        const category = await Category.create({ label, transactionCategory, incomeCategory }); 
+        const category = await Category.create({ label, transactionCategory, incomeCategory });
 
         return {
             label
@@ -61,14 +61,14 @@ export async function createCategory(
 export async function getCategroy(id: string) {
     try {
         await connectDB();
-  
+
         const parsedId = stringToObjectId(id);
-  
+
         if (!parsedId) {
             return { error: "Category not found" };
         }
-  
-      const category = await Category.findById(parsedId).lean().exec();
+
+        const category = await Category.findById(parsedId).lean().exec();
         if (category) {
             return {
                 category,
@@ -80,52 +80,52 @@ export async function getCategroy(id: string) {
         return { error };
     }
 }
-  
+
 export async function updateCategory(
     id: string,
-    { label, transactionCategory, incomeCategory } : { label?: string; transactionCategory?: boolean; incomeCategory?: boolean } 
+    { label, transactionCategory, incomeCategory }: { label?: string; transactionCategory?: boolean; incomeCategory?: boolean }
 ) {
     try {
         await connectDB();
-  
+
         const parsedId = stringToObjectId(id);
-  
+
         if (!parsedId) {
             return { error: "Category not found" };
         }
-  
+
         const category = await Category.findByIdAndUpdate(
             parsedId,
-            { label, transactionCategory, incomeCategory }, 
+            { label, transactionCategory, incomeCategory },
             { new: true }
         )
-        .lean()
-        .exec();
-  
+            .lean()
+            .exec();
+
         if (category) {
             return {
                 category,
             };
         } else {
             return { error: "Category not found" };
-      }
+        }
     } catch (error) {
         return { error };
     }
 }
-  
-  export async function deleteCategory(id: string) {
+
+export async function deleteCategory(id: string) {
     try {
         await connectDB();
-  
+
         const parsedId = stringToObjectId(id);
-  
+
         if (!parsedId) {
             return { error: "Category not found" };
         }
-  
+
         const category = await Category.findByIdAndDelete(parsedId).exec();
-  
+
         if (category) {
             return {};
         } else {

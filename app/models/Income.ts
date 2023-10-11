@@ -35,25 +35,25 @@ import mongoose from "mongoose"
 @index({ vendor: 1 })
 class IncomeClass {
 
-    @prop({required: true})
+    @prop({ required: true })
     incomeDate: Date;
-    
-    @prop({required: true})
+
+    @prop({ required: true })
     company: string;
 
-    @prop({required: true })
+    @prop({ required: true })
     amount: number;
 
-    @prop({required: true, default: "Miscellaneous"})
+    @prop({ required: true, default: "Miscellaneous" })
     incomeCategory: string;
 
-    @prop({required: false})
+    @prop({ required: false })
     notes: string;
-    
+
     _id: mongoose.Types.ObjectId | string;
 
     id: string;
 }
 
 const Income = getModelForClass(IncomeClass);
-export { Income, IncomeClass};
+export { Income, IncomeClass };

@@ -36,15 +36,15 @@ export async function getTransactions(filter: TransactionFilter) {
     }
 }
 
-export async function getTransactionsBetweenDates(startDate?: Date, endDate?: Date){
+export async function getTransactionsBetweenDates(startDate?: Date, endDate?: Date) {
     try {
         connectDB();
 
         const searchStartDate = startDate ?? startOfMonth(new Date())
         const searchEndDate = endDate ?? endOfMonth(new Date())
 
-        const transactions = await Transaction.find({ transactionDate: { $gte: searchStartDate, $lte: searchEndDate  } }).sort({ transactionDate: -1 }).lean().exec();
- 
+        const transactions = await Transaction.find({ transactionDate: { $gte: searchStartDate, $lte: searchEndDate } }).sort({ transactionDate: -1 }).lean().exec();
+
         const results = transactions.length;
 
         return {
@@ -53,21 +53,21 @@ export async function getTransactionsBetweenDates(startDate?: Date, endDate?: Da
         };
 
     } catch (error) {
-        return {error};
+        return { error };
     }
 }
 
 export async function getTransaction(id: string) {
     try {
         await connectDB();
-  
+
         const parsedId = stringToObjectId(id);
-  
+
         if (!parsedId) {
             return { error: "Transaction not found" };
         }
-  
-      const transaction = await Transaction.findById(parsedId).lean().exec();
+
+        const transaction = await Transaction.findById(parsedId).lean().exec();
         if (transaction) {
             return {
                 transaction,
@@ -81,17 +81,17 @@ export async function getTransaction(id: string) {
 }
 
 export async function createTransaction(
-    transactionDate: Date, 
-    vendor: string, 
-    value: number, 
-    category: string, 
-    items: string, 
+    transactionDate: Date,
+    vendor: string,
+    value: number,
+    category: string,
+    items: string,
     notes: string
 ) {
     try {
         await connectDB();
-        
-        const transaction = await Transaction.create({ transactionDate, vendor, value, category, items, notes }); 
+
+        const transaction = await Transaction.create({ transactionDate, vendor, value, category, items, notes });
 
         return {
             transaction
@@ -100,52 +100,52 @@ export async function createTransaction(
         return { error };
     }
 }
-  
+
 export async function updateTransaction(
     id: string,
-    { transactionDate, vendor, value, category, items, notes, checked } : { transactionDate?: Date; vendor?: string; value?: number; category?: string, items?: string, notes?: string; checked?: boolean; } 
+    { transactionDate, vendor, value, category, items, notes, checked }: { transactionDate?: Date; vendor?: string; value?: number; category?: string, items?: string, notes?: string; checked?: boolean; }
 ) {
     try {
         await connectDB();
-  
+
         const parsedId = stringToObjectId(id);
-  
+
         if (!parsedId) {
             return { error: "Transaction not found" };
         }
-  
+
         const transaction = await Transaction.findByIdAndUpdate(
             parsedId,
-            { transactionDate, vendor, value, category, items, notes, checked }, 
+            { transactionDate, vendor, value, category, items, notes, checked },
             { new: true }
         )
-        .lean()
-        .exec();
-  
+            .lean()
+            .exec();
+
         if (transaction) {
             return {
                 transaction,
             };
         } else {
             return { error: "Transaction not found" };
-      }
+        }
     } catch (error) {
         return { error };
     }
 }
-  
-  export async function deleteTransaction(id: string) {
+
+export async function deleteTransaction(id: string) {
     try {
         await connectDB();
-  
+
         const parsedId = stringToObjectId(id);
-  
+
         if (!parsedId) {
             return { error: "Transaction not found" };
         }
-  
+
         const transaction = await Transaction.findByIdAndDelete(parsedId).exec();
-  
+
         if (transaction) {
             return {};
         } else {
