@@ -35,11 +35,11 @@ export default function varianceTimeButton() {
     const [alignment, setAlignment] = React.useState('week');
     var transactionTotal = 0;
 
-    async function setTargetItems() {
+    async function setTargetItems(startDate: Date, endDate: Date) {
         targetItems = []
-        let endDate = new Date();
-        const startDate = new Date(endDate.setDate(endDate.getDate() - 7));
-        endDate = new Date()
+        // let endDate = new Date();
+        // const startDate = new Date(endDate.setDate(endDate.getDate() - 7));
+        // endDate = new Date()
 
         var { transactions, results: transactionResults } = await getTransactionsBetweenDatesAction({ startDate, endDate })
         var { targets, results: targetResults } = await getTargetsAction()
@@ -72,22 +72,25 @@ export default function varianceTimeButton() {
     }
 
     async function setTable(value: string) {
+        var startDate = new Date()
+        var endDate = new Date()
+
         if (value === "week") {
-            let endDate = new Date();
-            const startDate = new Date(endDate.setDate(endDate.getDate() - 7));
+            endDate = new Date();
+            startDate = new Date(endDate.setDate(endDate.getDate() - 7));
             endDate = new Date()
             const { transactions, results } = await getTransactionsBetweenDatesAction({ startDate, endDate })
             transactionTotal = await calculateTransactionTotalAction({ transactions, results }) ?? 0
         } else if (value === "month") {
             const date = new Date();
-            const startDate = new Date(date.getFullYear(), date.getMonth(), 1);
-            const endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+            startDate = new Date(date.getFullYear(), date.getMonth(), 1);
+            endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
             const { transactions, results } = await getTransactionsBetweenDatesAction({ startDate, endDate })
             transactionTotal = await calculateTransactionTotalAction({ transactions, results }) ?? 0
         } else if (value === "year") {
             const currentYear = new Date().getFullYear();
-            const startDate = new Date(currentYear, 0, 1);
-            const endDate = new Date(currentYear, 11, 31);
+            startDate = new Date(currentYear, 0, 1);
+            endDate = new Date(currentYear, 11, 31);
             const { transactions, results } = await getTransactionsBetweenDatesAction({ startDate, endDate })
             transactionTotal = await calculateTransactionTotalAction({ transactions, results }) ?? 0
         } else {
@@ -95,7 +98,7 @@ export default function varianceTimeButton() {
         }
 
         setTimeTransactionTotal(transactionTotal);
-        setTargetItems()
+        setTargetItems(startDate, endDate)
     }
 
     async function handleChange(
@@ -151,7 +154,7 @@ export default function varianceTimeButton() {
                         ) : (
                             targetItems?.map((targetItem) => (
                                 targetItem.targetType === true ? (
-                                    <tr key={targetItem.targetName + targetItem.targetType}>
+                                    <tr key={targetItem.targetName + targetItem.targetType} className="divide-y-2">
                                         <td className="text-right font-bold">{targetItem.targetName}:</td>
                                         <td className="text-center">£{targetItem.targetValue.toFixed(2)}</td>
                                         <td className="text-center">£{targetItem.actualValue.toFixed(2)}</td>
