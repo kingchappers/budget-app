@@ -14,7 +14,7 @@ interface targetItem {
     targetName: string;
     targetValue: number;
     targetType: boolean;
-    actualSpend: number;
+    actualValue: number;
 }
 
 var targetItems: targetItem[] = []
@@ -56,7 +56,7 @@ export default function varianceTimeButton() {
                 targetName: target.categoryName,
                 targetValue: target.targetAmount,
                 targetType: target.expenseTarget,
-                actualSpend: 0
+                actualValue: 0
             }
 
             targetItems.push(newItem)
@@ -71,7 +71,7 @@ export default function varianceTimeButton() {
             // console.log(foo)
             // console.log(index)
 
-            targetItems[index].actualSpend = targetItems[index].actualSpend + transaction.value
+            targetItems[index].actualValue = targetItems[index].actualValue + transaction.value
 
             console.log("boo")
             console.log(targetItems.length)
@@ -121,6 +121,16 @@ export default function varianceTimeButton() {
         setTable(value)
     };
 
+    function textColourClass(value: number) {
+        if (value > 0) {
+            return "text-center text-green-500"
+        } else if (value < 0) {
+            return "text-center text-red-500"
+        } else {
+            return "text-center"
+        }
+    };
+
     return (
         <div>
             <ToggleButtonGroup
@@ -137,28 +147,11 @@ export default function varianceTimeButton() {
 
             <p>£{timeTransactionTotal}</p>
 
-            {/* {targetItems?.map((targetItem) => (
-                <div>
-                  <p>{targetItem.targetName}</p>
-                  <p>{targetItem.actualSpend}</p>
-                </div>
-              ))} */}
-
-            {/* {targetItems.length < 0 ? (
-                <p>nothing</p>
-              ) : (
-                targetItems.forEach((targetItem) => {
-                  <div>
-                    <p>{targetItem.targetName}</p>
-                    <p>{targetItem.actualSpend}</p>
-                  </div>
-                })
-              )} */}
-
+            <h1 className="text-2xl font-bold mt-5 mb-3">Monthly Expense Variance</h1>
             <table className="divide-y-2 table-fixed">
                 <thead>
                     <tr className="text-left text-1xl">
-                        <th className="w-10"></th>
+                        <th className="w-44"></th>
                         <th className="pl-5 text-center w-44">Target Value</th>
                         <th className="px-5 text-center w-44">Actual Spending</th>
                         <th className="px-5 text-center w-44">Difference</th>
@@ -169,12 +162,46 @@ export default function varianceTimeButton() {
                     <p> nothing found</p>
                 ) : (
                     targetItems?.map((targetItem) => (
+                        targetItem.targetType === true ? (
                         <tr key={targetItem.targetName + targetItem.targetType}>
-                            <td>{targetItem.targetName}:</td>
-                            <td>£{targetItem.targetValue.toFixed(2)}</td>
-                            <td>£{targetItem.actualSpend.toFixed(2)}</td>
-                            <td>£Insert Difference Calculation here</td>
+                            <td className="text-right font-bold">{targetItem.targetName}:</td>
+                            <td className="text-center">£{targetItem.targetValue.toFixed(2)}</td>
+                            <td className="text-center">£{targetItem.actualValue.toFixed(2)}</td>
+                            <td className="text-center">£Insert Difference Calculation here</td>
                         </tr>
+                        ) : (
+                            ""
+                        )
+                    ))
+                )}
+
+            </table>
+
+            <h1 className="text-2xl font-bold mt-5 mb-3">Monthly Income Variance</h1>
+            <table className="divide-y-2 table-fixed">
+                <thead>
+                    <tr className="text-left text-1xl">
+                        <th className="w-44"></th>
+                        <th className="pl-5 text-center w-44">Target Value</th>
+                        <th className="px-5 text-center w-44">Actual Income</th>
+                        <th className="px-5 text-center w-44">Difference</th>
+                    </tr>
+                </thead>
+
+                {targetItems.length < 0 ? (
+                    <p> nothing found</p>
+                ) : (
+                    targetItems?.map((targetItem) => (
+                        targetItem.targetType === false ? (
+                        <tr key={targetItem.targetName + targetItem.targetType}>
+                            <td className="text-right font-bold">{targetItem.targetName}:</td>
+                            <td className="text-center">£{targetItem.targetValue.toFixed(2)}</td>
+                            <td className="text-center">£{targetItem.actualValue.toFixed(2)}</td>
+                            <td className="text-center">£Insert Difference Calculation here</td>
+                        </tr>
+                        ) : (
+                            ""
+                        )
                     ))
                 )}
 
