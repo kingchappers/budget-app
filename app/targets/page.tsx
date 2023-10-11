@@ -85,7 +85,7 @@ export default async function Home() {
 
             <h1 className="text-2xl font-bold mt-5 mb-3">Monthly Income Targets</h1>
             <form action={action} key={Math.random()}>
-                <div className="grid grid-cols-1">
+                <div className="grid grid-cols-3">
                     {incomeResults === 0 ? (
                         <p className="text-center">No Income Targets Found</p>
                     ) : (

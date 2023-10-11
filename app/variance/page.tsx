@@ -82,24 +82,26 @@ export default async function Home() {
                         <th className="px-5 text-center w-44">Difference</th>
                     </tr>
                 </thead>
-                <tr className="">
-                    <td className="text-right font-bold">Expenses:</td>
-                    <td className="text-center">£{targetMonthlyExpenseTotal.toFixed(2)}</td>
-                    <td className="text-center">£{actualMonthyExpensesTotal.toFixed(2)}</td>
-                    <td className={expenseDifferenceColor}>£{expenseDifference.toFixed(2)}</td>
-                </tr>
-                <tr className="">
-                    <td className="text-right font-bold">Income:</td>
-                    <td className="text-center">£{targetMonthlyIncomeTotal.toFixed(2)}</td>
-                    <td className="text-center">£{actualMonthlyIncomeTotal.toFixed(2)}</td>
-                    <td className={incomeDifferenceColor}>£{incomeDifference.toFixed(2)}</td>
-                </tr>
-                <tr className="">
-                    <td className="text-right font-bold">Savings:</td>
-                    <td className="text-center">£{impliedMonthlySaving.toFixed(2)}</td>
-                    <td className="text-center">£{actualMonthlySaving.toFixed(2)}</td>
-                    <td className={savingDifferenceColor}>£{savingDifference.toFixed(2)}</td>
-                </tr>
+                <tbody>
+                    <tr className="">
+                        <td className="text-right font-bold">Expenses:</td>
+                        <td className="text-center">£{targetMonthlyExpenseTotal.toFixed(2)}</td>
+                        <td className="text-center">£{actualMonthyExpensesTotal.toFixed(2)}</td>
+                        <td className={expenseDifferenceColor}>£{expenseDifference.toFixed(2)}</td>
+                    </tr>
+                    <tr className="">
+                        <td className="text-right font-bold">Income:</td>
+                        <td className="text-center">£{targetMonthlyIncomeTotal.toFixed(2)}</td>
+                        <td className="text-center">£{actualMonthlyIncomeTotal.toFixed(2)}</td>
+                        <td className={incomeDifferenceColor}>£{incomeDifference.toFixed(2)}</td>
+                    </tr>
+                    <tr className="">
+                        <td className="text-right font-bold">Savings:</td>
+                        <td className="text-center">£{impliedMonthlySaving.toFixed(2)}</td>
+                        <td className="text-center">£{actualMonthlySaving.toFixed(2)}</td>
+                        <td className={savingDifferenceColor}>£{savingDifference.toFixed(2)}</td>
+                    </tr>
+                </tbody>
             </table>
 
             <VarianceTimeButton />

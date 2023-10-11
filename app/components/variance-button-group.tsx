@@ -6,7 +6,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { getTransactionsBetweenDatesAction } from '../_transactionActions';
 import { calculateTransactionTotalAction, getTargetsAction } from '../_targetActions';
 import { useState } from "react";
-import TargetItem from './target-form-server';
+import { calculateDifference } from './target-calculation-functions';
 
 let didInit = false;
 
@@ -15,6 +15,7 @@ interface targetItem {
     targetValue: number;
     targetType: boolean;
     actualValue: number;
+    difference: number;
 }
 
 var targetItems: targetItem[] = []
@@ -30,14 +31,12 @@ export default function varianceTimeButton() {
 
 
     const [timeTransactionTotal, setTimeTransactionTotal] = useState(0);
+    const [statefulTarget, setStatefulTarget] = useState(targetItems);
     const [alignment, setAlignment] = React.useState('week');
-    var transactionTotal = 0
-
-    const [test, setTest] = useState(targetItems)
+    var transactionTotal = 0;
 
     async function setTargetItems() {
         targetItems = []
-        console.log(targetItems)
         let endDate = new Date();
         const startDate = new Date(endDate.setDate(endDate.getDate() - 7));
         endDate = new Date()
@@ -45,43 +44,31 @@ export default function varianceTimeButton() {
         var { transactions, results: transactionResults } = await getTransactionsBetweenDatesAction({ startDate, endDate })
         var { targets, results: targetResults } = await getTargetsAction()
 
-        // console.log(transactions?.find((transaction) => {return transaction.category === "Childcare"}))
-
         targets?.forEach((target) => {
-            // console.log(target.categoryName)
-            // console.log(target.expenseTarget)
-            // console.log(target.targetAmount)
-
             const newItem: targetItem = {
                 targetName: target.categoryName,
                 targetValue: target.targetAmount,
                 targetType: target.expenseTarget,
-                actualValue: 0
+                actualValue: 0,
+                difference: 0
             }
-
             targetItems.push(newItem)
         })
 
-        // console.log("this is the test variable:" + targetItems)
-
         transactions?.forEach((transaction) => {
-            // console.log(transaction.category)
-            const foo = targetItems.find((targetItem) => { return targetItem.targetName === transaction.category })
             const index: number = targetItems.findIndex((targetItem) => { return targetItem.targetName === transaction.category })
-            // console.log(foo)
-            // console.log(index)
-
             targetItems[index].actualValue = targetItems[index].actualValue + transaction.value
-
-            console.log("boo")
-            console.log(targetItems.length)
-
         })
 
-        setTest(targetItems)
+        targetItems?.forEach((targetItem) => {
+            if(targetItem.targetType){
+                targetItem.difference = calculateDifference(targetItem.actualValue, targetItem.targetValue)
+            } else {
+                targetItem.difference = calculateDifference(targetItem.targetValue, targetItem.actualValue)
+            }
+        })
 
-        // console.log(test)
-
+        setStatefulTarget(targetItems)
     }
 
     async function setTable(value: string) {
@@ -109,8 +96,6 @@ export default function varianceTimeButton() {
 
         setTimeTransactionTotal(transactionTotal);
         setTargetItems()
-        console.log("hello")
-        console.log(targetItems.length)
     }
 
     async function handleChange(
@@ -148,64 +133,72 @@ export default function varianceTimeButton() {
             <p>£{timeTransactionTotal}</p>
 
             <h1 className="text-2xl font-bold mt-5 mb-3">Monthly Expense Variance</h1>
-            <table className="divide-y-2 table-fixed">
-                <thead>
-                    <tr className="text-left text-1xl">
-                        <th className="w-44"></th>
-                        <th className="pl-5 text-center w-44">Target Value</th>
-                        <th className="px-5 text-center w-44">Actual Spending</th>
-                        <th className="px-5 text-center w-44">Difference</th>
-                    </tr>
-                </thead>
-
-                {targetItems.length < 0 ? (
-                    <p> nothing found</p>
-                ) : (
-                    targetItems?.map((targetItem) => (
-                        targetItem.targetType === true ? (
-                        <tr key={targetItem.targetName + targetItem.targetType}>
-                            <td className="text-right font-bold">{targetItem.targetName}:</td>
-                            <td className="text-center">£{targetItem.targetValue.toFixed(2)}</td>
-                            <td className="text-center">£{targetItem.actualValue.toFixed(2)}</td>
-                            <td className="text-center">£Insert Difference Calculation here</td>
+            <div className="container flex justify-center">
+                <table className="divide-y-2 table-fixed">
+                    <thead>
+                        <tr className="text-left text-1xl">
+                            <th className="w-44"></th>
+                            <th className="pl-5 text-center w-44">Target Value</th>
+                            <th className="px-5 text-center w-44">Actual Spending</th>
+                            <th className="px-5 text-center w-48">Remaining Budget</th>
                         </tr>
+                    </thead>
+                    <tbody>
+                        {targetItems.length < 0 ? (
+                            <tr>
+                                <td className="text-center font-bold" colSpan={5}>No Targets Found!</td>
+                            </tr>
                         ) : (
-                            ""
-                        )
-                    ))
-                )}
-
-            </table>
+                            targetItems?.map((targetItem) => (
+                                targetItem.targetType === true ? (
+                                    <tr key={targetItem.targetName + targetItem.targetType}>
+                                        <td className="text-right font-bold">{targetItem.targetName}:</td>
+                                        <td className="text-center">£{targetItem.targetValue.toFixed(2)}</td>
+                                        <td className="text-center">£{targetItem.actualValue.toFixed(2)}</td>
+                                        <td className={textColourClass(targetItem.difference)}>£{targetItem.difference.toFixed(2)}</td>
+                                    </tr>
+                                ) : (
+                                    ""
+                                )
+                            ))
+                        )}
+                    </tbody>
+                </table>
+            </div>
 
             <h1 className="text-2xl font-bold mt-5 mb-3">Monthly Income Variance</h1>
-            <table className="divide-y-2 table-fixed">
-                <thead>
-                    <tr className="text-left text-1xl">
-                        <th className="w-44"></th>
-                        <th className="pl-5 text-center w-44">Target Value</th>
-                        <th className="px-5 text-center w-44">Actual Income</th>
-                        <th className="px-5 text-center w-44">Difference</th>
-                    </tr>
-                </thead>
-
-                {targetItems.length < 0 ? (
-                    <p> nothing found</p>
-                ) : (
-                    targetItems?.map((targetItem) => (
-                        targetItem.targetType === false ? (
-                        <tr key={targetItem.targetName + targetItem.targetType}>
-                            <td className="text-right font-bold">{targetItem.targetName}:</td>
-                            <td className="text-center">£{targetItem.targetValue.toFixed(2)}</td>
-                            <td className="text-center">£{targetItem.actualValue.toFixed(2)}</td>
-                            <td className="text-center">£Insert Difference Calculation here</td>
+            <div className="container flex justify-center">
+                <table className="divide-y-2 table-fixed">
+                    <thead>
+                        <tr className="text-left text-1xl">
+                            <th className="w-44"></th>
+                            <th className="pl-5 text-center w-44">Target Value</th>
+                            <th className="px-5 text-center w-44">Actual Income</th>
+                            <th className="px-5 text-center w-48">Difference</th>
                         </tr>
+                    </thead>
+                    <tbody>
+                        {targetItems.length < 0 ? (
+                            <tr>
+                                <td className="text-center font-bold" colSpan={5}>No Targets Found!</td>
+                            </tr>
                         ) : (
-                            ""
-                        )
-                    ))
-                )}
-
-            </table>
+                            targetItems?.map((targetItem) => (
+                                targetItem.targetType === false ? (
+                                    <tr key={targetItem.targetName + targetItem.targetType}>
+                                        <td className="text-right font-bold">{targetItem.targetName}:</td>
+                                        <td className="text-center">£{targetItem.targetValue.toFixed(2)}</td>
+                                        <td className="text-center">£{targetItem.actualValue.toFixed(2)}</td>
+                                        <td className={textColourClass(targetItem.difference)}>£{targetItem.difference.toFixed(2)}</td>
+                                    </tr>
+                                ) : (
+                                    ""
+                                )
+                            ))
+                        )}
+                    </tbody>
+                </table>
+            </div>
 
             <table className="divide-y-2 table-fixed">
                 <thead>
@@ -216,18 +209,20 @@ export default function varianceTimeButton() {
                         <th className="px-5 text-center w-44">Difference</th>
                     </tr>
                 </thead>
-                <tr className="">
-                    <td className="text-right font-bold">TargetName:</td>
-                    <td className="text-center">£0</td>
-                    <td className="text-center">£0</td>
-                    <td className="{ expenseDifferenceColor }">£0</td>
-                </tr>
-                <tr className="">
-                    <td className="text-right font-bold">Income:</td>
-                    <td className="text-center">£0</td>
-                    <td className="text-center">£0</td>
-                    <td className="{ expenseDifferenceColor }">£0</td>
-                </tr>
+                <tbody>
+                    <tr className="">
+                        <td className="text-right font-bold">TargetName:</td>
+                        <td className="text-center">£0</td>
+                        <td className="text-center">£0</td>
+                        <td className="{ expenseDifferenceColor }">£0</td>
+                    </tr>
+                    <tr className="">
+                        <td className="text-right font-bold">Income:</td>
+                        <td className="text-center">£0</td>
+                        <td className="text-center">£0</td>
+                        <td className="{ expenseDifferenceColor }">£0</td>
+                    </tr>
+                </tbody>
             </table>
         </div>
     );
