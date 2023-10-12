@@ -1,6 +1,6 @@
 "use server";
 
-import { createIncome, deleteIncome, updateIncome } from "./lib/income-db";
+import { createIncome, deleteIncome, getIncomesBetweenDates, updateIncome } from "./lib/income-db";
 import { revalidatePath } from "next/cache";
 import { stringToDate } from "./lib/utils";
 
@@ -51,4 +51,19 @@ export async function deleteIncomeAction({
 }) {
     await deleteIncome(id);
     revalidatePath(path);
+}
+
+export async function getIncomesBetweenDatesAction({
+    startDate,
+    endDate,
+}: {
+    startDate: Date;
+    endDate: Date;
+}) {
+    const { incomes, results } = await getIncomesBetweenDates({}, startDate, endDate)
+
+    return {
+        incomes: incomes,
+        results
+    };
 }

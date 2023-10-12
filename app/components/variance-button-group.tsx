@@ -7,6 +7,8 @@ import { getTransactionsBetweenDatesAction } from '../_transactionActions';
 import { calculateTransactionTotalAction, getTargetsAction } from '../_targetActions';
 import { useState } from "react";
 import { calculateDifference } from './target-calculation-functions';
+import { getIncomesBetweenDatesAction } from '../_incomeActions';
+import differenceInDays from 'date-fns/differenceInDays';
 
 let didInit = false;
 
@@ -41,13 +43,16 @@ export default function varianceTimeButton() {
         // const startDate = new Date(endDate.setDate(endDate.getDate() - 7));
         // endDate = new Date()
 
-        var { transactions, results: transactionResults } = await getTransactionsBetweenDatesAction({ startDate, endDate })
-        var { targets, results: targetResults } = await getTargetsAction()
+        var { transactions, results: transactionResults } = await getTransactionsBetweenDatesAction({ startDate, endDate });
+        var { targets, results: targetResults } = await getTargetsAction();
+        var { incomes, results: incomeResults } = await getIncomesBetweenDatesAction({ startDate, endDate})
+
+        const daysBetween = differenceInDays(endDate, startDate)
 
         targets?.forEach((target) => {
             const newItem: targetItem = {
                 targetName: target.categoryName,
-                targetValue: target.targetAmount,
+                targetValue: (target.targetAmount / 31) * daysBetween,
                 targetType: target.expenseTarget,
                 actualValue: 0,
                 difference: 0
@@ -56,8 +61,13 @@ export default function varianceTimeButton() {
         })
 
         transactions?.forEach((transaction) => {
-            const index: number = targetItems.findIndex((targetItem) => { return targetItem.targetName === transaction.category })
-            targetItems[index].actualValue = targetItems[index].actualValue + transaction.value
+            const index: number = targetItems.findIndex((targetItem) => { return targetItem.targetName === transaction.category && targetItem.targetType === true})
+            targetItems[index].actualValue = targetItems[index].actualValue + transaction.value;
+        })
+
+        incomes?.forEach((income) => {
+            const index: number = targetItems.findIndex((targetItem) => { return targetItem.targetName === income.incomeCategory && targetItem.targetType === false})
+            targetItems[index].actualValue = targetItems[index].actualValue + income.amount;
         })
 
         targetItems?.forEach((targetItem) => {
