@@ -52,7 +52,7 @@ export default function varianceTimeButton() {
         targets?.forEach((target) => {
             const newItem: targetItem = {
                 targetName: target.categoryName,
-                targetValue: (target.targetAmount / 31) * daysBetween,
+                targetValue: (target.targetAmount / 30) * daysBetween,
                 targetType: target.expenseTarget,
                 actualValue: 0,
                 difference: 0
