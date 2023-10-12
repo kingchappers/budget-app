@@ -4,11 +4,12 @@ import * as React from 'react';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { getTransactionsBetweenDatesAction } from '../_transactionActions';
-import { calculateTransactionTotalAction, getTargetsAction } from '../_targetActions';
+import { calculateIncomeTotalAction, calculateTransactionTotalAction, getTargetsAction } from '../_targetActions';
 import { useState } from "react";
-import { calculateDifference } from './target-calculation-functions';
+import { calculateDifference, calculateIncomeTotal } from './target-calculation-functions';
 import { getIncomesBetweenDatesAction } from '../_incomeActions';
 import differenceInDays from 'date-fns/differenceInDays';
+import { getIncome } from '../lib/income-db';
 
 let didInit = false;
 
@@ -27,21 +28,20 @@ export default function varianceTimeButton() {
         //The if checks if the page has already initialised and stops it running twice
         if (!didInit) {
             didInit = true;
-            setTable("week")
+            setTable("month")
         }
     }, [])
 
 
     const [timeTransactionTotal, setTimeTransactionTotal] = useState(0);
+    const [timeIncomeTotal, setTimeIncomeTotal] = useState(0);
     const [statefulTarget, setStatefulTarget] = useState(targetItems);
-    const [alignment, setAlignment] = React.useState('week');
+    const [alignment, setAlignment] = React.useState('month');
     var transactionTotal = 0;
+    var incomeTotal = 0;
 
     async function setTargetItems(startDate: Date, endDate: Date) {
         targetItems = []
-        // let endDate = new Date();
-        // const startDate = new Date(endDate.setDate(endDate.getDate() - 7));
-        // endDate = new Date()
 
         var { transactions, results: transactionResults } = await getTransactionsBetweenDatesAction({ startDate, endDate });
         var { targets, results: targetResults } = await getTargetsAction();
@@ -89,25 +89,32 @@ export default function varianceTimeButton() {
             endDate = new Date();
             startDate = new Date(endDate.setDate(endDate.getDate() - 7));
             endDate = new Date()
-            const { transactions, results } = await getTransactionsBetweenDatesAction({ startDate, endDate })
-            transactionTotal = await calculateTransactionTotalAction({ transactions, results }) ?? 0
+            const { transactions, results: transactionsResults } = await getTransactionsBetweenDatesAction({ startDate, endDate })
+            const { incomes, results: incomesResults } = await getIncomesBetweenDatesAction({ startDate, endDate })
+            transactionTotal = await calculateTransactionTotalAction({ transactions, transactionsResults }) ?? 0
+            incomeTotal = await calculateIncomeTotalAction({ incomes, incomesResults }) ?? 0
         } else if (value === "month") {
             const date = new Date();
             startDate = new Date(date.getFullYear(), date.getMonth(), 1);
             endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-            const { transactions, results } = await getTransactionsBetweenDatesAction({ startDate, endDate })
-            transactionTotal = await calculateTransactionTotalAction({ transactions, results }) ?? 0
+            const { transactions, results: transactionsResults } = await getTransactionsBetweenDatesAction({ startDate, endDate })
+            const { incomes, results: incomesResults } = await getIncomesBetweenDatesAction({ startDate, endDate })
+            transactionTotal = await calculateTransactionTotalAction({ transactions, transactionsResults }) ?? 0
+            incomeTotal = await calculateIncomeTotalAction({ incomes, incomesResults }) ?? 0
         } else if (value === "year") {
             const currentYear = new Date().getFullYear();
             startDate = new Date(currentYear, 0, 1);
             endDate = new Date(currentYear, 11, 31);
-            const { transactions, results } = await getTransactionsBetweenDatesAction({ startDate, endDate })
-            transactionTotal = await calculateTransactionTotalAction({ transactions, results }) ?? 0
+            const { transactions, results: transactionsResults } = await getTransactionsBetweenDatesAction({ startDate, endDate })
+            const { incomes, results: incomesResults } = await getIncomesBetweenDatesAction({ startDate, endDate })
+            transactionTotal = await calculateTransactionTotalAction({ transactions, transactionsResults }) ?? 0
+            incomeTotal = await calculateIncomeTotalAction({ incomes, incomesResults }) ?? 0
         } else {
             transactionTotal = 0;
         }
 
         setTimeTransactionTotal(transactionTotal);
+        setTimeIncomeTotal(incomeTotal)
         setTargetItems(startDate, endDate)
     }
 
@@ -142,6 +149,38 @@ export default function varianceTimeButton() {
                 <ToggleButton value="month">This Month</ToggleButton>
                 <ToggleButton value="year">This Year</ToggleButton>
             </ToggleButtonGroup>
+
+            <h1 className="text-2xl font-bold mt-5 mb-3">Monthly Overall Variance</h1>
+            <table className="divide-y-2 table-fixed">
+                <thead>
+                    <tr className="text-left text-1xl">
+                        <th className="w-10"></th>
+                        <th className="pl-5 text-center w-44">Target</th>
+                        <th className="px-5 text-center w-44">Actual Spending</th>
+                        <th className="px-5 text-center w-44">Difference</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr className="">
+                        <td className="text-right font-bold">Expenses:</td>
+                        <td className="text-center">£{targetMonthlyExpenseTotal.toFixed(2)}</td>
+                        <td className="text-center">£{timeTransactionTotal.toFixed(2)}</td>
+                        <td className={expenseDifferenceColor}>£{expenseDifference.toFixed(2)}</td>
+                    </tr>
+                    <tr className="">
+                        <td className="text-right font-bold">Income:</td>
+                        <td className="text-center">£{targetMonthlyIncomeTotal.toFixed(2)}</td>
+                        <td className="text-center">£{timeIncomeTotal.toFixed(2)}</td>
+                        <td className={incomeDifferenceColor}>£{incomeDifference.toFixed(2)}</td>
+                    </tr>
+                    <tr className="">
+                        <td className="text-right font-bold">Savings:</td>
+                        <td className="text-center">£{impliedMonthlySaving.toFixed(2)}</td>
+                        <td className="text-center">£{timeTransactionTotal.toFixed(2)}</td>
+                        <td className={savingDifferenceColor}>£{savingDifference.toFixed(2)}</td>
+                    </tr>
+                </tbody>
+            </table>
 
             <p>£{timeTransactionTotal}</p>
 
@@ -212,31 +251,6 @@ export default function varianceTimeButton() {
                     </tbody>
                 </table>
             </div>
-
-            <table className="divide-y-2 table-fixed">
-                <thead>
-                    <tr className="text-left text-1xl">
-                        <th className="w-10"></th>
-                        <th className="pl-5 text-center w-44">Target Value:</th>
-                        <th className="px-5 text-center w-44">Actual Spending</th>
-                        <th className="px-5 text-center w-44">Difference</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr className="">
-                        <td className="text-right font-bold">TargetName:</td>
-                        <td className="text-center">£0</td>
-                        <td className="text-center">£0</td>
-                        <td className="{ expenseDifferenceColor }">£0</td>
-                    </tr>
-                    <tr className="">
-                        <td className="text-right font-bold">Income:</td>
-                        <td className="text-center">£0</td>
-                        <td className="text-center">£0</td>
-                        <td className="{ expenseDifferenceColor }">£0</td>
-                    </tr>
-                </tbody>
-            </table>
         </div>
     );
 }
