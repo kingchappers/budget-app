@@ -59,7 +59,7 @@ export default function varianceTimeButton() {
 
         var { transactions, results: transactionResults } = await getTransactionsBetweenDatesAction({ startDate, endDate });
         var { targets, results: targetResults } = await getTargetsAction({});
-        var { incomes, results: incomeResults } = await getIncomesBetweenDatesAction({ startDate, endDate})
+        var { incomes, results: incomeResults } = await getIncomesBetweenDatesAction({ startDate, endDate })
 
         const daysBetween = differenceInDays(endDate, startDate)
 
@@ -75,17 +75,17 @@ export default function varianceTimeButton() {
         })
 
         transactions?.forEach((transaction) => {
-            const index: number = targetItems.findIndex((targetItem) => { return targetItem.targetName === transaction.category && targetItem.targetType === true})
+            const index: number = targetItems.findIndex((targetItem) => { return targetItem.targetName === transaction.category && targetItem.targetType === true })
             targetItems[index].actualValue = targetItems[index].actualValue + transaction.value;
         })
 
         incomes?.forEach((income) => {
-            const index: number = targetItems.findIndex((targetItem) => { return targetItem.targetName === income.incomeCategory && targetItem.targetType === false})
+            const index: number = targetItems.findIndex((targetItem) => { return targetItem.targetName === income.incomeCategory && targetItem.targetType === false })
             targetItems[index].actualValue = targetItems[index].actualValue + income.amount;
         })
 
         targetItems?.forEach((targetItem) => {
-            if(targetItem.targetType){
+            if (targetItem.targetType) {
                 targetItem.difference = calculateDifference(targetItem.actualValue, targetItem.targetValue)
             } else {
                 targetItem.difference = calculateDifference(targetItem.targetValue, targetItem.actualValue)
@@ -114,47 +114,43 @@ export default function varianceTimeButton() {
             endDate = new Date();
             startDate = new Date(endDate.setDate(endDate.getDate() - 7));
             endDate = new Date();
-            daysBetween = differenceInDays(endDate, startDate)
-            const { transactions, results: transactionsResults } = await getTransactionsBetweenDatesAction({ startDate, endDate })
-            const { incomes, results: incomesResults } = await getIncomesBetweenDatesAction({ startDate, endDate })
-            let { targets: expenseTargets, results: expenseResults } = await getTargetsAction(targetExpenseFilter)
-            let { targets: incomeTargets, results: incomeResults } = await getTargetsAction(targetIncomeFilter)
-            transactionTotal = await calculateTransactionTotalAction({ transactions, transactionsResults }) ?? 0
-            incomeTotal = await calculateIncomeTotalAction({ incomes, incomesResults }) ?? 0
-
-            expenseTargetsTotal = await calculateTargetsTotalAction(expenseTargets, expenseResults ) ?? 0
-            incomeTargetsTotal = await calculateTargetsTotalAction(incomeTargets, incomeResults ) ?? 0
+            setValues(startDate, endDate)
         } else if (value === "month") {
             const date = new Date();
             startDate = new Date(date.getFullYear(), date.getMonth(), 1);
             endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-            daysBetween = differenceInDays(endDate, startDate)
-            const { transactions, results: transactionsResults } = await getTransactionsBetweenDatesAction({ startDate, endDate })
-            const { incomes, results: incomesResults } = await getIncomesBetweenDatesAction({ startDate, endDate })
-            let { targets: expenseTargets, results: expenseResults } = await getTargetsAction(targetExpenseFilter)
-            let { targets: incomeTargets, results: incomeResults } = await getTargetsAction(targetIncomeFilter)
-            transactionTotal = await calculateTransactionTotalAction({ transactions, transactionsResults }) ?? 0
-            incomeTotal = await calculateIncomeTotalAction({ incomes, incomesResults }) ?? 0
-
-            expenseTargetsTotal = await calculateTargetsTotalAction(expenseTargets, expenseResults ) ?? 0
-            incomeTargetsTotal = await calculateTargetsTotalAction(incomeTargets, incomeResults ) ?? 0
+            setValues(startDate, endDate)
         } else if (value === "year") {
             const currentYear = new Date().getFullYear();
             startDate = new Date(currentYear, 0, 1);
             endDate = new Date(currentYear, 11, 31);
-            daysBetween = differenceInDays(endDate, startDate)
-            const { transactions, results: transactionsResults } = await getTransactionsBetweenDatesAction({ startDate, endDate })
-            const { incomes, results: incomesResults } = await getIncomesBetweenDatesAction({ startDate, endDate })
-            let { targets: expenseTargets, results: expenseResults } = await getTargetsAction(targetExpenseFilter)
-            let { targets: incomeTargets, results: incomeResults } = await getTargetsAction(targetIncomeFilter)
-            transactionTotal = await calculateTransactionTotalAction({ transactions, transactionsResults }) ?? 0
-            incomeTotal = await calculateIncomeTotalAction({ incomes, incomesResults }) ?? 0
-
-            expenseTargetsTotal = await calculateTargetsTotalAction(expenseTargets, expenseResults ) ?? 0
-            incomeTargetsTotal = await calculateTargetsTotalAction(incomeTargets, incomeResults ) ?? 0
+            setValues(startDate, endDate)
         } else {
             transactionTotal = 0;
         }
+    }
+
+    async function setValues(startDate: Date, endDate: Date) {
+        const targetExpenseFilter: TargetFilter = {
+            limit: 50,
+            type: "expense"
+        }
+        const targetIncomeFilter: TargetFilter = {
+            limit: 50,
+            type: "income"
+        }
+
+        var daysBetween = differenceInDays(endDate, startDate)
+        const { transactions, results: transactionsResults } = await getTransactionsBetweenDatesAction({ startDate, endDate })
+        const { incomes, results: incomesResults } = await getIncomesBetweenDatesAction({ startDate, endDate })
+        let { targets: expenseTargets, results: expenseResults } = await getTargetsAction(targetExpenseFilter)
+        let { targets: incomeTargets, results: incomeResults } = await getTargetsAction(targetIncomeFilter)
+
+        transactionTotal = await calculateTransactionTotalAction({ transactions, transactionsResults }) ?? 0
+        incomeTotal = await calculateIncomeTotalAction({ incomes, incomesResults }) ?? 0
+
+        expenseTargetsTotal = await calculateTargetsTotalAction(expenseTargets, expenseResults) ?? 0
+        incomeTargetsTotal = await calculateTargetsTotalAction(incomeTargets, incomeResults) ?? 0
 
         const calculatedExpenseDifference = calculateDifference(transactionTotal, expenseTargetsTotal)
         const calculatedIncomeDifference = calculateDifference(incomeTargetsTotal, incomeTotal)
@@ -166,14 +162,12 @@ export default function varianceTimeButton() {
         setTimeIncomeTotal(incomeTotal)
         setTargetExpenses((expenseTargetsTotal / 30) * daysBetween)
         setTargetIncome((incomeTargetsTotal / 30) * daysBetween)
-
         setTargetItems(startDate, endDate)
         setExpenseDifference(calculatedExpenseDifference)
         setIncomeDifference(calculatedIncomeDifference)
         setImpliedSavings((calculatedImpliedSaving / 30) * daysBetween)
         setActualSavings(calculatedActualMonthlySaving)
         setSavingDifference(calculatedSavingDifference)
-
         setExpenseDifferenceColour(textColourClass(expenseDifference))
         setIncomeDifferenceColour(textColourClass(incomeDifference))
         setSavingDifferenceColour(textColourClass(savingDifference))
