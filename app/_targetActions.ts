@@ -4,8 +4,9 @@ import { TargetFilter, createTarget, deleteTarget, getTargets, getTargetsByName,
 import { revalidatePath } from "next/cache";
 import { CategoryClass } from "./models/Category";
 import { TransactionClass } from "./models/Transaction";
-import { calculateIncomeTotal, calculateTransactionTotal } from "./components/target-calculation-functions";
+import { calculateIncomeTotal, calculateTargetsTotal, calculateTransactionTotal } from "./components/target-calculation-functions";
 import { IncomeClass } from "./models/Income";
+import { TargetClass } from "./models/Target";
 
 /**
  * Server Action: Create a new target
@@ -136,11 +137,21 @@ export async function calculateIncomeTotalAction({
     }
 }
 
-export async function getTargetsAction() {
-    const { targets, results } = await getTargets({})
+export async function getTargetsAction(filter: TargetFilter) {
+    const { targets, results } = await getTargets(filter)
 
     return {
         targets: targets,
         results: results
     };
+}
+
+
+export async function calculateTargetsTotalAction(targets: TargetClass[] | undefined, results: number | undefined){
+    if (results === 0 || results === undefined) {
+        return 0;
+    } else {
+        const total = await calculateTargetsTotal(targets);
+        return total;
+    }
 }

@@ -4,12 +4,13 @@ import * as React from 'react';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { getTransactionsBetweenDatesAction } from '../_transactionActions';
-import { calculateIncomeTotalAction, calculateTransactionTotalAction, getTargetsAction } from '../_targetActions';
+import { calculateIncomeTotalAction, calculateTargetsTotalAction, calculateTransactionTotalAction, getTargetsAction } from '../_targetActions';
 import { useState } from "react";
 import { calculateDifference, calculateIncomeTotal } from './target-calculation-functions';
 import { getIncomesBetweenDatesAction } from '../_incomeActions';
 import differenceInDays from 'date-fns/differenceInDays';
 import { getIncome } from '../lib/income-db';
+import { TargetFilter } from '../lib/target-db';
 
 let didInit = false;
 
@@ -36,15 +37,28 @@ export default function varianceTimeButton() {
     const [timeTransactionTotal, setTimeTransactionTotal] = useState(0);
     const [timeIncomeTotal, setTimeIncomeTotal] = useState(0);
     const [statefulTarget, setStatefulTarget] = useState(targetItems);
-    const [alignment, setAlignment] = React.useState('month');
+    const [alignment, setAlignment] = useState('month');
+    const [targetExpenses, setTargetExpenses] = useState(0);
+    const [targetIncome, setTargetIncome] = useState(0);
+    const [expenseDifference, setExpenseDifference] = useState(0);
+    const [incomeDifference, setIncomeDifference] = useState(0);
+    const [impliedSavings, setImpliedSavings] = useState(0)
+    const [actualSavings, setActualSavings] = useState(0)
+    const [savingDifference, setSavingDifference] = useState(0)
+    const [expenseDifferenceColour, setExpenseDifferenceColour] = useState("")
+    const [incomeDifferenceColour, setIncomeDifferenceColour] = useState("")
+    const [savingDifferenceColour, setSavingDifferenceColour] = useState("")
+
     var transactionTotal = 0;
     var incomeTotal = 0;
+    var expenseTargetsTotal = 0
+    var incomeTargetsTotal = 0
 
     async function setTargetItems(startDate: Date, endDate: Date) {
         targetItems = []
 
         var { transactions, results: transactionResults } = await getTransactionsBetweenDatesAction({ startDate, endDate });
-        var { targets, results: targetResults } = await getTargetsAction();
+        var { targets, results: targetResults } = await getTargetsAction({});
         var { incomes, results: incomeResults } = await getIncomesBetweenDatesAction({ startDate, endDate})
 
         const daysBetween = differenceInDays(endDate, startDate)
@@ -82,40 +96,87 @@ export default function varianceTimeButton() {
     }
 
     async function setTable(value: string) {
-        var startDate = new Date()
-        var endDate = new Date()
+        var startDate = new Date();
+        var endDate = new Date();
+        var daysBetween = 1;
+
+        const targetExpenseFilter: TargetFilter = {
+            limit: 50,
+            type: "expense"
+        }
+
+        const targetIncomeFilter: TargetFilter = {
+            limit: 50,
+            type: "income"
+        }
 
         if (value === "week") {
             endDate = new Date();
             startDate = new Date(endDate.setDate(endDate.getDate() - 7));
-            endDate = new Date()
+            endDate = new Date();
+            daysBetween = differenceInDays(endDate, startDate)
             const { transactions, results: transactionsResults } = await getTransactionsBetweenDatesAction({ startDate, endDate })
             const { incomes, results: incomesResults } = await getIncomesBetweenDatesAction({ startDate, endDate })
+            let { targets: expenseTargets, results: expenseResults } = await getTargetsAction(targetExpenseFilter)
+            let { targets: incomeTargets, results: incomeResults } = await getTargetsAction(targetIncomeFilter)
             transactionTotal = await calculateTransactionTotalAction({ transactions, transactionsResults }) ?? 0
             incomeTotal = await calculateIncomeTotalAction({ incomes, incomesResults }) ?? 0
+
+            expenseTargetsTotal = await calculateTargetsTotalAction(expenseTargets, expenseResults ) ?? 0
+            incomeTargetsTotal = await calculateTargetsTotalAction(incomeTargets, incomeResults ) ?? 0
         } else if (value === "month") {
             const date = new Date();
             startDate = new Date(date.getFullYear(), date.getMonth(), 1);
             endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+            daysBetween = differenceInDays(endDate, startDate)
             const { transactions, results: transactionsResults } = await getTransactionsBetweenDatesAction({ startDate, endDate })
             const { incomes, results: incomesResults } = await getIncomesBetweenDatesAction({ startDate, endDate })
+            let { targets: expenseTargets, results: expenseResults } = await getTargetsAction(targetExpenseFilter)
+            let { targets: incomeTargets, results: incomeResults } = await getTargetsAction(targetIncomeFilter)
             transactionTotal = await calculateTransactionTotalAction({ transactions, transactionsResults }) ?? 0
             incomeTotal = await calculateIncomeTotalAction({ incomes, incomesResults }) ?? 0
+
+            expenseTargetsTotal = await calculateTargetsTotalAction(expenseTargets, expenseResults ) ?? 0
+            incomeTargetsTotal = await calculateTargetsTotalAction(incomeTargets, incomeResults ) ?? 0
         } else if (value === "year") {
             const currentYear = new Date().getFullYear();
             startDate = new Date(currentYear, 0, 1);
             endDate = new Date(currentYear, 11, 31);
+            daysBetween = differenceInDays(endDate, startDate)
             const { transactions, results: transactionsResults } = await getTransactionsBetweenDatesAction({ startDate, endDate })
             const { incomes, results: incomesResults } = await getIncomesBetweenDatesAction({ startDate, endDate })
+            let { targets: expenseTargets, results: expenseResults } = await getTargetsAction(targetExpenseFilter)
+            let { targets: incomeTargets, results: incomeResults } = await getTargetsAction(targetIncomeFilter)
             transactionTotal = await calculateTransactionTotalAction({ transactions, transactionsResults }) ?? 0
             incomeTotal = await calculateIncomeTotalAction({ incomes, incomesResults }) ?? 0
+
+            expenseTargetsTotal = await calculateTargetsTotalAction(expenseTargets, expenseResults ) ?? 0
+            incomeTargetsTotal = await calculateTargetsTotalAction(incomeTargets, incomeResults ) ?? 0
         } else {
             transactionTotal = 0;
         }
 
+        const calculatedExpenseDifference = calculateDifference(transactionTotal, expenseTargetsTotal)
+        const calculatedIncomeDifference = calculateDifference(incomeTargetsTotal, incomeTotal)
+        const calculatedImpliedSaving = calculateDifference(expenseTargetsTotal, incomeTargetsTotal)
+        const calculatedActualMonthlySaving = calculateDifference(transactionTotal, incomeTotal)
+        const calculatedSavingDifference = calculateDifference(calculatedImpliedSaving, calculatedActualMonthlySaving)
+
         setTimeTransactionTotal(transactionTotal);
         setTimeIncomeTotal(incomeTotal)
+        setTargetExpenses((expenseTargetsTotal / 30) * daysBetween)
+        setTargetIncome((incomeTargetsTotal / 30) * daysBetween)
+
         setTargetItems(startDate, endDate)
+        setExpenseDifference(calculatedExpenseDifference)
+        setIncomeDifference(calculatedIncomeDifference)
+        setImpliedSavings((calculatedImpliedSaving / 30) * daysBetween)
+        setActualSavings(calculatedActualMonthlySaving)
+        setSavingDifference(calculatedSavingDifference)
+
+        setExpenseDifferenceColour(textColourClass(expenseDifference))
+        setIncomeDifferenceColour(textColourClass(incomeDifference))
+        setSavingDifferenceColour(textColourClass(savingDifference))
     }
 
     async function handleChange(
@@ -150,7 +211,7 @@ export default function varianceTimeButton() {
                 <ToggleButton value="year">This Year</ToggleButton>
             </ToggleButtonGroup>
 
-            <h1 className="text-2xl font-bold mt-5 mb-3">Monthly Overall Variance</h1>
+            <h1 className="text-2xl font-bold mt-5 mb-3">Overall Targets vs Actuals</h1>
             <table className="divide-y-2 table-fixed">
                 <thead>
                     <tr className="text-left text-1xl">
@@ -163,26 +224,24 @@ export default function varianceTimeButton() {
                 <tbody>
                     <tr className="">
                         <td className="text-right font-bold">Expenses:</td>
-                        <td className="text-center">£{targetMonthlyExpenseTotal.toFixed(2)}</td>
+                        <td className="text-center">£{targetExpenses.toFixed(2)}</td>
                         <td className="text-center">£{timeTransactionTotal.toFixed(2)}</td>
-                        <td className={expenseDifferenceColor}>£{expenseDifference.toFixed(2)}</td>
+                        <td className={expenseDifferenceColour}>£{expenseDifference.toFixed(2)}</td>
                     </tr>
                     <tr className="">
                         <td className="text-right font-bold">Income:</td>
-                        <td className="text-center">£{targetMonthlyIncomeTotal.toFixed(2)}</td>
+                        <td className="text-center">£{targetIncome.toFixed(2)}</td>
                         <td className="text-center">£{timeIncomeTotal.toFixed(2)}</td>
-                        <td className={incomeDifferenceColor}>£{incomeDifference.toFixed(2)}</td>
+                        <td className={incomeDifferenceColour}>£{incomeDifference.toFixed(2)}</td>
                     </tr>
                     <tr className="">
                         <td className="text-right font-bold">Savings:</td>
-                        <td className="text-center">£{impliedMonthlySaving.toFixed(2)}</td>
-                        <td className="text-center">£{timeTransactionTotal.toFixed(2)}</td>
-                        <td className={savingDifferenceColor}>£{savingDifference.toFixed(2)}</td>
+                        <td className="text-center">£{impliedSavings.toFixed(2)}</td>
+                        <td className="text-center">£{actualSavings.toFixed(2)}</td>
+                        <td className={savingDifferenceColour}>£{savingDifference.toFixed(2)}</td>
                     </tr>
                 </tbody>
             </table>
-
-            <p>£{timeTransactionTotal}</p>
 
             <h1 className="text-2xl font-bold mt-5 mb-3">Monthly Expense Variance</h1>
             <div className="container flex justify-center">
