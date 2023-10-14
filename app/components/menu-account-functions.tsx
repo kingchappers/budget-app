@@ -6,7 +6,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Link from 'next/link';
 
-export default function BudgetMenu() {
+export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -25,7 +25,7 @@ export default function BudgetMenu() {
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
       >
-        Budget ▼
+        Account ▼
       </Button>
       <Menu
         id="basic-menu"
@@ -36,9 +36,10 @@ export default function BudgetMenu() {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={handleClose}><Link href="/category">Configure Categories</Link></MenuItem>
-        <MenuItem onClick={handleClose}><Link href="/targets">Targets</Link></MenuItem>
-        <MenuItem onClick={handleClose}><Link href="/variance">Variance</Link></MenuItem>
+        <MenuItem onClick={handleClose}><Link href="/category">Sign In</Link></MenuItem>
+        <MenuItem onClick={handleClose}><Link href="/targets">Sign Out</Link></MenuItem>
+        <MenuItem onClick={handleClose}><Link href="/variance">Register</Link></MenuItem>
+        <MenuItem onClick={handleClose}><Link href="/variance">Get Session Info</Link></MenuItem>
       </Menu>
     </div>
   );

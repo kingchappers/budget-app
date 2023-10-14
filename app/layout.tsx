@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { LoginButton, LogoutButton, ProfileButton, RegisterButton, } from './components/buttons.component';
 import BudgetMenu from "./components/menu-budget-functions"
+import AccountMenu from "./components/menu-account-functions"
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -37,7 +38,10 @@ export default function RootLayout({
                         </Link>
                         <ul className="flex text-3xl mt-5">
                             <li className="ml-20 mr-9">
-                            <BudgetMenu />
+                                <BudgetMenu />
+                            </li>
+                            <li className="ml-20 mr-9">
+                                <AccountMenu />
                             </li>
                             <li className="ml-20 mr-9">
                                 <Link href="/">Home</Link>
