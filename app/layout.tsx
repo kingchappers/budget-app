@@ -1,9 +1,10 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
 import Link from 'next/link'
-import Head from 'next/head';
 import Image from 'next/image'
 import { LoginButton, LogoutButton, ProfileButton, RegisterButton, } from './components/buttons.component';
+import TransactionFormServerComponent from "../components/transaction-form-server";
+import BudgetMenu from "./components/menu-budget-functions"
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -37,6 +38,9 @@ export default function RootLayout({
                         </Link>
                         <ul className="flex text-3xl mt-5">
                             <li className="ml-20 mr-9">
+                            <BudgetMenu />
+                            </li>
+                            <li className="ml-20 mr-9">
                                 <Link href="/">Home</Link>
                             </li>
                             <li className="mx-9">
@@ -52,16 +56,7 @@ export default function RootLayout({
                                 <Link href="/income">Income</Link>
                             </li>
                             <li className="mx-9">
-                                <Link href="/category">Configure Categories</Link>
-                            </li>
-                            <li className="mx-9">
                                 <Link href="/admin">Admin Page</Link>
-                            </li>
-                            <li className="mx-9">
-                                <Link href="/targets">Targets</Link>
-                            </li>
-                            <li className="mx-9">
-                                <Link href="/variance">Variance</Link>
                             </li>
                             <li>
                                 <LoginButton />
