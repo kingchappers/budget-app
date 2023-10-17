@@ -5,7 +5,7 @@ interface TargetItemProps {
     target: TargetClass
 }
 
-const TargetItem: React.FC<TargetItemProps> = ({ target }) => {
+export const TargetItem: React.FC<TargetItemProps> = ({ target }) => {
     return (
         <div className="flex items-center space-x-2 space-y-2">
             <label htmlFor="target" className="align-middle text-right ml-1 pt-2 w-48">{target.categoryName}: </label>
@@ -13,5 +13,3 @@ const TargetItem: React.FC<TargetItemProps> = ({ target }) => {
         </div>
     );
 };
-
-export default TargetItem;

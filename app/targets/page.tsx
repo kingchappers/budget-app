@@ -1,6 +1,6 @@
 import { updateTargetAction } from "../_targetActions";
 import { calculateTargetsTotal, calculateDifference, calculateIncomeTotal, calculateTransactionTotal } from "../components/target-calculation-functions";
-import TargetFormServerComponent from "../components/target-form-server";
+import { TargetItem } from "../components/target-form-server";
 import { TargetFilter, getTargets } from "../lib/target-db";
 import { revalidatePath } from 'next/cache'
 import { getTransactionsBetweenDates } from "../lib/transaction-db";
@@ -76,7 +76,7 @@ export default async function Home() {
                         <p className="text-center">No Expense Targets Found</p>
                     ) : (
                         expenseTargets?.map((expenseTarget) => (
-                            <TargetFormServerComponent key={expenseTarget.id} target={expenseTarget} />
+                            <TargetItem key={expenseTarget.id} target={expenseTarget} />
                         ))
                     )}
                 </div>
@@ -90,7 +90,7 @@ export default async function Home() {
                         <p className="text-center">No Income Targets Found</p>
                     ) : (
                         incomeTargets?.map((incomeTarget) => (
-                            <TargetFormServerComponent key={incomeTarget.id} target={incomeTarget} />
+                            <TargetItem key={incomeTarget.id} target={incomeTarget} />
                         ))
                     )}
                 </div>

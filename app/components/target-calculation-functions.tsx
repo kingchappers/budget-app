@@ -2,10 +2,6 @@ import { IncomeClass } from "../models/Income";
 import { TargetClass } from "../models/Target";
 import { TransactionClass } from "../models/Transaction";
 
-interface TargetItemProps {
-    expenseTargets: TargetClass[]
-}
-
 export function calculateTargetsTotal(targets: TargetClass[] | undefined) {
     let targetTotal: number = 0
 
