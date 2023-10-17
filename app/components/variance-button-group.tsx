@@ -9,7 +9,6 @@ import { useState } from "react";
 import { calculateDifference, calculateIncomeTotal } from './target-calculation-functions';
 import { getIncomesBetweenDatesAction } from '../_incomeActions';
 import differenceInDays from 'date-fns/differenceInDays';
-import { getIncome } from '../lib/income-db';
 import { TargetFilter } from '../lib/target-db';
 
 let didInit = false;
@@ -24,7 +23,7 @@ interface targetItem {
 
 var targetItems: targetItem[] = []
 
-export default function varianceTimeButton() {
+export function VarianceTimeButton() {
     React.useEffect(() => {
         //The if checks if the page has already initialised and stops it running twice
         if (!didInit) {
