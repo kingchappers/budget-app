@@ -3,8 +3,7 @@ import { Inter } from 'next/font/google'
 import Link from 'next/link'
 import Image from 'next/image'
 import { LoginButton, LogoutButton, ProfileButton, RegisterButton, } from './components/buttons.component';
-import BudgetMenu from "./components/menu-budget-functions"
-import AccountMenu from "./components/menu-account-functions"
+import {AccountMenu, BudgetMenu} from "./components/menu-buttons"
 
 
 const inter = Inter({ subsets: ['latin'] })
