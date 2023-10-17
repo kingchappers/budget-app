@@ -6,7 +6,7 @@ interface CategoryItemProps {
     category: CategoryClass
 }
 
-const CategoryItem: React.FC<CategoryItemProps> = ({ category }) => {
+export const CategoryItem: React.FC<CategoryItemProps> = ({ category }) => {
     return (
         <tbody>
             <tr>
@@ -19,4 +19,4 @@ const CategoryItem: React.FC<CategoryItemProps> = ({ category }) => {
     );
 };
 
-export default CategoryItem;
+// export default CategoryItem;

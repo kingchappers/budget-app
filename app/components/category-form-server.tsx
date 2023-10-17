@@ -1,7 +1,7 @@
 import { createCategoryAction } from "../_categoryActions";
 import { createTargetAction } from "../_targetActions";
 
-export default function CategoryForm() {
+export function CategoryForm() {
     async function action(data: FormData) {
         "use server";
 

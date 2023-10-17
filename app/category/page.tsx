@@ -1,5 +1,5 @@
-import CategoryFormServerComponent from "../components/category-form-server";
-import CategoryItemServerComponent from "../components/category-item-server";
+import { CategoryForm } from "../components/category-form-server";
+import { CategoryItem } from "../components/category-item-server";
 import { getCategories, CategoryFilter } from "../lib/categories-db";
 
 export default async function Home() {
@@ -12,7 +12,7 @@ export default async function Home() {
     return (
         <div className="container mx-auto max-w-screen-2xl p-4">
 
-            <CategoryFormServerComponent />
+            <CategoryForm />
 
             <h1 className="text-2xl font-bold mb-4">Income List</h1>
             <table className="divide-y-2 table-fixed">
@@ -28,7 +28,7 @@ export default async function Home() {
                     <p className="text-center">No Categories Found</p>
                 ) : (
                     categories?.map((category) => (
-                        <CategoryItemServerComponent key={category.id} category={category} />
+                        <CategoryItem key={category.id} category={category} />
                     ))
                 )}
             </table>
