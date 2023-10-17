@@ -1,7 +1,7 @@
 import { createCategoryAction } from "../_categoryActions";
 import { createTargetAction } from "../_targetActions";
 
-export default function DefaulttCategoriesButton() {
+export function DefaulttCategoriesButton() {
     async function action() {
         "use server";
 
