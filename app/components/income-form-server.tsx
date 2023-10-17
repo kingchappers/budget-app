@@ -1,6 +1,6 @@
 import { createIncomeAction } from "../_incomeActions";
 import { CategoryComboBox } from "./comboBox";
-import DatePicker from "./datePicker";
+import { DatePicker } from "./datePicker";
 import { CategoriesComboProps } from "../components/comboBox";
 
 export default function IncomeForm({ categories }: CategoriesComboProps) {

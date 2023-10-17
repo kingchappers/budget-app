@@ -18,5 +18,3 @@ export const CategoryItem: React.FC<CategoryItemProps> = ({ category }) => {
         </tbody>
     );
 };
-
-// export default CategoryItem;

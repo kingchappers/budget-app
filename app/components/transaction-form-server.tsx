@@ -1,5 +1,5 @@
 import { createTransactionAction } from "../_transactionActions";
-import DatePicker from "./datePicker";
+import { DatePicker } from "./datePicker";
 import { CategoryComboBox } from "./comboBox";
 import { CategoriesComboProps } from "../components/comboBox";
 

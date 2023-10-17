@@ -4,7 +4,7 @@ import React, { useState } from "react"
 import Datetime from "react-datetime"
 import "react-datetime/css/react-datetime.css"
 
-export default function DatePicker() {
+export function DatePicker() {
     let inputProps = {
         name: 'pickedDate',
         size: 6,
