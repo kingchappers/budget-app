@@ -7,7 +7,7 @@ interface IncomeItemProps {
     income: IncomeClass
 }
 
-const IncomeItem: React.FC<IncomeItemProps> = ({ income }) => {
+export const IncomeItem: React.FC<IncomeItemProps> = ({ income }) => {
     const incomeDateString = dateToString(income.incomeDate)
     return (
         <tbody>
@@ -22,5 +22,3 @@ const IncomeItem: React.FC<IncomeItemProps> = ({ income }) => {
         </tbody>
     );
 };
-
-export default IncomeItem;

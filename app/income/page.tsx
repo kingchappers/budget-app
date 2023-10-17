@@ -1,5 +1,5 @@
-import IncomeFormServerComponent from "../components/income-form-server";
-import IncomeItemServerComponent from "../components/income-item-server";
+import { IncomeForm } from "../components/income-form-server";
+import { IncomeItem } from "../components/income-item-server";
 import { IncomeFilter, getIncomes } from "../lib/income-db";
 import { getCategories, CategoryFilter } from "../lib/categories-db";
 import { CategoriesComboProps } from "../components/comboBox";
@@ -41,7 +41,7 @@ export default async function Home({
     return (
         <div className="container mx-auto max-w-screen-2xl p-4">
 
-            <IncomeFormServerComponent categories={listOfCategories} />
+            <IncomeForm categories={listOfCategories} />
 
             <h1 className="text-2xl font-bold mb-4">Income List</h1>
             <table className="divide-y-2 table-fixed">
@@ -59,7 +59,7 @@ export default async function Home({
                     <p className="text-center">No Incomes Found</p>
                 ) : (
                     incomes?.map((income) => (
-                        <IncomeItemServerComponent key={income.id} income={income} />
+                        <IncomeItem key={income.id} income={income} />
                     ))
                 )}
 

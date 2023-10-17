@@ -3,7 +3,7 @@ import { CategoryComboBox } from "./comboBox";
 import { DatePicker } from "./datePicker";
 import { CategoriesComboProps } from "../components/comboBox";
 
-export default function IncomeForm({ categories }: CategoriesComboProps) {
+export function IncomeForm({ categories }: CategoriesComboProps) {
     async function action(data: FormData) {
         "use server";
 
