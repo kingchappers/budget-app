@@ -1,5 +1,5 @@
-import TransactionFormServerComponent from "../components/transaction-form-server";
-import TransactionItemServerComponent from "../components/transaction-item-server";
+import { TransactionForm } from "../components/transaction-form-server";
+import { TransactionItem } from "../components/transaction-item-server";
 import { TransactionFilter, getTransactions } from "../lib/transaction-db";
 import { getCategories, CategoryFilter } from "../lib/categories-db";
 import { CategoriesComboProps } from "../components/comboBox";
@@ -40,7 +40,7 @@ export default async function Home({
     return (
         <div className="container mx-auto max-w-screen-2xl p-4">
 
-            <TransactionFormServerComponent categories={listOfCategories} />
+            <TransactionForm categories={listOfCategories} />
 
             <h1 className="text-2xl font-bold mb-4">Transaction List</h1>
             <table className="divide-y-2 table-fixed">
@@ -59,7 +59,7 @@ export default async function Home({
                     <p className="text-center">No Transactions Found</p>
                 ) : (
                     transactions?.map((transaction) => (
-                        <TransactionItemServerComponent key={transaction.id} transaction={transaction} />
+                        <TransactionItem key={transaction.id} transaction={transaction} />
                     ))
                 )}
 

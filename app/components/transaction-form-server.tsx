@@ -3,7 +3,7 @@ import { DatePicker } from "./datePicker";
 import { CategoryComboBox } from "./comboBox";
 import { CategoriesComboProps } from "../components/comboBox";
 
-export default function TransactionForm({ categories }: CategoriesComboProps) {
+export function TransactionForm({ categories }: CategoriesComboProps) {
     async function action(data: FormData) {
         "use server";
 

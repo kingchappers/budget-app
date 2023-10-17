@@ -6,7 +6,7 @@ interface TransactionItemProps {
     transaction: TransactionClass
 }
 
-const TransactionItem: React.FC<TransactionItemProps> = ({ transaction }) => {
+export const TransactionItem: React.FC<TransactionItemProps> = ({ transaction }) => {
     const transactionDateString = dateToString(transaction.transactionDate)
     return (
         <tbody>
@@ -22,5 +22,3 @@ const TransactionItem: React.FC<TransactionItemProps> = ({ transaction }) => {
         </tbody>
     );
 };
-
-export default TransactionItem;
