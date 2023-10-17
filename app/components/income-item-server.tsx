@@ -1,5 +1,5 @@
 import { IncomeClass } from "../models/Income";
-import DeleteIncome from "./delete-income-item-server";
+import { DeleteIncome } from "./delete-items-server";
 import { dateToString } from "../lib/utils";
 
 

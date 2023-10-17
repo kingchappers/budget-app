@@ -1,5 +1,5 @@
 import { TransactionClass } from "../models/Transaction";
-import DeleteTransaction from "./delete-transaction-item-server";
+import { DeleteTransaction } from "./delete-items-server";
 import { dateToString } from "../lib/utils";
 
 interface TransactionItemProps {

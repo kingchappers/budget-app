@@ -1,6 +1,6 @@
 import { IncomeCategoryCheckBox, TransactionCategoryCheckBox } from "./checkboxes";
 import { CategoryClass } from "../models/Category";
-import DeleteCategory from "./delete-category-item-server";
+import { DeleteCategory } from "./delete-items-server";
 
 interface CategoryItemProps {
     category: CategoryClass
