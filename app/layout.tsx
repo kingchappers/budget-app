@@ -23,7 +23,7 @@ export default function RootLayout({
                 <link rel="icon" href="/favicon.ico" sizes="any" />
             </head>
 
-            <body className={inter.className}>
+            <body className="bg-slate-300">
                 <header>
                     <div className="max-w-screen-2xl flex flex-wrap items-center justify-between mx-auto p-4">
                         <Link className="mr-1" href="/">
