@@ -1,10 +1,14 @@
 "use client"
 
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Link from 'next/link';
+import * as React from "react";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Link from "next/link";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import Logout from "@mui/icons-material/Logout";
+import Login from '@mui/icons-material/Login';
+import PersonAdd from "@mui/icons-material/PersonAdd";
+import ManageAccounts from "@mui/icons-material/ManageAccounts";
 import { signIn, signOut } from "next-auth/react";
 
 export function BudgetMenu() {
@@ -84,22 +88,34 @@ export function AccountMenu() {
                 }}
             >
                 <MenuItem onClick={handleClose}>
+                    <ListItemIcon>
+                        <Login fontSize="small" />
+                    </ListItemIcon>
                     <button onClick={() => signIn()}>
                         Sign in
                     </button>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
+                    <ListItemIcon>
+                        <Logout fontSize="small" />
+                    </ListItemIcon>
                     <button onClick={() => signOut()}>
                         Sign Out
                     </button>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
+                    <ListItemIcon>
+                        <PersonAdd fontSize="small" />
+                    </ListItemIcon>
                     <Link href="/register">Register</Link>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
                     <Link href="/api/session">Get Session Info</Link>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
+                    <ListItemIcon>
+                        <ManageAccounts fontSize="small" />
+                    </ListItemIcon>
                     <Link href="/profile">Profile</Link>
                 </MenuItem>
             </Menu>
