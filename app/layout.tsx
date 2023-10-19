@@ -60,21 +60,6 @@ export default function RootLayout({
                             <li className="mx-9">
                                 <Link href="/admin">Admin Page</Link>
                             </li>
-                            <li>
-                                <LoginButton />
-                            </li>
-                            <li>
-                                <RegisterButton />
-                            </li>
-                            <li>
-                                <LogoutButton />
-                            </li>
-                            <li>
-                                <ProfileButton />
-                            </li>
-                            <li className="mx-9">
-                                <Link href="/api/session">Get Session Info</Link>
-                            </li>
                         </ul>
                     </div>
                 </header>
