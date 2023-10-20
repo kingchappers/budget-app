@@ -214,7 +214,7 @@ export function VarianceTimeButton() {
                         <th className="px-5 text-center w-44">Difference</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className="divide-y-2">
                     <tr className="">
                         <td className="text-right font-bold">Expenses:</td>
                         <td className="text-center">£{targetExpenses.toFixed(2)}</td>
@@ -247,7 +247,7 @@ export function VarianceTimeButton() {
                             <th className="px-5 text-center w-48">Remaining Budget</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="divide-y-2">
                         {targetItems.length < 0 ? (
                             <tr>
                                 <td className="text-center font-bold" colSpan={5}>No Targets Found!</td>
@@ -255,7 +255,7 @@ export function VarianceTimeButton() {
                         ) : (
                             targetItems?.map((targetItem) => (
                                 targetItem.targetType === true ? (
-                                    <tr key={targetItem.targetName + targetItem.targetType} className="divide-y-2">
+                                    <tr key={targetItem.targetName + targetItem.targetType}>
                                         <td className="text-right font-bold">{targetItem.targetName}:</td>
                                         <td className="text-center">£{targetItem.targetValue.toFixed(2)}</td>
                                         <td className="text-center">£{targetItem.actualValue.toFixed(2)}</td>
@@ -281,7 +281,7 @@ export function VarianceTimeButton() {
                             <th className="px-5 text-center w-48">Difference</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="divide-y-2">
                         {targetItems.length < 0 ? (
                             <tr>
                                 <td className="text-center font-bold" colSpan={5}>No Targets Found!</td>
