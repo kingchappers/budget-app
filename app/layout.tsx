@@ -24,7 +24,7 @@ export default function RootLayout({
                     <div className="max-w-screen-2xl flex justify-center mx-auto p-4">
                         <Link className="mr-1" href="/">
                             <Image
-                                src="/../public/images/fin-wide.png"
+                                src="/images/fin-wide.png"
                                 height={200}
                                 width={200}
                                 alt="samchapman.dev"
