@@ -1,4 +1,6 @@
 import type { NextAuthOptions } from "next-auth";
+import { MongoDBAdapter } from "@auth/mongodb-adapter";
+import clientPromise from "./mongodb-connect-db";
 
 import Auth0Provider from "next-auth/providers/auth0";
 import DiscordProvider from "next-auth/providers/discord";
@@ -24,6 +26,7 @@ const {
 } = process.env;
 
 export const authOptions: NextAuthOptions = {
+    adapter: MongoDBAdapter(clientPromise),
     session: {
         strategy: "jwt",
     },
@@ -62,6 +65,7 @@ export const authOptions: NextAuthOptions = {
     callbacks: {
         session: ({ session, token }) => {
             console.log("Session Callback", { session, token });
+            const userId = token.sub;
             return {
                 ...session,
                 user: {
