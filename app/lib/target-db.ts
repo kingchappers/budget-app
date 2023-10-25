@@ -1,5 +1,5 @@
 import { Target } from "../models/Target";
-import connectDB from "./connect-db";
+import connectDB from "./mongoose-connect-db";
 import { stringToObjectId } from "./utils";
 
 export interface TargetFilter {

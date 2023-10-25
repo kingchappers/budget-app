@@ -1,5 +1,5 @@
 import { Transaction } from "../models/Transaction";
-import connectDB from "./connect-db";
+import connectDB from "./mongoose-connect-db";
 import { stringToObjectId } from "./utils";
 import { startOfMonth, endOfMonth } from "date-fns";
 
