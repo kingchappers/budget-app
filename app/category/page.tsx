@@ -12,18 +12,19 @@ export default async function Home() {
         redirect("/api/auth/signin");
     }
 
+    const userId = session.user.id;
+
     let filter: CategoryFilter = {
         limit: 50,
         userId: session.user.id
     }
 
-    const userId = session.user.id;
     const { categories, results } = await getCategories(filter);
 
     return (
         <div className="container mx-auto max-w-screen-2xl p-4">
 
-            <CategoryForm userId={userId}/>
+            <CategoryForm userId={userId} />
 
             <h1 className="text-2xl font-bold mb-4">Income List</h1>
             <table className="divide-y-2 table-fixed">

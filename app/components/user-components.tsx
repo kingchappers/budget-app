@@ -1,3 +1,3 @@
-export interface userProps{
+export interface userProps {
     userId: string
 }
