@@ -36,9 +36,10 @@ export function TransactionCheckBox({ transaction }: TransactionCheckBoxProps) {
 
 type TransactionCategoryCheckBoxProps = {
     category: CategoryClass;
+    userId: string;
 };
 
-export function TransactionCategoryCheckBox({ category }: TransactionCategoryCheckBoxProps) {
+export function TransactionCategoryCheckBox({ category, userId }: TransactionCategoryCheckBoxProps) {
     const [isPending, startTransition] = useTransition();
 
     return (
@@ -49,7 +50,7 @@ export function TransactionCategoryCheckBox({ category }: TransactionCategoryChe
             onChange={() =>
                 startTransition(() => {
                     updateCategoryAction(category.id, { transactionCategory: !category.transactionCategory }, "/with-server-actions")
-                    updateTargetsByNameAction(category, "transaction")
+                    updateTargetsByNameAction(category, "transaction", userId)
                 })
             }
             disabled={isPending}
@@ -60,9 +61,10 @@ export function TransactionCategoryCheckBox({ category }: TransactionCategoryChe
 
 type IncomeCategoryCheckBoxProps = {
     category: CategoryClass;
+    userId: string;
 };
 
-export function IncomeCategoryCheckBox({ category }: IncomeCategoryCheckBoxProps) {
+export function IncomeCategoryCheckBox({ category, userId }: IncomeCategoryCheckBoxProps) {
     const [isPending, startTransition] = useTransition();
 
     return (
@@ -73,7 +75,7 @@ export function IncomeCategoryCheckBox({ category }: IncomeCategoryCheckBoxProps
             onChange={() =>
                 startTransition(() => {
                     updateCategoryAction(category.id, { incomeCategory: !category.incomeCategory }, "/with-server-actions")
-                    updateTargetsByNameAction(category, "income")
+                    updateTargetsByNameAction(category, "income", userId)
                 })
             }
             disabled={isPending}

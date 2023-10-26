@@ -12,8 +12,8 @@ export const CategoryItem: React.FC<CategoryItemProps> = ({ category, userId }) 
         <tbody>
             <tr>
                 <td className="px-5">{category.label}</td>
-                <td className="text-center"><TransactionCategoryCheckBox category={category} /></td>
-                <td className="text-center"><IncomeCategoryCheckBox category={category} /></td>
+                <td className="text-center"><TransactionCategoryCheckBox category={category} userId={userId} /></td>
+                <td className="text-center"><IncomeCategoryCheckBox category={category} userId={userId} /></td>
                 <td><DeleteCategory category={category} userId={userId} /></td>
             </tr>
         </tbody>
