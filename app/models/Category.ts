@@ -44,6 +44,9 @@ class CategoryClass {
     @prop({ default: true })
     incomeCategory: boolean;
 
+    @prop({required: true})
+    userId: string;
+
     _id: mongoose.Types.ObjectId | string;
 
     id: string;

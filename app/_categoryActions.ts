@@ -10,14 +10,16 @@ export async function createCategoryAction({
     label,
     transactionCategory,
     incomeCategory,
+    userId,
     path
 }: {
     label: string;
     transactionCategory: boolean;
     incomeCategory: boolean;
+    userId: string,
     path: string;
 }) {
-    await createCategory(label, transactionCategory, incomeCategory);
+    await createCategory(label, transactionCategory, incomeCategory, userId);
     revalidatePath(path);
 }
 
@@ -47,8 +49,10 @@ export async function deleteCategoryAction({
     revalidatePath(path);
 }
 
-export async function getCategoriesAction() {
-    let filter: CategoryFilter = {}
+export async function getCategoriesAction(userId: string) {
+    let filter: CategoryFilter = {
+        userId: userId
+    }
     const categories = await getCategories(filter);
     return (
         categories

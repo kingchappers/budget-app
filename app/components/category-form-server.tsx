@@ -1,7 +1,11 @@
 import { createCategoryAction } from "../_categoryActions";
 import { createTargetAction } from "../_targetActions";
 
-export function CategoryForm() {
+interface userProps{
+    userId: string
+}
+
+export function CategoryForm({userId}: userProps ) {
     async function action(data: FormData) {
         "use server";
 
@@ -27,7 +31,7 @@ export function CategoryForm() {
         }
 
         // Invoke server action to add new category
-        await createCategoryAction({ label, transactionCategory, incomeCategory, path: "/" });
+        await createCategoryAction({ label, transactionCategory, incomeCategory, userId, path: "/" });
 
         // Invoke server action to add new target
         await createTargetAction({ categoryName: label, targetAmount: 0, expenseTarget: transactionCategory, path: "/" })

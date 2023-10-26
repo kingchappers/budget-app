@@ -6,6 +6,7 @@ export interface CategoryFilter {
     page?: number;
     limit?: number;
     type?: string;
+    userId: string;
 }
 
 export async function getCategories(filter: CategoryFilter) {
@@ -20,11 +21,11 @@ export async function getCategories(filter: CategoryFilter) {
         let categories;
 
         if (type === "income") {
-            categories = await Category.find({ incomeCategory: true }).skip(skip).sort({ label: 1 }).limit(limit).lean().exec();
+            categories = await Category.find({ incomeCategory: true, userId: filter.userId }).skip(skip).sort({ label: 1 }).limit(limit).lean().exec();
         } else if (type === "transaction") {
-            categories = await Category.find({ transactionCategory: true }).skip(skip).sort({ label: 1 }).limit(limit).lean().exec();
+            categories = await Category.find({ transactionCategory: true, userId: filter.userId }).skip(skip).sort({ label: 1 }).limit(limit).lean().exec();
         } else {
-            categories = await Category.find().skip(skip).sort({ label: 1 }).limit(limit).lean().exec();
+            categories = await Category.find({ userId: filter.userId }).skip(skip).sort({ label: 1 }).limit(limit).lean().exec();
         }
 
         const results = categories.length;
@@ -44,11 +45,12 @@ export async function createCategory(
     label: string,
     transactionCategory: boolean,
     incomeCategory: boolean,
+    userId: string,
 ) {
     try {
         await connectDB();
 
-        const category = await Category.create({ label, transactionCategory, incomeCategory });
+        const category = await Category.create({ label, transactionCategory, incomeCategory, userId });
 
         return {
             label
