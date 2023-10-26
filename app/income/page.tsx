@@ -19,21 +19,24 @@ export default async function Home({
     if (!session) {
         redirect("/api/auth/signin");
     }
-    
+
+    const userId = session.user.id;
+
     const filter: CategoryFilter = {
         limit: 30,
-        type: "income"
+        type: "income",
+        userId: session.user.id
     }
 
     let incomeFilter: IncomeFilter = {
         page: typeof searchParams.page === 'string' ? Number(searchParams.page) : 1,
-        limit: typeof searchParams.limit === 'string' ? Number(searchParams.limit) : 50
+        limit: typeof searchParams.limit === 'string' ? Number(searchParams.limit) : 50,
+        userId: userId
     }
 
     let { incomes, results, maxPages } = await getIncomes(incomeFilter);
     let categories: CategoriesComboProps = await getCategories(filter) as CategoriesComboProps;
     const listOfCategories = categories.categories
-
 
     if (maxPages == undefined) {
         maxPages = 1;
@@ -50,7 +53,7 @@ export default async function Home({
     return (
         <div className="container mx-auto max-w-screen-2xl p-4">
 
-            <IncomeForm categories={listOfCategories} />
+            <IncomeForm categories={listOfCategories} userId={userId} />
 
             <h1 className="text-2xl font-bold mb-4">Income List</h1>
             <table className="divide-y-2 table-fixed">

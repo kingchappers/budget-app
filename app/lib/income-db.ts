@@ -6,6 +6,7 @@ import { startOfMonth, endOfMonth } from "date-fns";
 export interface IncomeFilter {
     page?: number;
     limit?: number;
+    userId: string;
 }
 
 export async function getIncomes(filter: IncomeFilter) {
@@ -16,7 +17,7 @@ export async function getIncomes(filter: IncomeFilter) {
         const limit = filter.limit ?? 10;
         const skip = (page - 1) * limit;
 
-        const incomes = await Income.find().skip(skip).sort({ incomeDate: -1 }).limit(limit).lean().exec();
+        const incomes = await Income.find({ userId: filter.userId }).skip(skip).sort({ incomeDate: -1 }).limit(limit).lean().exec();
 
         const results = incomes.length;
 
@@ -46,7 +47,7 @@ export async function getIncomesBetweenDates(filter: IncomeFilter, startDate?: D
         const searchStartDate = startDate ?? startOfMonth(new Date())
         const searchEndDate = endDate ?? endOfMonth(new Date())
 
-        const incomes = await Income.find({ incomeDate: { $gte: searchStartDate, $lte: searchEndDate } }).sort({ incomeDate: -1 }).skip(skip).limit(limit).lean().exec();
+        const incomes = await Income.find({ userId: filter.userId, incomeDate: { $gte: searchStartDate, $lte: searchEndDate } }).sort({ incomeDate: -1 }).skip(skip).limit(limit).lean().exec();
 
         const results = incomes.length;
 
@@ -67,12 +68,13 @@ export async function createIncome(
     company: string,
     amount: number,
     incomeCategory: string,
-    notes: string
+    notes: string,
+    userId: string
 ) {
     try {
         await connectDB();
 
-        const income = await Income.create({ incomeDate, company, amount, incomeCategory, notes });
+        const income = await Income.create({ incomeDate, company, amount, incomeCategory, notes, userId });
 
         return {
             income

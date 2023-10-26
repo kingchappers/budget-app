@@ -1,9 +1,14 @@
 import { createIncomeAction } from "../_incomeActions";
 import { CategoryComboBox } from "./comboBox";
 import { DatePicker } from "./datePicker";
-import { CategoriesComboProps } from "../components/comboBox";
+import { CategoryClass } from "../models/Category";
 
-export function IncomeForm({ categories }: CategoriesComboProps) {
+interface incomeFormProps {
+    categories: CategoryClass[];
+    userId: string;
+}
+
+export function IncomeForm({ categories, userId }: incomeFormProps) {
     async function action(data: FormData) {
         "use server";
 
@@ -35,8 +40,8 @@ export function IncomeForm({ categories }: CategoriesComboProps) {
         //For testing / Troubleshooting
         // console.log(typeof value)
 
-        // Invoke server action to add new transaction
-        await createIncomeAction({ incomeDate, company, amount, incomeCategory, notes, path: "/" });
+        // Invoke server action to add new income
+        await createIncomeAction({ incomeDate, company, amount, incomeCategory, notes, userId, path: "/" });
     }
 
     return (

@@ -14,6 +14,7 @@ export async function createIncomeAction({
     incomeCategory,
     notes,
     path,
+    userId,
 }: {
     incomeDate: string;
     company: string;
@@ -21,9 +22,10 @@ export async function createIncomeAction({
     incomeCategory: string;
     notes: string;
     path: string;
+    userId: string;
 }) {
     const parsedIncomeDate = stringToDate(incomeDate)
-    await createIncome(parsedIncomeDate, company, amount, incomeCategory, notes);
+    await createIncome(parsedIncomeDate, company, amount, incomeCategory, notes, userId);
     revalidatePath(path);
 }
 
@@ -56,11 +58,13 @@ export async function deleteIncomeAction({
 export async function getIncomesBetweenDatesAction({
     startDate,
     endDate,
+    userId,
 }: {
     startDate: Date;
     endDate: Date;
+    userId: string;
 }) {
-    const { incomes, results } = await getIncomesBetweenDates({}, startDate, endDate)
+    const { incomes, results } = await getIncomesBetweenDates({ userId }, startDate, endDate)
 
     return {
         incomes: incomes,

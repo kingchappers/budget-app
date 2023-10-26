@@ -50,6 +50,9 @@ class IncomeClass {
     @prop({ required: false })
     notes: string;
 
+    @prop({required: true})
+    userId: string;
+
     _id: mongoose.Types.ObjectId | string;
 
     id: string;
