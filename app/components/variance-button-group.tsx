@@ -21,9 +21,13 @@ interface targetItem {
     difference: number;
 }
 
+interface VarianceTimeButtonProps {
+    userId: string
+}
+
 var targetItems: targetItem[] = []
 
-export function VarianceTimeButton() {
+export function VarianceTimeButton({ userId }: VarianceTimeButtonProps) {
     React.useEffect(() => {
         //The if checks if the page has already initialised and stops it running twice
         if (!didInit) {
@@ -56,9 +60,9 @@ export function VarianceTimeButton() {
     async function setTargetItems(startDate: Date, endDate: Date) {
         targetItems = []
 
-        var { transactions, results: transactionResults } = await getTransactionsBetweenDatesAction({ startDate, endDate });
-        var { targets, results: targetResults } = await getTargetsAction({});
-        var { incomes, results: incomeResults } = await getIncomesBetweenDatesAction({ startDate, endDate })
+        var { transactions, results: transactionResults } = await getTransactionsBetweenDatesAction({ userId, startDate, endDate });
+        var { targets, results: targetResults } = await getTargetsAction({ userId });
+        var { incomes, results: incomeResults } = await getIncomesBetweenDatesAction({ userId, startDate, endDate })
 
         const daysBetween = differenceInDays(endDate, startDate)
 
@@ -101,12 +105,14 @@ export function VarianceTimeButton() {
 
         const targetExpenseFilter: TargetFilter = {
             limit: 50,
-            type: "expense"
+            type: "expense",
+            userId: userId,
         }
 
         const targetIncomeFilter: TargetFilter = {
             limit: 50,
-            type: "income"
+            type: "income",
+            userId: userId,
         }
 
         if (value === "week") {
@@ -132,16 +138,18 @@ export function VarianceTimeButton() {
     async function setValues(startDate: Date, endDate: Date) {
         const targetExpenseFilter: TargetFilter = {
             limit: 50,
-            type: "expense"
+            type: "expense",
+            userId: userId,
         }
         const targetIncomeFilter: TargetFilter = {
             limit: 50,
-            type: "income"
+            type: "income",
+            userId: userId,
         }
 
         var daysBetween = differenceInDays(endDate, startDate)
-        const { transactions, results: transactionsResults } = await getTransactionsBetweenDatesAction({ startDate, endDate })
-        const { incomes, results: incomesResults } = await getIncomesBetweenDatesAction({ startDate, endDate })
+        const { transactions, results: transactionsResults } = await getTransactionsBetweenDatesAction({ userId, startDate, endDate })
+        const { incomes, results: incomesResults } = await getIncomesBetweenDatesAction({ userId, startDate, endDate })
         let { targets: expenseTargets, results: expenseResults } = await getTargetsAction(targetExpenseFilter)
         let { targets: incomeTargets, results: incomeResults } = await getTargetsAction(targetIncomeFilter)
 

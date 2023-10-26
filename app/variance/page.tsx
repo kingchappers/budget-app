@@ -9,10 +9,12 @@ export default async function Home() {
     if (!session) {
         redirect("/api/auth/signin");
     }
+
+    const userId = session.user.id
     return (
         <div className="container mx-auto max-w-screen-2xl p-4">
 
-            <VarianceTimeButton />
+            <VarianceTimeButton userId={userId} />
 
         </div>
     );
