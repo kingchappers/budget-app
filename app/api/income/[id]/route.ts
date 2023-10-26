@@ -1,4 +1,4 @@
-import connectDB from "@/app/lib/connect-db";
+import connectDB from "@/app/lib/mongoose-connect-db";
 import { deleteIncome, getIncome, updateIncome } from "@/app/lib/income-db";
 import { createErrorResponse } from "@/app/lib/utils";
 import { NextResponse } from "next/server";
