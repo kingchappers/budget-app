@@ -1,7 +1,11 @@
 import { createCategoryAction } from "../_categoryActions";
 import { createTargetAction } from "../_targetActions";
 
-export function DefaulttCategoriesButton() {
+interface userProps {
+    userId: string
+}
+
+export function DefaultCategoriesButton({ userId }: userProps) {
     async function action() {
         "use server";
 
@@ -168,7 +172,7 @@ export function DefaulttCategoriesButton() {
             const label = category.label
             const transactionCategory = category.transactionCategory
             const incomeCategory = category.incomeCategory
-            await createCategoryAction({ label, transactionCategory, incomeCategory, path: "/" });
+            await createCategoryAction({ label, transactionCategory, incomeCategory, userId, path: "/" });
             await createTargetAction({ categoryName: label, targetAmount: 0, expenseTarget: transactionCategory, path: "/" })
             if (category.incomeCategory == true && category.transactionCategory == true) {
                 await createTargetAction({ categoryName: label, targetAmount: 0, expenseTarget: false, path: "/" })
