@@ -8,13 +8,15 @@ import { stringToDate } from "./lib/utils";
  * Server Action: Get a transactions between dates
  */
 export async function getTransactionsBetweenDatesAction({
+    userId,
     startDate,
     endDate,
 }: {
+    userId: string;
     startDate: Date;
     endDate: Date;
 }) {
-    const { transactions, results } = await getTransactionsBetweenDates(startDate, endDate)
+    const { transactions, results } = await getTransactionsBetweenDates(userId, startDate, endDate)
 
     return {
         transactions: transactions,
@@ -33,6 +35,7 @@ export async function createTransactionAction({
     items,
     notes,
     path,
+    userId,
 }: {
     transactionDate: string;
     vendor: string;
@@ -41,9 +44,10 @@ export async function createTransactionAction({
     items: string;
     notes: string;
     path: string;
+    userId: string;
 }) {
     const parsedTransactionDate = stringToDate(transactionDate)
-    await createTransaction(parsedTransactionDate, vendor, value, category, items, notes);
+    await createTransaction(parsedTransactionDate, vendor, value, category, items, notes, userId);
     revalidatePath(path);
 }
 

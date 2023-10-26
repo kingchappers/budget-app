@@ -1,9 +1,14 @@
 import { createTransactionAction } from "../_transactionActions";
 import { DatePicker } from "./datePicker";
 import { CategoryComboBox } from "./comboBox";
-import { CategoriesComboProps } from "../components/comboBox";
+import { CategoryClass } from "../models/Category";
 
-export function TransactionForm({ categories }: CategoriesComboProps) {
+interface TransactionFormProps {
+    categories: CategoryClass[];
+    userId: string;
+}
+
+export function TransactionForm({ categories, userId }: TransactionFormProps) {
     async function action(data: FormData) {
         "use server";
 
@@ -41,7 +46,7 @@ export function TransactionForm({ categories }: CategoriesComboProps) {
         // console.log(typeof value)
 
         // Invoke server action to add new transaction
-        await createTransactionAction({ transactionDate, vendor, value, category, items, notes, path: "/" });
+        await createTransactionAction({ transactionDate, vendor, value, category, items, notes, userId, path: "/" });
     }
 
     return (

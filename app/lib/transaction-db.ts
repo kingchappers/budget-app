@@ -6,6 +6,7 @@ import { startOfMonth, endOfMonth } from "date-fns";
 export interface TransactionFilter {
     page?: number;
     limit?: number;
+    userId: string;
 }
 
 export async function getTransactions(filter: TransactionFilter) {
@@ -16,7 +17,7 @@ export async function getTransactions(filter: TransactionFilter) {
         const limit = filter.limit ?? 10;
         const skip = (page - 1) * limit;
 
-        const transactions = await Transaction.find().sort({ transactionDate: -1 }).skip(skip).limit(limit).lean().exec();
+        const transactions = await Transaction.find({ userId: filter.userId }).sort({ transactionDate: -1 }).skip(skip).limit(limit).lean().exec();
 
         const results = transactions.length;
 
@@ -36,14 +37,14 @@ export async function getTransactions(filter: TransactionFilter) {
     }
 }
 
-export async function getTransactionsBetweenDates(startDate?: Date, endDate?: Date) {
+export async function getTransactionsBetweenDates(userId: string, startDate?: Date, endDate?: Date) {
     try {
         connectDB();
 
         const searchStartDate = startDate ?? startOfMonth(new Date())
         const searchEndDate = endDate ?? endOfMonth(new Date())
 
-        const transactions = await Transaction.find({ transactionDate: { $gte: searchStartDate, $lte: searchEndDate } }).sort({ transactionDate: -1 }).lean().exec();
+        const transactions = await Transaction.find({ userId: userId, transactionDate: { $gte: searchStartDate, $lte: searchEndDate } }).sort({ transactionDate: -1 }).lean().exec();
 
         const results = transactions.length;
 
@@ -86,12 +87,13 @@ export async function createTransaction(
     value: number,
     category: string,
     items: string,
-    notes: string
+    notes: string,
+    userId: string,
 ) {
     try {
         await connectDB();
 
-        const transaction = await Transaction.create({ transactionDate, vendor, value, category, items, notes });
+        const transaction = await Transaction.create({ transactionDate, vendor, value, category, items, notes, userId });
 
         return {
             transaction
