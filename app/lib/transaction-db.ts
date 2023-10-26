@@ -17,6 +17,8 @@ export async function getTransactions(filter: TransactionFilter) {
         const limit = filter.limit ?? 10;
         const skip = (page - 1) * limit;
 
+        console.log(filter.userId)
+
         const transactions = await Transaction.find({ userId: filter.userId }).sort({ transactionDate: -1 }).skip(skip).limit(limit).lean().exec();
 
         const results = transactions.length;

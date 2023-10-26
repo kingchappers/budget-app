@@ -19,15 +19,19 @@ export default async function Home({
     if (!session) {
         redirect("/api/auth/signin");
     }
-    
+
+    const userId = session.user.id;
+
     const categoryFilter: CategoryFilter = {
         limit: 30,
-        type: "transaction"
+        type: "transaction",
+        userId: userId,
     }
 
     let tansactionFilter: TransactionFilter = {
         page: typeof searchParams.page === 'string' ? Number(searchParams.page) : 1,
-        limit: typeof searchParams.limit === 'string' ? Number(searchParams.limit) : 50
+        limit: typeof searchParams.limit === 'string' ? Number(searchParams.limit) : 50,
+        userId: userId,
     }
 
     let { transactions, results, maxPages } = await getTransactions(tansactionFilter);
@@ -49,7 +53,7 @@ export default async function Home({
     return (
         <div className="container mx-auto max-w-screen-2xl p-4">
 
-            <TransactionForm categories={listOfCategories} />
+            <TransactionForm categories={listOfCategories} userId={userId}/>
 
             <h1 className="text-2xl font-bold mb-4">Transaction List</h1>
             <table className="divide-y-2 table-fixed">

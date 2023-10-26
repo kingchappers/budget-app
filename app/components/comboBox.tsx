@@ -4,7 +4,7 @@ import React from 'react';
 import Select from 'react-select';
 import { CategoryClass } from '../models/Category';
 
-interface CategoriesComboProps {
+export interface CategoriesComboProps {
     categories: CategoryClass[];
 };
 
