@@ -1,9 +1,6 @@
 import { createCategoryAction } from "../_categoryActions";
 import { createTargetAction } from "../_targetActions";
-
-interface userProps{
-    userId: string
-}
+import { userProps } from "./user-components";
 
 export function CategoryForm({userId}: userProps ) {
     async function action(data: FormData) {
