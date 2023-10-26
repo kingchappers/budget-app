@@ -1,8 +1,11 @@
 import { createCategoryAction } from "../_categoryActions";
 import { createTargetAction } from "../_targetActions";
-import { userProps } from "./user-components";
 
-export function CategoryForm({ userId }: userProps) {
+interface CategoryFormProps {
+    userId: string;
+}
+
+export function CategoryForm({ userId }: CategoryFormProps) {
     async function action(data: FormData) {
         "use server";
 
