@@ -17,7 +17,7 @@ export default async function Home() {
         userId: session.user.id
     }
 
-    const userId = session.user.id.toString();
+    const userId = session.user.id;
     const { categories, results } = await getCategories(filter);
 
     return (
