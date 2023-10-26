@@ -6,6 +6,7 @@ export interface TargetFilter {
     page?: number;
     limit?: number;
     type?: string;
+    userId: string;
 }
 
 export async function getTargets(filter: TargetFilter) {
@@ -20,11 +21,11 @@ export async function getTargets(filter: TargetFilter) {
         let targets;
 
         if (type === "expense") {
-            targets = await Target.find({ expenseTarget: true }).skip(skip).sort({ categoryName: 1 }).limit(limit).lean().exec();
+            targets = await Target.find({ userId: filter.userId, expenseTarget: true }).skip(skip).sort({ categoryName: 1 }).limit(limit).lean().exec();
         } else if (type === "income") {
-            targets = await Target.find({ expenseTarget: false }).skip(skip).sort({ categoryName: 1 }).limit(limit).lean().exec();
+            targets = await Target.find({ userId: filter.userId, expenseTarget: false }).skip(skip).sort({ categoryName: 1 }).limit(limit).lean().exec();
         } else {
-            targets = await Target.find().skip(skip).sort({ categoryName: 1 }).limit(limit).lean().exec();
+            targets = await Target.find({ userId: filter.userId }).skip(skip).sort({ categoryName: 1 }).limit(limit).lean().exec();
         }
 
         const results = targets.length;
@@ -48,7 +49,7 @@ export async function getTargetsByName(filter: TargetFilter, targetName: string)
         const limit = filter.limit ?? 10;
         const skip = (page - 1) * limit;
 
-        let targets = await Target.find({ categoryName: targetName }).skip(skip).sort({ categoryName: 1 }).limit(limit).lean().exec();
+        let targets = await Target.find({ userId: filter.userId, categoryName: targetName }).skip(skip).sort({ categoryName: 1 }).limit(limit).lean().exec();
 
         const results = targets.length;
 
@@ -71,7 +72,7 @@ export async function getTargetsByNameAndType(filter: TargetFilter, targetName: 
         const limit = filter.limit ?? 10;
         const skip = (page - 1) * limit;
 
-        let targets = await Target.find({ categoryName: targetName, expenseTarget: targetType }).skip(skip).sort({ categoryName: 1 }).limit(limit).lean().exec();
+        let targets = await Target.find({ userId: filter.userId, categoryName: targetName, expenseTarget: targetType }).skip(skip).sort({ categoryName: 1 }).limit(limit).lean().exec();
 
         const results = targets.length;
 
@@ -91,6 +92,7 @@ export async function createTarget(
     categoryName: string,
     targetAmount: number,
     expenseTarget: boolean,
+    userId: string,
 ) {
     try {
         await connectDB();
@@ -104,7 +106,7 @@ export async function createTarget(
             return { error: "Target with this name and type already exists" };
         }
 
-        const target = await Target.create({ categoryName, targetAmount, expenseTarget });
+        const target = await Target.create({ categoryName, targetAmount, expenseTarget, userId });
 
         return {
             target

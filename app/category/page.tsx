@@ -40,7 +40,7 @@ export default async function Home() {
                     <p className="text-center">No Categories Found</p>
                 ) : (
                     categories?.map((category) => (
-                        <CategoryItem key={category.id} category={category} />
+                        <CategoryItem key={category.id} category={category} userId={userId}/>
                     ))
                 )}
             </table>

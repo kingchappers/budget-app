@@ -15,17 +15,23 @@ export default async function Home() {
     if (!session) {
         redirect("/api/auth/signin");
     }
-    
-    const incomeFilter = {}
+
+    const userId = session.user.id
+
+    const incomeFilter = {
+        userId: userId
+    }
 
     const targetExpenseFilter: TargetFilter = {
         limit: 50,
-        type: "expense"
+        type: "expense",
+        userId: userId
     }
 
     const targetIncomeFilter: TargetFilter = {
         limit: 50,
-        type: "income"
+        type: "income",
+        userId: userId
     }
 
     let { targets: expenseTargets, results: expenseResults } = await getTargets(targetExpenseFilter)

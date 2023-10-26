@@ -19,6 +19,7 @@ type incomeDeleteButtonProps = {
 
 type categoryDeleteButtonProps = {
     category: CategoryClass;
+    userId: string;
 };
 
 export function DeleteTransaction({ transaction }: transactionDeleteButtonProps) {
@@ -50,13 +51,13 @@ export function DeleteIncome({ income }: incomeDeleteButtonProps) {
     );
 }
 
-export function DeleteCategory({ category }: categoryDeleteButtonProps) {
+export function DeleteCategory({ category, userId }: categoryDeleteButtonProps) {
     const [isPending, startTransition] = useTransition();
 
     return (
         <button onClick={() => startTransition(async () => {
             await deleteCategoryAction({ id: category.id, path: "/" })
-            await deleteTargetsByNameAction(category)
+            await deleteTargetsByNameAction(category, userId)
         })
         } className="px-2 py-1 ml-2 my-1 text-white rounded bg-red-500">Delete</button>
 

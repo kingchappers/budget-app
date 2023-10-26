@@ -34,9 +34,9 @@ export function CategoryForm({ userId }: CategoryFormProps) {
         await createCategoryAction({ label, transactionCategory, incomeCategory, userId, path: "/" });
 
         // Invoke server action to add new target
-        await createTargetAction({ categoryName: label, targetAmount: 0, expenseTarget: transactionCategory, path: "/" })
+        await createTargetAction({ categoryName: label, targetAmount: 0, expenseTarget: transactionCategory, userId: userId, path: "/" })
         if (incomeCategory == true && transactionCategory == true) {
-            await createTargetAction({ categoryName: label, targetAmount: 0, expenseTarget: false, path: "/" })
+            await createTargetAction({ categoryName: label, targetAmount: 0, expenseTarget: false, userId: userId, path: "/" })
         }
     }
 
