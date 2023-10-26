@@ -147,7 +147,7 @@ export async function getTargetsAction(filter: TargetFilter) {
 }
 
 
-export async function calculateTargetsTotalAction(targets: TargetClass[] | undefined, results: number | undefined){
+export async function calculateTargetsTotalAction(targets: TargetClass[] | undefined, results: number | undefined) {
     if (results === 0 || results === undefined) {
         return 0;
     } else {

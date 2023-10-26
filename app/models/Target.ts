@@ -44,7 +44,7 @@ class TargetClass {
     @prop({ default: true })
     expenseTarget: boolean;
 
-    @prop({required: true})
+    @prop({ required: true })
     userId: string;
 
     _id: mongoose.Types.ObjectId | string;
