@@ -3,6 +3,9 @@ import { TransactionItem } from "../components/transaction-item-server";
 import { TransactionFilter, getTransactions } from "../lib/transaction-db";
 import { getCategories, CategoryFilter } from "../lib/categories-db";
 import { CategoriesComboProps } from "../components/comboBox";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/lib/auth";
+import { redirect } from "next/navigation";
 import Link from "next/link";
 import clsx from "clsx";
 
@@ -11,6 +14,12 @@ export default async function Home({
 }: {
     searchParams: { [key: string]: string | string[] | undefined }
 }) {
+    const session = await getServerSession(authOptions);
+
+    if (!session) {
+        redirect("/api/auth/signin");
+    }
+    
     const categoryFilter: CategoryFilter = {
         limit: 30,
         type: "transaction"

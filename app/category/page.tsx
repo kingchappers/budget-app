@@ -1,8 +1,17 @@
 import { CategoryForm } from "../components/category-form-server";
 import { CategoryItem } from "../components/category-item-server";
 import { getCategories, CategoryFilter } from "../lib/categories-db";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/lib/auth";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
+    const session = await getServerSession(authOptions);
+
+    if (!session) {
+        redirect("/api/auth/signin");
+    }
+    
     let filter: CategoryFilter = {
         limit: 50
     }

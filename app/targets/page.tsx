@@ -5,8 +5,17 @@ import { TargetFilter, getTargets } from "../lib/target-db";
 import { revalidatePath } from 'next/cache'
 import { getTransactionsBetweenDates } from "../lib/transaction-db";
 import { getIncomesBetweenDates } from "../lib/income-db";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/lib/auth";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
+    const session = await getServerSession(authOptions);
+
+    if (!session) {
+        redirect("/api/auth/signin");
+    }
+    
     const incomeFilter = {}
 
     const targetExpenseFilter: TargetFilter = {
