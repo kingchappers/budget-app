@@ -12,7 +12,26 @@ export function DatePicker() {
 
     return (
         <div>
-            <Datetime dateFormat="DD/MM/YYYY" inputProps={inputProps} initialValue={new Date()} timeFormat={false} className="bg-white border rounded px-1 py-1 flex-1" /> {/* w-28"/>  */}
+            <Datetime dateFormat="DD/MM/YYYY" inputProps={inputProps} initialValue={new Date()} timeFormat={false} className="bg-white border rounded px-1 py-1 flex-1" />
+        </div>
+    )
+}
+
+export function BetweenTwoDates() {
+    let startDateInputProps = {
+        name: 'startDate',
+        size: 8,
+    };
+
+    let endDateInputProps = {
+        name: 'endDate',
+        size: 8,
+    };
+
+    return (
+        <div className="flex items-center">
+            <Datetime dateFormat="DD/MM/YYYY" inputProps={startDateInputProps} initialValue={new Date()} timeFormat={false} className="bg-white border rounded px-1 py-1" />
+            <Datetime dateFormat="DD/MM/YYYY" inputProps={endDateInputProps} initialValue={new Date()} timeFormat={false} className="bg-white border rounded px-1 py-1" />
         </div>
     )
 }
