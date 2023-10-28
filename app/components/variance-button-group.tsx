@@ -33,7 +33,7 @@ export function VarianceTimeButton({ userId }: VarianceTimeButtonProps) {
         //The if checks if the page has already initialised and stops it running twice
         if (!didInit) {
             didInit = true;
-            setTable("month")
+            setTimeSpan("month")
         }
     }, [])
 
@@ -49,9 +49,6 @@ export function VarianceTimeButton({ userId }: VarianceTimeButtonProps) {
     const [impliedSavings, setImpliedSavings] = useState(0)
     const [actualSavings, setActualSavings] = useState(0)
     const [savingDifference, setSavingDifference] = useState(0)
-    const [expenseDifferenceColour, setExpenseDifferenceColour] = useState("")
-    const [incomeDifferenceColour, setIncomeDifferenceColour] = useState("")
-    const [savingDifferenceColour, setSavingDifferenceColour] = useState("")
 
     var transactionTotal = 0;
     var incomeTotal = 0;
@@ -99,22 +96,9 @@ export function VarianceTimeButton({ userId }: VarianceTimeButtonProps) {
         setStatefulTarget(targetItems)
     }
 
-    async function setTable(value: string) {
+    async function setTimeSpan(value: string) {
         var startDate = new Date();
         var endDate = new Date();
-        var daysBetween = 1;
-
-        const targetExpenseFilter: TargetFilter = {
-            limit: 50,
-            type: "expense",
-            userId: userId,
-        }
-
-        const targetIncomeFilter: TargetFilter = {
-            limit: 50,
-            type: "income",
-            userId: userId,
-        }
 
         if (value === "week") {
             endDate = new Date();
@@ -176,9 +160,6 @@ export function VarianceTimeButton({ userId }: VarianceTimeButtonProps) {
         setImpliedSavings((calculatedImpliedSaving / 30) * daysBetween)
         setActualSavings(calculatedActualMonthlySaving)
         setSavingDifference(calculatedSavingDifference)
-        setExpenseDifferenceColour(textColourClass(expenseDifference))
-        setIncomeDifferenceColour(textColourClass(incomeDifference))
-        setSavingDifferenceColour(textColourClass(savingDifference))
     }
 
     async function toggleButtonChange(
@@ -186,7 +167,7 @@ export function VarianceTimeButton({ userId }: VarianceTimeButtonProps) {
         value: string,
     ) {
         setAlignment(value);
-        setTable(value)
+        setTimeSpan(value)
     };
 
     function textColourClass(value: number) {
@@ -232,19 +213,19 @@ export function VarianceTimeButton({ userId }: VarianceTimeButtonProps) {
                         <td className="text-right font-bold">Expenses:</td>
                         <td className="text-center">£{targetExpenses.toFixed(2)}</td>
                         <td className="text-center">£{timeTransactionTotal.toFixed(2)}</td>
-                        <td className={expenseDifferenceColour}>£{expenseDifference.toFixed(2)}</td>
+                        <td className={textColourClass(expenseDifference)}>£{expenseDifference.toFixed(2)}</td>
                     </tr>
                     <tr className="">
                         <td className="text-right font-bold">Income:</td>
                         <td className="text-center">£{targetIncome.toFixed(2)}</td>
                         <td className="text-center">£{timeIncomeTotal.toFixed(2)}</td>
-                        <td className={incomeDifferenceColour}>£{incomeDifference.toFixed(2)}</td>
+                        <td className={textColourClass(incomeDifference)}>£{incomeDifference.toFixed(2)}</td>
                     </tr>
                     <tr className="">
                         <td className="text-right font-bold">Savings:</td>
                         <td className="text-center">£{impliedSavings.toFixed(2)}</td>
                         <td className="text-center">£{actualSavings.toFixed(2)}</td>
-                        <td className={savingDifferenceColour}>£{savingDifference.toFixed(2)}</td>
+                        <td className={textColourClass(savingDifference)}>£{savingDifference.toFixed(2)}</td>
                     </tr>
                 </tbody>
             </table>
