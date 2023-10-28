@@ -28,10 +28,18 @@ export function BetweenTwoDates() {
         size: 8,
     };
 
+    const defaultStartDate = new Date()
+    const test = new Date()
+
+    const date = new Date();
+    const startDate = new Date(date.getFullYear(), date.getMonth(), 1);
+    const endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
     return (
         <div className="flex items-center">
-            <Datetime dateFormat="DD/MM/YYYY" inputProps={startDateInputProps} initialValue={new Date()} timeFormat={false} className="bg-white border rounded px-1 py-1" />
-            <Datetime dateFormat="DD/MM/YYYY" inputProps={endDateInputProps} initialValue={new Date()} timeFormat={false} className="bg-white border rounded px-1 py-1" />
+            <Datetime dateFormat="DD/MM/YYYY" inputProps={startDateInputProps} initialValue={startDate} timeFormat={false} className="bg-white border rounded px-1 py-1 ml-5" />
+            <p className="mx-2"> to </p>
+            <Datetime dateFormat="DD/MM/YYYY" inputProps={endDateInputProps} initialValue={endDate} timeFormat={false} className="bg-white border rounded px-1 py-1" />
         </div>
     )
 }

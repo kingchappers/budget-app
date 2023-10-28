@@ -11,6 +11,9 @@ import { getIncomesBetweenDatesAction } from '../_incomeActions';
 import differenceInDays from 'date-fns/differenceInDays';
 import { TargetFilter } from '../lib/target-db';
 import { BetweenTwoDates } from './datePicker';
+import Datetime from "react-datetime"
+import "react-datetime/css/react-datetime.css"
+import { stringToDate } from '../lib/utils';
 
 let didInit = false;
 
@@ -46,14 +49,26 @@ export function VarianceTimeButton({ userId }: VarianceTimeButtonProps) {
     const [targetIncome, setTargetIncome] = useState(0);
     const [expenseDifference, setExpenseDifference] = useState(0);
     const [incomeDifference, setIncomeDifference] = useState(0);
-    const [impliedSavings, setImpliedSavings] = useState(0)
-    const [actualSavings, setActualSavings] = useState(0)
-    const [savingDifference, setSavingDifference] = useState(0)
+    const [impliedSavings, setImpliedSavings] = useState(0);
+    const [actualSavings, setActualSavings] = useState(0);
+    const [savingDifference, setSavingDifference] = useState(0);
+    const [dateSelectorStart, setDateSelectorStart] = useState(new Date);
+    const [dateSelectorEnd, setDateSelectorEnd] = useState(new Date);
 
     var transactionTotal = 0;
     var incomeTotal = 0;
     var expenseTargetsTotal = 0
     var incomeTargetsTotal = 0
+
+    let startDateInputProps = {
+        name: 'startDate',
+        size: 8,
+    };
+
+    let endDateInputProps = {
+        name: 'endDate',
+        size: 8,
+    };
 
     async function setTargetItems(startDate: Date, endDate: Date) {
         targetItems = []
@@ -96,7 +111,7 @@ export function VarianceTimeButton({ userId }: VarianceTimeButtonProps) {
         setStatefulTarget(targetItems)
     }
 
-    async function setTimeSpan(value: string) {
+    async function setTimeSpan(value: string, customStartDate?: Date, customEndDate?: Date) {
         var startDate = new Date();
         var endDate = new Date();
 
@@ -148,7 +163,7 @@ export function VarianceTimeButton({ userId }: VarianceTimeButtonProps) {
         const calculatedIncomeDifference = calculateDifference((incomeTargetsTotal / 30) * daysBetween, incomeTotal)
         const calculatedImpliedSaving = calculateDifference(expenseTargetsTotal, incomeTargetsTotal)
         const calculatedActualMonthlySaving = calculateDifference(transactionTotal, incomeTotal)
-        const calculatedSavingDifference = calculateDifference((calculatedImpliedSaving/ 30) * daysBetween, calculatedActualMonthlySaving)
+        const calculatedSavingDifference = calculateDifference((calculatedImpliedSaving / 30) * daysBetween, calculatedActualMonthlySaving)
 
         setTimeTransactionTotal(transactionTotal);
         setTimeIncomeTotal(incomeTotal)
@@ -160,6 +175,9 @@ export function VarianceTimeButton({ userId }: VarianceTimeButtonProps) {
         setImpliedSavings((calculatedImpliedSaving / 30) * daysBetween)
         setActualSavings(calculatedActualMonthlySaving)
         setSavingDifference(calculatedSavingDifference)
+
+        setDateSelectorStart(startDate);
+        setDateSelectorEnd(endDate);
     }
 
     async function toggleButtonChange(
@@ -167,8 +185,28 @@ export function VarianceTimeButton({ userId }: VarianceTimeButtonProps) {
         value: string,
     ) {
         setAlignment(value);
-        setTimeSpan(value)
+        setTimeSpan(value);
     };
+
+    async function toggleCustomButtonChange() {
+        const form = document.querySelector('form');
+        form?.requestSubmit();
+    }
+
+    function betweenTwoDatesFormAction(data: FormData) {
+        const startDate = data.get("startDate");
+        if (!startDate || typeof startDate !== "string") {
+            return;
+        }
+
+        const endDate = data.get("endDate");
+        if (!endDate || typeof endDate !== "string") {
+            return;
+        }
+        setDateSelectorStart(stringToDate(startDate));
+        setDateSelectorEnd(stringToDate(endDate));
+        setValues(stringToDate(startDate), stringToDate(endDate));
+    }
 
     function textColourClass(value: number) {
         if (value > 0) {
@@ -183,19 +221,26 @@ export function VarianceTimeButton({ userId }: VarianceTimeButtonProps) {
     return (
         <div>
             <div className="flex items-center">
-            <ToggleButtonGroup
-                color="primary"
-                value={alignment}
-                exclusive
-                onChange={toggleButtonChange}
-                aria-label="Platform"
-            >
-                <ToggleButton value="week">Last 7-Days</ToggleButton>
-                <ToggleButton value="month">This Month</ToggleButton>
-                <ToggleButton value="year">This Year</ToggleButton>
-            </ToggleButtonGroup>
+                <ToggleButtonGroup
+                    color="primary"
+                    value={alignment}
+                    exclusive
+                    onChange={toggleButtonChange}
+                    aria-label="Platform"
+                >
+                    <ToggleButton value="week">Last 7-Days</ToggleButton>
+                    <ToggleButton value="month">This Month</ToggleButton>
+                    <ToggleButton value="year">This Year</ToggleButton>
+                    <ToggleButton onClick={toggleCustomButtonChange} value="custom">Custom</ToggleButton>
 
-            <BetweenTwoDates />
+                </ToggleButtonGroup>
+
+                <form action={betweenTwoDatesFormAction} key={Math.random()} className="flex items-center space-x-3 mb-4">
+                    <Datetime dateFormat="DD/MM/YYYY" inputProps={startDateInputProps} initialValue={dateSelectorStart} timeFormat={false} className="bg-white border rounded px-1 py-1 ml-5" />
+                    <p className="mx-2"> to </p>
+                    <Datetime dateFormat="DD/MM/YYYY" inputProps={endDateInputProps} initialValue={dateSelectorEnd} timeFormat={false} className="bg-white border rounded px-1 py-1" />
+                </form>
+
             </div>
 
             <h1 className="text-2xl font-bold mt-5 mb-3">Overall Targets vs Actuals</h1>
