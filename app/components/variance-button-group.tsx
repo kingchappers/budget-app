@@ -244,7 +244,7 @@ export function VarianceTimeButton({ userId }: VarianceTimeButtonProps) {
                 </tbody>
             </table>
 
-            <h1 className="text-2xl font-bold mt-5 mb-3">Monthly Expense Variance</h1>
+            <h1 className="text-2xl font-bold mt-5 mb-3">Expense Variance</h1>
             <div className="container flex justify-center">
                 <table className="divide-y-2 table-fixed">
                     <thead>
@@ -278,7 +278,7 @@ export function VarianceTimeButton({ userId }: VarianceTimeButtonProps) {
                 </table>
             </div>
 
-            <h1 className="text-2xl font-bold mt-5 mb-3">Monthly Income Variance</h1>
+            <h1 className="text-2xl font-bold mt-5 mb-3">Income Variance</h1>
             <div className="container flex justify-center">
                 <table className="divide-y-2 table-fixed">
                     <thead>

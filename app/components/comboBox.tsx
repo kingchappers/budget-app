@@ -22,6 +22,7 @@ export function CategoryComboBox({ categories }: CategoriesComboProps) {
             isClearable={true}
             backspaceRemovesValue={true}
             classNames={{ control: () => "w-44" }}
+            placeholder="Category..."
         />
     )
 }
