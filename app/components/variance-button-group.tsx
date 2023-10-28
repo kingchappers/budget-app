@@ -10,6 +10,7 @@ import { calculateDifference, calculateIncomeTotal } from './target-calculation-
 import { getIncomesBetweenDatesAction } from '../_incomeActions';
 import differenceInDays from 'date-fns/differenceInDays';
 import { TargetFilter } from '../lib/target-db';
+import { BetweenTwoDates } from './datePicker';
 
 let didInit = false;
 
@@ -159,11 +160,11 @@ export function VarianceTimeButton({ userId }: VarianceTimeButtonProps) {
         expenseTargetsTotal = await calculateTargetsTotalAction(expenseTargets, expenseResults) ?? 0
         incomeTargetsTotal = await calculateTargetsTotalAction(incomeTargets, incomeResults) ?? 0
 
-        const calculatedExpenseDifference = calculateDifference(transactionTotal, expenseTargetsTotal)
-        const calculatedIncomeDifference = calculateDifference(incomeTargetsTotal, incomeTotal)
+        const calculatedExpenseDifference = calculateDifference(transactionTotal, (expenseTargetsTotal / 30) * daysBetween)
+        const calculatedIncomeDifference = calculateDifference((incomeTargetsTotal / 30) * daysBetween, incomeTotal)
         const calculatedImpliedSaving = calculateDifference(expenseTargetsTotal, incomeTargetsTotal)
         const calculatedActualMonthlySaving = calculateDifference(transactionTotal, incomeTotal)
-        const calculatedSavingDifference = calculateDifference(calculatedImpliedSaving, calculatedActualMonthlySaving)
+        const calculatedSavingDifference = calculateDifference((calculatedImpliedSaving/ 30) * daysBetween, calculatedActualMonthlySaving)
 
         setTimeTransactionTotal(transactionTotal);
         setTimeIncomeTotal(incomeTotal)
@@ -180,7 +181,7 @@ export function VarianceTimeButton({ userId }: VarianceTimeButtonProps) {
         setSavingDifferenceColour(textColourClass(savingDifference))
     }
 
-    async function handleChange(
+    async function toggleButtonChange(
         event: React.MouseEvent<HTMLElement>,
         value: string,
     ) {
@@ -200,11 +201,12 @@ export function VarianceTimeButton({ userId }: VarianceTimeButtonProps) {
 
     return (
         <div>
+            <div className="flex items-center">
             <ToggleButtonGroup
                 color="primary"
                 value={alignment}
                 exclusive
-                onChange={handleChange}
+                onChange={toggleButtonChange}
                 aria-label="Platform"
             >
                 <ToggleButton value="week">Last 7-Days</ToggleButton>
@@ -212,13 +214,16 @@ export function VarianceTimeButton({ userId }: VarianceTimeButtonProps) {
                 <ToggleButton value="year">This Year</ToggleButton>
             </ToggleButtonGroup>
 
+            <BetweenTwoDates />
+            </div>
+
             <h1 className="text-2xl font-bold mt-5 mb-3">Overall Targets vs Actuals</h1>
             <table className="divide-y-2 table-fixed">
                 <thead>
                     <tr className="text-left text-1xl">
                         <th className="w-10"></th>
                         <th className="pl-5 text-center w-44">Target</th>
-                        <th className="px-5 text-center w-44">Actual Spending</th>
+                        <th className="px-5 text-center w-44">Actual</th>
                         <th className="px-5 text-center w-44">Difference</th>
                     </tr>
                 </thead>
