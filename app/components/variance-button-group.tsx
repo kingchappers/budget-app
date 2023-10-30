@@ -10,7 +10,6 @@ import { calculateDifference, calculateIncomeTotal } from './target-calculation-
 import { getIncomesBetweenDatesAction } from '../_incomeActions';
 import differenceInDays from 'date-fns/differenceInDays';
 import { TargetFilter } from '../lib/target-db';
-import { BetweenTwoDates } from './datePicker';
 import Datetime from "react-datetime"
 import "react-datetime/css/react-datetime.css"
 import { stringToDate } from '../lib/utils';
@@ -39,7 +38,6 @@ export function VarianceTimeButton({ userId }: VarianceTimeButtonProps) {
             setTimeSpan("month")
         }
     }, [])
-
 
     const [timeTransactionTotal, setTimeTransactionTotal] = useState(0);
     const [timeIncomeTotal, setTimeIncomeTotal] = useState(0);
