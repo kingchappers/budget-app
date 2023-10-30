@@ -1,7 +1,7 @@
 import './globals.css'
 import Link from 'next/link'
 import Image from 'next/image'
-import {AccountMenu, BudgetMenu} from "./components/menu-buttons"
+import { AccountMenu, BudgetMenu } from "./components/menu-buttons"
 
 export const metadata = {
     title: 'Budget App',
@@ -37,6 +37,9 @@ export default function RootLayout({
                             </li>
                             <li className="mx-5">
                                 <AccountMenu />
+                            </li>
+                            <li className="mx-5">
+                                <Link href="/utilities">Utilities</Link>
                             </li>
                             <li className="mx-5">
                                 <Link href="/">Home</Link>
