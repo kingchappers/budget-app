@@ -68,7 +68,9 @@ export default async function Home({
                 </thead>
 
                 {results === 0 ? (
-                    <p className="text-center">No Incomes Found</p>
+                    <tbody>
+                        <td colSpan={7} className="text-center">No Incomes Found</td>
+                    </tbody>
                 ) : (
                     incomes?.map((income) => (
                         <IncomeItem key={income.id} income={income} />

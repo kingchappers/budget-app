@@ -53,7 +53,7 @@ export default async function Transactions({
     return (
         <div className="container mx-auto max-w-screen-2xl p-4">
 
-            <TransactionForm categories={listOfCategories} userId={userId}/>
+            <TransactionForm categories={listOfCategories} userId={userId} />
 
             <h1 className="text-2xl font-bold mb-4">Transaction List</h1>
             <table className="divide-y-2 table-fixed">
@@ -69,7 +69,9 @@ export default async function Transactions({
                 </thead>
 
                 {results === 0 ? (
-                    <p className="text-center">No Transactions Found</p>
+                    <tbody>
+                        <td colSpan={7} className="text-center">No Transactions Found</td>
+                    </tbody>
                 ) : (
                     transactions?.map((transaction) => (
                         <TransactionItem key={transaction.id} transaction={transaction} />
