@@ -232,7 +232,6 @@ export function VarianceTimeButton({ userId }: VarianceTimeButtonProps) {
                     <ToggleButton value="month">This Month</ToggleButton>
                     <ToggleButton value="year">This Year</ToggleButton>
                     <ToggleButton onClick={toggleCustomButtonChange} value="custom">Custom</ToggleButton>
-
                 </ToggleButtonGroup>
 
                 <form action={betweenTwoDatesFormAction} key={Math.random()} className="flex items-center space-x-3 mb-4">
