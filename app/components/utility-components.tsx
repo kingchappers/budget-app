@@ -3,8 +3,6 @@
 import { useState } from "react";
 
 export function SplitBill() {
-    // var total = 0;
-
     const [total, setTotal] = useState(0);
 
     async function action(data: FormData) {
@@ -20,8 +18,6 @@ export function SplitBill() {
         }
 
         setTotal(cost / numberOfPeople);
-
-        console.log(total)
     }
 
     return (
