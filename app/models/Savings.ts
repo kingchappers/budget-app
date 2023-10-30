@@ -41,7 +41,7 @@ class SavingClass {
     @prop({ required: true })
     value: number;
 
-    @prop({required: true})
+    @prop({ required: true })
     userId: string;
 
     _id: mongoose.Types.ObjectId | string;
