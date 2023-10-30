@@ -17,7 +17,7 @@ export async function getSavings(filter: SavingFilter) {
         const limit = filter.limit ?? 10;
         const skip = (page - 1) * limit;
 
-        const savings = await Saving.find({ userId: filter.userId }).sort({ transactionDate: -1 }).skip(skip).limit(limit).lean().exec();
+        const savings = await Saving.find({ userId: filter.userId }).sort({ monthStart: -1 }).skip(skip).limit(limit).lean().exec();
 
         const results = savings.length;
 
@@ -44,7 +44,25 @@ export async function getSavingsBetweenDates(userId: string, startDate?: Date, e
         const searchStartDate = startDate ?? startOfMonth(new Date())
         const searchEndDate = endDate ?? endOfMonth(new Date())
 
-        const savings = await Saving.find({ userId: userId, transactionDate: { $gte: searchStartDate, $lte: searchEndDate } }).sort({ transactionDate: -1 }).lean().exec();
+        const savings = await Saving.find({ userId: userId, monthStart: { $gte: searchStartDate, $lte: searchEndDate } }).sort({ monthStart: -1 }).lean().exec();
+
+        const results = savings.length;
+
+        return {
+            savings: savings,
+            results
+        };
+
+    } catch (error) {
+        return { error };
+    }
+}
+
+export async function getSavingsOnDate(userId: string, savingDate?: Date) {
+    try {
+        connectDB();
+
+        const savings = await Saving.find({ userId: userId, monthStart: savingDate }).sort({ monthStart: -1 }).lean().exec();
 
         const results = savings.length;
 
