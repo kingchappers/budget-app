@@ -9,7 +9,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import clsx from "clsx";
 
-export default async function Home({
+export default async function Transactions({
     searchParams
 }: {
     searchParams: { [key: string]: string | string[] | undefined }
