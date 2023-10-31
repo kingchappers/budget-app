@@ -63,23 +63,29 @@ export default async function Savings({
         // Do initial calculations to produce savings list
         const { oldestTransaction, oldestTransactionFound, newestTransaction, newestTransactionFound } = await getOldestAndNewestTransactions(transactionFilter)
         const { oldestIncome, oldestIncomeFound, newestIncome, newestIncomeFound } = await getOldestAndNewestIncomes(incomeFilter)
-        oldestTransaction?._id
 
-        console.log(oldestTransaction?.transactionDate)
-        console.log(newestTransaction?.transactionDate)
-        console.log(oldestIncome?.incomeDate)
-        console.log(newestIncome?.incomeDate)
+        const oldestTransactionDate = oldestTransaction?.transactionDate ?? new Date;
+        const newestTransactionDate = newestTransaction?.transactionDate ?? new Date;
+
+        const oldestIncomeDate = oldestIncome?.incomeDate ?? new Date;
+        const newestIncomeDate = newestIncome?.incomeDate ?? new Date;
 
         if(!oldestTransactionFound || !newestTransactionFound){
             // Process if there are no transactions
             console.log(oldestTransactionFound)
             console.log(newestTransactionFound)
+        } else {
+           var transactionMonths = getMonthsBetweenDates(oldestTransactionDate, newestTransactionDate)
+        //    console.log(transactionMonths)
         }
 
         if(!oldestIncomeFound || !newestIncomeFound){
             // Process if there are no incomes
             console.log(oldestIncomeFound)
             console.log(newestIncomeFound)
+        } else {
+            var incomeMonths = getMonthsBetweenDates(oldestIncomeDate, newestIncomeDate)
+        //    console.log(incomeMonths)
         }
 
     }

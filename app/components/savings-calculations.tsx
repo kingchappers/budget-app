@@ -45,6 +45,8 @@ export function getMonthsBetweenDates(startDate: Date, endDate: Date) {
     const months = [];
 
     for (let i = startDate.getMonth(); i <= endDate.getMonth(); i++) {
-        months.push(i)
+        months.push(new Date(startDate.getFullYear(), i, 1))
     }
+
+    return months;
 }
