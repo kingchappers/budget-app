@@ -1,4 +1,4 @@
-import { Transaction } from "../models/Transaction";
+import { Transaction, TransactionClass } from "../models/Transaction";
 import connectDB from "./mongoose-connect-db";
 import { stringToObjectId } from "./utils";
 import { startOfMonth, endOfMonth } from "date-fns";
@@ -52,6 +52,25 @@ export async function getTransactionsBetweenDates(userId: string, startDate?: Da
             transactions: transactions,
             results
         };
+
+    } catch (error) {
+        return { error };
+    }
+}
+
+export async function getOldestOrNewestTransaction(filter: TransactionFilter, oldest: boolean) {
+    try {
+        connectDB();
+
+        const userId = filter.userId;
+
+        if (oldest == true) {
+            var transaction = await Transaction.find({ userId: userId }).sort({ transactionDate: 1 }).limit(1);
+        } else {
+            var transaction = await Transaction.find({ userId: userId }).sort({ transactionDate: -1 }).limit(1);
+        }
+
+        return transaction;
 
     } catch (error) {
         return { error };

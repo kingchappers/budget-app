@@ -63,22 +63,19 @@ export async function getIncomesBetweenDates(filter: IncomeFilter, startDate?: D
     }
 }
 
-export async function createIncome(
-    incomeDate: Date,
-    company: string,
-    amount: number,
-    incomeCategory: string,
-    notes: string,
-    userId: string
-) {
+export async function getOldestOrNewestIncome(filter: IncomeFilter, oldest: boolean) {
     try {
-        await connectDB();
+        connectDB();
 
-        const income = await Income.create({ incomeDate, company, amount, incomeCategory, notes, userId });
+        const userId = filter.userId;
 
-        return {
-            income
-        };
+        if (oldest == true) {
+            var income = await Income.find({ userId: userId }).sort({ incomeDate: 1 }).limit(1)
+        } else {
+            var income = await Income.find({ userId: userId }).sort({ incomeDate: -1 }).limit(1)
+        }
+        return income;
+
     } catch (error) {
         return { error };
     }
@@ -102,6 +99,27 @@ export async function getIncome(id: string) {
         } else {
             return { error: "Income not found" };
         }
+    } catch (error) {
+        return { error };
+    }
+}
+
+export async function createIncome(
+    incomeDate: Date,
+    company: string,
+    amount: number,
+    incomeCategory: string,
+    notes: string,
+    userId: string
+) {
+    try {
+        await connectDB();
+
+        const income = await Income.create({ incomeDate, company, amount, incomeCategory, notes, userId });
+
+        return {
+            income
+        };
     } catch (error) {
         return { error };
     }
