@@ -4,8 +4,11 @@ import { SavingItem } from "../components/savings-item-server";
 import { authOptions } from "../lib/auth";
 import { redirect } from "next/navigation";
 import { getSavings, SavingFilter } from "../lib/saving-db";
+import { TransactionFilter } from "../lib/transaction-db";
+import { IncomeFilter } from "../lib/income-db";
 import Link from "next/link";
 import clsx from "clsx";
+import { getMonthsBetweenDates, getOldestAndNewestIncomes, getOldestAndNewestTransactions } from "../components/savings-calculations";
 
 export default async function Savings({
     searchParams
@@ -26,10 +29,18 @@ export default async function Savings({
         userId: userId,
     }
 
-    let { savings, results, maxPages } = await getSavings(savingFilter);
+    let { savings, results: savingsResults, maxPages: savingsMaxPages } = await getSavings(savingFilter);
 
-    if (maxPages == undefined) {
-        maxPages = 1;
+    let transactionFilter: TransactionFilter = {
+        userId: userId,
+    }
+
+    let incomeFilter: IncomeFilter = {
+        userId: userId,
+    }
+
+    if (savingsMaxPages == undefined) {
+        savingsMaxPages = 1;
     }
 
     if (savingFilter.page == undefined) {
@@ -38,6 +49,39 @@ export default async function Savings({
 
     if (savingFilter.limit == undefined) {
         savingFilter.limit = 50;
+    }
+
+    if (savingsResults != null && savingsResults > 1) {
+        // Do checks and calculations for multiple savings entry and calculate current savings
+        // ___________________________________________________________________________________________________________________________________________________
+        // ___________________________________________________________________________________________________________________________________________________
+        // ___________________________________________________________________________________________________________________________________________________
+        // ___________________________________________________________________________________________________________________________________________________
+        // ___________________________________________________________________________________________________________________________________________________
+        // ___________________________________________________________________________________________________________________________________________________
+    } else {
+        // Do initial calculations to produce savings list
+        const { oldestTransaction, oldestTransactionFound, newestTransaction, newestTransactionFound } = await getOldestAndNewestTransactions(transactionFilter)
+        const { oldestIncome, oldestIncomeFound, newestIncome, newestIncomeFound } = await getOldestAndNewestIncomes(incomeFilter)
+        oldestTransaction?._id
+
+        console.log(oldestTransaction?.transactionDate)
+        console.log(newestTransaction?.transactionDate)
+        console.log(oldestIncome?.incomeDate)
+        console.log(newestIncome?.incomeDate)
+
+        if(!oldestTransactionFound || !newestTransactionFound){
+            // Process if there are no transactions
+            console.log(oldestTransactionFound)
+            console.log(newestTransactionFound)
+        }
+
+        if(!oldestIncomeFound || !newestIncomeFound){
+            // Process if there are no incomes
+            console.log(oldestIncomeFound)
+            console.log(newestIncomeFound)
+        }
+
     }
 
     return (
@@ -54,7 +98,7 @@ export default async function Savings({
                     </tr>
                 </thead>
 
-                {results === 0 ? (
+                {savingsResults === 0 ? (
                     <tbody>
                         <td colSpan={2} className="text-center">No Transactions Found</td>
                     </tbody>
@@ -66,7 +110,7 @@ export default async function Savings({
 
                 <tr>
                     <td className="pt-4"><Link href={`/transactions?page=${savingFilter.page > 1 ? savingFilter.page - 1 : 1}`} className={clsx('rounded border bg-sky-500 px-3 p-1', savingFilter.page <= 1 && 'pointer-events-none opacity-50')}>Previous</Link></td>
-                    <td className="pt-4"><Link href={`/transactions?page=${savingFilter.page < maxPages ? savingFilter.page + 1 : maxPages}`} className={clsx('rounded border bg-sky-500 px-3.5 py-1 float-right', savingFilter.page >= maxPages && 'pointer-events-none opacity-50')}>Next</Link></td>
+                    <td className="pt-4"><Link href={`/transactions?page=${savingFilter.page < savingsMaxPages ? savingFilter.page + 1 : savingsMaxPages}`} className={clsx('rounded border bg-sky-500 px-3.5 py-1 float-right', savingFilter.page >= savingsMaxPages && 'pointer-events-none opacity-50')}>Next</Link></td>
                 </tr>
             </table>
         </div>

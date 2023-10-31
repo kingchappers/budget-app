@@ -1,3 +1,4 @@
+import { typographyClasses } from "@mui/material";
 import { Transaction, TransactionClass } from "../models/Transaction";
 import connectDB from "./mongoose-connect-db";
 import { stringToObjectId } from "./utils";
@@ -65,12 +66,28 @@ export async function getOldestOrNewestTransaction(filter: TransactionFilter, ol
         const userId = filter.userId;
 
         if (oldest == true) {
-            var transaction = await Transaction.find({ userId: userId }).sort({ transactionDate: 1 }).limit(1);
+            var transaction = await Transaction.findOne({ userId: userId }).sort({ transactionDate: 1 }).lean().exec();
         } else {
-            var transaction = await Transaction.find({ userId: userId }).sort({ transactionDate: -1 }).limit(1);
+            var transaction = await Transaction.findOne({ userId: userId }).sort({ transactionDate: -1 }).lean().exec();
         }
 
-        return transaction;
+        var transactionFound = false;
+
+        if (transaction) {
+            transactionFound = true;
+        }
+
+        if (transaction) {
+            return {
+                transaction,
+                transactionFound
+            };
+        } else {
+            return {
+                error: "Transaction not found",
+                transactionFound
+            };
+        }
 
     } catch (error) {
         return { error };

@@ -70,11 +70,28 @@ export async function getOldestOrNewestIncome(filter: IncomeFilter, oldest: bool
         const userId = filter.userId;
 
         if (oldest == true) {
-            var income = await Income.find({ userId: userId }).sort({ incomeDate: 1 }).limit(1)
+            var income = await Income.findOne({ userId: userId }).sort({ incomeDate: 1 }).lean().exec();
         } else {
-            var income = await Income.find({ userId: userId }).sort({ incomeDate: -1 }).limit(1)
+            var income = await Income.findOne({ userId: userId }).sort({ incomeDate: -1 }).lean().exec();
         }
-        return income;
+
+        var incomeFound = false;
+
+        if (income) {
+            incomeFound = true;
+        }
+
+        if (income) {
+            return {
+                income,
+                incomeFound
+            };
+        } else {
+            return {
+                error: "Income not found",
+                incomeFound
+            };
+        }
 
     } catch (error) {
         return { error };
