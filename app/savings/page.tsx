@@ -8,7 +8,7 @@ import { TransactionFilter } from "../lib/transaction-db";
 import { IncomeFilter } from "../lib/income-db";
 import Link from "next/link";
 import clsx from "clsx";
-import { getMonthsBetweenDates, getOldestAndNewestIncomes, getOldestAndNewestTransactions } from "../components/savings-calculations";
+import { calculateInitialSavings } from "../components/savings-calculations";
 
 export default async function Savings({
     searchParams
@@ -61,33 +61,7 @@ export default async function Savings({
         // ___________________________________________________________________________________________________________________________________________________
     } else {
         // Do initial calculations to produce savings list
-        const { oldestTransaction, oldestTransactionFound, newestTransaction, newestTransactionFound } = await getOldestAndNewestTransactions(transactionFilter)
-        const { oldestIncome, oldestIncomeFound, newestIncome, newestIncomeFound } = await getOldestAndNewestIncomes(incomeFilter)
-
-        const oldestTransactionDate = oldestTransaction?.transactionDate ?? new Date;
-        const newestTransactionDate = newestTransaction?.transactionDate ?? new Date;
-
-        const oldestIncomeDate = oldestIncome?.incomeDate ?? new Date;
-        const newestIncomeDate = newestIncome?.incomeDate ?? new Date;
-
-        if(!oldestTransactionFound || !newestTransactionFound){
-            // Process if there are no transactions
-            console.log(oldestTransactionFound)
-            console.log(newestTransactionFound)
-        } else {
-           var transactionMonths = getMonthsBetweenDates(oldestTransactionDate, newestTransactionDate)
-        //    console.log(transactionMonths)
-        }
-
-        if(!oldestIncomeFound || !newestIncomeFound){
-            // Process if there are no incomes
-            console.log(oldestIncomeFound)
-            console.log(newestIncomeFound)
-        } else {
-            var incomeMonths = getMonthsBetweenDates(oldestIncomeDate, newestIncomeDate)
-        //    console.log(incomeMonths)
-        }
-
+        calculateInitialSavings(userId)
     }
 
     return (
