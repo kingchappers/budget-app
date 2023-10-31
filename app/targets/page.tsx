@@ -41,7 +41,7 @@ export default async function Home() {
     const targetMonthlyIncomeTotal = calculateTargetsTotal(incomeTargets)
     const impliedMonthlySaving = calculateDifference(targetMonthlyExpenseTotal, targetMonthlyIncomeTotal)
 
-    const { transactions: monthTransactions } = await getTransactionsBetweenDates(userId)
+    const { transactions: monthTransactions } = await getTransactionsBetweenDates({ userId })
     const { incomes: monthIncomes } = await getIncomesBetweenDates(incomeFilter)
 
     const actualMonthyExpensesTotal = calculateTransactionTotal(monthTransactions)

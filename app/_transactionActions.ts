@@ -16,7 +16,7 @@ export async function getTransactionsBetweenDatesAction({
     startDate: Date;
     endDate: Date;
 }) {
-    const { transactions, results } = await getTransactionsBetweenDates(userId, startDate, endDate)
+    const { transactions, results } = await getTransactionsBetweenDates({ userId }, startDate, endDate)
 
     return {
         transactions: transactions,
