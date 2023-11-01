@@ -121,7 +121,6 @@ export async function calculateSavingsUpdate(userId: string) {
         })
     }
     const savingsUpdate = calculateMonthlySavings(monthlyTotals)
-    console.log(savingsUpdate)
     return savingsUpdate;
 }
 

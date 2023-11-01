@@ -3,7 +3,7 @@ import { SavingForm } from "../components/savings-form-server";
 import { SavingItem } from "../components/savings-item-server";
 import { authOptions } from "../lib/auth";
 import { redirect } from "next/navigation";
-import { getSavingByDate, getSavings, SavingFilter } from "../lib/saving-db";
+import { createSaving, getSavingByDate, getSavings, SavingFilter, updateSaving } from "../lib/saving-db";
 import { TransactionFilter } from "../lib/transaction-db";
 import { IncomeFilter } from "../lib/income-db";
 import Link from "next/link";
@@ -31,14 +31,6 @@ export default async function Savings({
 
     let { savings, results: savingsResults, maxPages: savingsMaxPages } = await getSavings(savingFilter);
 
-    let transactionFilter: TransactionFilter = {
-        userId: userId,
-    }
-
-    let incomeFilter: IncomeFilter = {
-        userId: userId,
-    }
-
     if (savingsMaxPages == undefined) {
         savingsMaxPages = 1;
     }
@@ -54,16 +46,15 @@ export default async function Savings({
     if (savingsResults != null && savingsResults > 1) {
         // Do checks and calculations for multiple savings entry and calculate current savings
         const savingsUpdate = await calculateSavingsUpdate(userId)
-        savingsUpdate.forEach((saving) => {
-            const savingToUpdate = getSavingByDate(userId, saving.date)
-            console.log(saving)
+        savingsUpdate.forEach(async (saving) => {
+            const { saving: savingToUpdate } = await getSavingByDate(userId, saving.date)
+            if (savingToUpdate) {
+                const savingId = savingToUpdate._id.toString();
+                updateSaving(savingId, saving)
+            } else if (!savingToUpdate) {
+                createSaving(saving.date, saving.value, userId)
+            }
         })
-        // ___________________________________________________________________________________________________________________________________________________
-        // ___________________________________________________________________________________________________________________________________________________
-        // ___________________________________________________________________________________________________________________________________________________
-        // ___________________________________________________________________________________________________________________________________________________
-        // ___________________________________________________________________________________________________________________________________________________
-        // ___________________________________________________________________________________________________________________________________________________
     } else {
         // Do initial calculations to produce savings list
         const initialSavings = await calculateInitialSavings(userId)
