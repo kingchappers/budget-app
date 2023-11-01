@@ -8,7 +8,7 @@ import { TransactionFilter } from "../lib/transaction-db";
 import { IncomeFilter } from "../lib/income-db";
 import Link from "next/link";
 import clsx from "clsx";
-import { calculateInitialSavings, calculateSavingsUpdate, createSavings } from "../components/savings-calculations";
+import { calculateInitialSavings, calculateSavingsUpdate, calculateTotalSaved, createSavings } from "../components/savings-calculations";
 
 export default async function Savings({
     searchParams
@@ -60,6 +60,9 @@ export default async function Savings({
         const initialSavings = await calculateInitialSavings(userId)
         createSavings(initialSavings, userId)
     }
+
+    const totalSaved = await calculateTotalSaved(userId)
+    console.log(totalSaved)
 
     return (
         <div className="container mx-auto max-w-screen-2xl p-4">

@@ -6,7 +6,7 @@ import { IncomeClass } from "../models/Income";
 import { TransactionClass } from "../models/Transaction";
 import { createSavingAction } from "../_savingActions";
 import { dateToString } from "../lib/utils";
-import { getLatestSaving } from "../lib/saving-db";
+import { SavingFilter, getLatestSaving, getSaving, getSavings } from "../lib/saving-db";
 
 interface transactionIncomeTotal {
     month: Date;
@@ -139,6 +139,27 @@ export function createSavings(savings: savingsObject[], userId: string) {
 // ___________________________________________________________________________________________________________________________________________________
 // ___________________________________________________________________________________________________________________________________________________
 // ___________________________________________________________________________________________________________________________________________________
+
+export async function calculateTotalSaved(userId: string) {
+    const filter: SavingFilter = {
+        userId: userId,
+    }
+    const { savings } = await getSavings(filter);
+    console.log(savings)
+    let totalSaved: number = 0;
+
+        savings?.forEach((saving) => {
+            totalSaved += saving.value;
+            console.log(totalSaved)
+        })
+
+    console.log(totalSaved)
+}
+
+// ___________________________________________________________________________________________________________________________________________________
+// ___________________________________________________________________________________________________________________________________________________
+// ___________________________________________________________________________________________________________________________________________________
+
 
 function calculateMonthsTransactions(startDate: Date, transactions: TransactionClass[]) {
     const endDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
