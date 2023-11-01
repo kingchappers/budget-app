@@ -6,6 +6,7 @@ import { IncomeClass } from "../models/Income";
 import { TransactionClass } from "../models/Transaction";
 import { createSavingAction } from "../_savingActions";
 import { dateToString } from "../lib/utils";
+import { getLatestSaving } from "../lib/saving-db";
 
 interface transactionIncomeTotal {
     month: Date;
@@ -38,8 +39,7 @@ export async function calculateInitialSavings(userId: string) {
 
     if (!oldestTransactionFound || !newestTransactionFound) {
         // Process if there are no transactions
-        console.log(oldestTransactionFound);
-        console.log(newestTransactionFound);
+        console.log("No Transactions Found!");
     } else {
         // Process if there are transactions
         // Produce an array of months between the oldest and newest transactions
@@ -59,8 +59,7 @@ export async function calculateInitialSavings(userId: string) {
 
     if (!oldestIncomeFound || !newestIncomeFound) {
         // Process if there are no incomes
-        console.log(oldestIncomeFound)
-        console.log(newestIncomeFound)
+        console.log("No Incomes Found!");
     } else {
         // Process if there are incomes
         // Produce an array of months between the oldest and newest incomes
@@ -79,19 +78,68 @@ export async function calculateInitialSavings(userId: string) {
     }
 
     const initialSavings = calculateMonthlySavings(monthlyTotals)
-
     return initialSavings;
-
 }
 
-export function createSavings(savings: savingsObject[], userId: string){
+// ___________________________________________________________________________________________________________________________________________________
+// ___________________________________________________________________________________________________________________________________________________
+// ___________________________________________________________________________________________________________________________________________________
+
+export async function calculateSavingsUpdate(userId: string) {
+    let transactionFilter: TransactionFilter = {
+        userId: userId,
+    }
+
+    let incomeFilter: IncomeFilter = {
+        userId: userId,
+    }
+
+    let monthlyTotals: transactionIncomeTotal[] = [];
+    const { saving } = await getLatestSaving(userId)
+    const latestSavingDate = saving?.monthStart ?? new Date;
+    let monthsSinceLastSaving = getMonthsBetweenDates(latestSavingDate, new Date);
+    let { transactions } = await getTransactionsBetweenDates(transactionFilter, latestSavingDate, new Date);
+    let { incomes } = await getIncomesBetweenDates(incomeFilter, latestSavingDate, new Date);
+
+    if (transactions) {
+        // Iterate through each of the months and calculate the total incomes in each of them
+        // Then add the totals to an array of objects for a later incomes
+        monthsSinceLastSaving.forEach((startDate) => {
+            if (transactions) {
+                let monthTransactionsTotal = calculateMonthsTransactions(startDate, transactions);
+                monthlyTotals.push(monthTransactionsTotal);
+            }
+        })
+    }
+
+    if (incomes) {
+        monthsSinceLastSaving.forEach((startDate) => {
+            if (incomes) {
+                let monthIncomesTotal = calculateMonthsIncomes(startDate, incomes);
+                monthlyTotals.push(monthIncomesTotal);
+            }
+        })
+    }
+    const savingsUpdate = calculateMonthlySavings(monthlyTotals)
+    console.log(savingsUpdate)
+    return savingsUpdate;
+}
+
+// ___________________________________________________________________________________________________________________________________________________
+// ___________________________________________________________________________________________________________________________________________________
+// ___________________________________________________________________________________________________________________________________________________
+
+export function createSavings(savings: savingsObject[], userId: string) {
     savings.forEach(async (saving) => {
         const monthStart = dateToString(saving.date);
         const value = saving.value;
-        await createSavingAction({monthStart, value, userId, path: "/"})
-        console.log(saving)
+        await createSavingAction({ monthStart, value, userId, path: "/" })
     })
 }
+
+// ___________________________________________________________________________________________________________________________________________________
+// ___________________________________________________________________________________________________________________________________________________
+// ___________________________________________________________________________________________________________________________________________________
 
 function calculateMonthsTransactions(startDate: Date, transactions: TransactionClass[]) {
     const endDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
@@ -117,6 +165,10 @@ function calculateMonthsTransactions(startDate: Date, transactions: TransactionC
     return monthTransactionTotal;
 }
 
+// ___________________________________________________________________________________________________________________________________________________
+// ___________________________________________________________________________________________________________________________________________________
+// ___________________________________________________________________________________________________________________________________________________
+
 function calculateMonthsIncomes(startDate: Date, incomes: IncomeClass[]) {
     const endDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
     let monthIncomes: IncomeClass[] = [];
@@ -138,6 +190,10 @@ function calculateMonthsIncomes(startDate: Date, incomes: IncomeClass[]) {
     }
     return monthIncomeTotal;
 }
+
+// ___________________________________________________________________________________________________________________________________________________
+// ___________________________________________________________________________________________________________________________________________________
+// ___________________________________________________________________________________________________________________________________________________
 
 function calculateMonthlySavings(monthlyTotals: transactionIncomeTotal[]) {
     const monthlySavings: savingsObject[] = [];
@@ -164,6 +220,10 @@ function calculateMonthlySavings(monthlyTotals: transactionIncomeTotal[]) {
 
 }
 
+// ___________________________________________________________________________________________________________________________________________________
+// ___________________________________________________________________________________________________________________________________________________
+// ___________________________________________________________________________________________________________________________________________________
+
 async function getOldestAndNewestTransactions(filter: TransactionFilter) {
     const { transaction: oldestTransaction, transactionFound: oldestTransactionFound } = await getOldestOrNewestTransaction(filter, true);
     const { transaction: newestTransaction, transactionFound: newestTransactionFound } = await getOldestOrNewestTransaction(filter, false);
@@ -176,7 +236,11 @@ async function getOldestAndNewestTransactions(filter: TransactionFilter) {
     }
 }
 
-export async function getOldestAndNewestIncomes(filter: IncomeFilter) {
+// ___________________________________________________________________________________________________________________________________________________
+// ___________________________________________________________________________________________________________________________________________________
+// ___________________________________________________________________________________________________________________________________________________
+
+async function getOldestAndNewestIncomes(filter: IncomeFilter) {
     const { income: oldestIncome, incomeFound: oldestIncomeFound } = await getOldestOrNewestIncome(filter, true);
     const { income: newestIncome, incomeFound: newestIncomeFound } = await getOldestOrNewestIncome(filter, false);
 
@@ -188,7 +252,11 @@ export async function getOldestAndNewestIncomes(filter: IncomeFilter) {
     }
 }
 
-export function getMonthsBetweenDates(startDate: Date, endDate: Date) {
+// ___________________________________________________________________________________________________________________________________________________
+// ___________________________________________________________________________________________________________________________________________________
+// ___________________________________________________________________________________________________________________________________________________
+
+function getMonthsBetweenDates(startDate: Date, endDate: Date) {
     const months = [];
 
     for (let i = startDate.getMonth(); i <= endDate.getMonth(); i++) {
@@ -197,6 +265,10 @@ export function getMonthsBetweenDates(startDate: Date, endDate: Date) {
 
     return months;
 }
+
+// ___________________________________________________________________________________________________________________________________________________
+// ___________________________________________________________________________________________________________________________________________________
+// ___________________________________________________________________________________________________________________________________________________
 
 function getMonthTotalItems(month: Date, monthlyTotals: transactionIncomeTotal[]) {
     const monthTotal = monthlyTotals.filter(function (monthlyTotal) {

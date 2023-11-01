@@ -3,12 +3,12 @@ import { SavingForm } from "../components/savings-form-server";
 import { SavingItem } from "../components/savings-item-server";
 import { authOptions } from "../lib/auth";
 import { redirect } from "next/navigation";
-import { getSavings, SavingFilter } from "../lib/saving-db";
+import { getSavingByDate, getSavings, SavingFilter } from "../lib/saving-db";
 import { TransactionFilter } from "../lib/transaction-db";
 import { IncomeFilter } from "../lib/income-db";
 import Link from "next/link";
 import clsx from "clsx";
-import { calculateInitialSavings, createSavings } from "../components/savings-calculations";
+import { calculateInitialSavings, calculateSavingsUpdate, createSavings } from "../components/savings-calculations";
 
 export default async function Savings({
     searchParams
@@ -53,7 +53,11 @@ export default async function Savings({
 
     if (savingsResults != null && savingsResults > 1) {
         // Do checks and calculations for multiple savings entry and calculate current savings
-        const updatedSavings = await calculateUpdatedSavings
+        const savingsUpdate = await calculateSavingsUpdate(userId)
+        savingsUpdate.forEach((saving) => {
+            const savingToUpdate = getSavingByDate(userId, saving.date)
+            console.log(saving)
+        })
         // ___________________________________________________________________________________________________________________________________________________
         // ___________________________________________________________________________________________________________________________________________________
         // ___________________________________________________________________________________________________________________________________________________
