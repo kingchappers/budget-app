@@ -5,15 +5,13 @@ import { calculateIncomeTotal, calculateTransactionTotal } from "./target-calcul
 import { IncomeClass } from "../models/Income";
 import { TransactionClass } from "../models/Transaction";
 
+interface transactionIncomeTotal {
+    month: Date;
+    value: number;
+    transaction: boolean;
+}
+
 export async function calculateInitialSavings(userId: string) {
-    interface transactionIncomeTotal {
-        month: Date;
-        value: number;
-        transaction: boolean;
-    }
-
-    let transactionIncomeList: transactionIncomeTotal[] = [];
-
     let transactionFilter: TransactionFilter = {
         userId: userId,
     }
@@ -22,12 +20,12 @@ export async function calculateInitialSavings(userId: string) {
         userId: userId,
     }
 
-    const { oldestTransaction, oldestTransactionFound, newestTransaction, newestTransactionFound } = await getOldestAndNewestTransactions(transactionFilter)
-    const { oldestIncome, oldestIncomeFound, newestIncome, newestIncomeFound } = await getOldestAndNewestIncomes(incomeFilter)
+    let transactionIncomeList: transactionIncomeTotal[] = [];
 
+    const { oldestTransaction, oldestTransactionFound, newestTransaction, newestTransactionFound } = await getOldestAndNewestTransactions(transactionFilter)
     const oldestTransactionDate = oldestTransaction?.transactionDate ?? new Date;
     const newestTransactionDate = newestTransaction?.transactionDate ?? new Date;
-
+    const { oldestIncome, oldestIncomeFound, newestIncome, newestIncomeFound } = await getOldestAndNewestIncomes(incomeFilter)
     const oldestIncomeDate = oldestIncome?.incomeDate ?? new Date;
     const newestIncomeDate = newestIncome?.incomeDate ?? new Date;
 
@@ -44,26 +42,11 @@ export async function calculateInitialSavings(userId: string) {
 
         // Iterate through each of the months and calculate the total transactions in each of them
         // Then add the totals to an array of objects for a later transaction
-        transactionMonths.forEach(async (startDate) => {
-            const endDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
-            var monthTransactions: TransactionClass[] = [];
-
+        transactionMonths.forEach((startDate) => {
             if (transactions) {
-                for (const transaction of transactions) {
-                    const transactionDate = transaction.transactionDate;
-                    if (transactionDate >= startDate && transactionDate <= endDate) {
-                        monthTransactions.push(transaction)
-                    }
-                }
+                let monthTransactionTotal = calculateMonthsTransactions(startDate, transactions);
+                transactionIncomeList.push(monthTransactionTotal);
             }
-
-            let transactionTotal = calculateTransactionTotal(monthTransactions)
-            let monthTransactionTotal: transactionIncomeTotal = {
-                month: startDate,
-                value: transactionTotal,
-                transaction: true,
-            }
-            transactionIncomeList.push(monthTransactionTotal)
         })
     }
 
@@ -75,35 +58,66 @@ export async function calculateInitialSavings(userId: string) {
         // Process if there are incomes
         // Produce an array of months between the oldest and newest incomes
         // And get all incomes between the oldest and the newest dates
-        let incomeMonths = getMonthsBetweenDates(oldestIncomeDate, newestIncomeDate)
-        let { incomes } = await getIncomesBetweenDates(incomeFilter, oldestIncomeDate, newestIncomeDate)
+        let incomeMonths = getMonthsBetweenDates(oldestIncomeDate, newestIncomeDate);
+        let { incomes } = await getIncomesBetweenDates(incomeFilter, oldestIncomeDate, newestIncomeDate);
 
         // Iterate through each of the months and calculate the total incomes in each of them
         // Then add the totals to an array of objects for a later incomes
-        incomeMonths.forEach(async (startDate) => {
-            const endDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
-            var monthIncomes: IncomeClass[] = [];
-
+        incomeMonths.forEach((startDate) => {
             if (incomes) {
-                for (const income of incomes) {
-                    const incomeDate = income.incomeDate;
-                    if (incomeDate >= startDate && incomeDate <= endDate) {
-                        monthIncomes.push(income)
-                    }
-                }
+                let monthIncomesTotal = calculateMonthsIncomes(startDate, incomes);
+                transactionIncomeList.push(monthIncomesTotal);
             }
-
-            let incomeTotal = calculateIncomeTotal(monthIncomes)
-            let monthIncomeTotal: transactionIncomeTotal = {
-                month: startDate,
-                value: incomeTotal,
-                transaction: false,
-            }
-            transactionIncomeList.push(monthIncomeTotal)
         })
-
-        console.log(transactionIncomeList)
     }
+
+    console.log(transactionIncomeList)
+}
+
+function calculateMonthsTransactions(startDate: Date, transactions: TransactionClass[]) {
+    const endDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
+
+    let monthTransactions: TransactionClass[] = [];
+
+    if (transactions) {
+        for (const transaction of transactions) {
+            const transactionDate = transaction.transactionDate;
+            if (transactionDate >= startDate && transactionDate <= endDate) {
+                monthTransactions.push(transaction)
+            }
+        }
+    }
+
+    let transactionTotal = calculateTransactionTotal(monthTransactions)
+    let monthTransactionTotal: transactionIncomeTotal = {
+        month: startDate,
+        value: transactionTotal,
+        transaction: true,
+    }
+
+    return monthTransactionTotal;
+}
+
+function calculateMonthsIncomes(startDate: Date, incomes: IncomeClass[]) {
+    const endDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
+    let monthIncomes: IncomeClass[] = [];
+
+    if (incomes) {
+        for (const income of incomes) {
+            const incomeDate = income.incomeDate;
+            if (incomeDate >= startDate && incomeDate <= endDate) {
+                monthIncomes.push(income)
+            }
+        }
+    }
+
+    let incomeTotal = calculateIncomeTotal(monthIncomes)
+    let monthIncomeTotal: transactionIncomeTotal = {
+        month: startDate,
+        value: incomeTotal,
+        transaction: false,
+    }
+    return monthIncomeTotal;
 }
 
 export async function getOldestAndNewestTransactions(filter: TransactionFilter) {
