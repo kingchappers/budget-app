@@ -11,6 +11,11 @@ interface transactionIncomeTotal {
     transaction: boolean;
 }
 
+interface savingsObject {
+    date: Date;
+    value: number;
+}
+
 export async function calculateInitialSavings(userId: string) {
     let transactionFilter: TransactionFilter = {
         userId: userId,
@@ -20,8 +25,7 @@ export async function calculateInitialSavings(userId: string) {
         userId: userId,
     }
 
-    let monthlyTransactionTotals: transactionIncomeTotal[] = [];
-    let monthlyIncomeTotals: transactionIncomeTotal[] = [];
+    let monthlyTotals: transactionIncomeTotal[] = [];
 
     const { oldestTransaction, oldestTransactionFound, newestTransaction, newestTransactionFound } = await getOldestAndNewestTransactions(transactionFilter)
     const oldestTransactionDate = oldestTransaction?.transactionDate ?? new Date;
@@ -46,7 +50,7 @@ export async function calculateInitialSavings(userId: string) {
         transactionMonths.forEach((startDate) => {
             if (transactions) {
                 let monthTransactionTotal = calculateMonthsTransactions(startDate, transactions);
-                monthlyTransactionTotals.push(monthTransactionTotal);
+                monthlyTotals.push(monthTransactionTotal);
             }
         })
     }
@@ -67,14 +71,21 @@ export async function calculateInitialSavings(userId: string) {
         incomeMonths.forEach((startDate) => {
             if (incomes) {
                 let monthIncomesTotal = calculateMonthsIncomes(startDate, incomes);
-                monthlyIncomeTotals.push(monthIncomesTotal);
+                monthlyTotals.push(monthIncomesTotal);
             }
         })
     }
 
-    // const test = calculateMonthlySavings(monthlyTransactionTotals, monthlyIncomeTotals)
-    calculateMonthlySavings(monthlyTransactionTotals, monthlyIncomeTotals)
+    const initialSavings = calculateMonthlySavings(monthlyTotals)
 
+    return initialSavings;
+
+}
+
+export function createSavings(savings: savingsObject[], userId: string){
+    savings.forEach((saving) => {
+        console.log(saving)
+    })
 }
 
 function calculateMonthsTransactions(startDate: Date, transactions: TransactionClass[]) {
@@ -123,35 +134,32 @@ function calculateMonthsIncomes(startDate: Date, incomes: IncomeClass[]) {
     return monthIncomeTotal;
 }
 
-function calculateMonthlySavings(monthlyTransactionTotals: transactionIncomeTotal[], monthlyIncomeTotals: transactionIncomeTotal[]) {
-    interface savingsObject {
-        date: Date;
-        value: number;
-    }
+function calculateMonthlySavings(monthlyTotals: transactionIncomeTotal[]) {
     const monthlySavings: savingsObject[] = [];
 
-    for (const monthlyTransactionTotal of monthlyTransactionTotals) {
-        console.log("test")
-        const transactionMonth = monthlyTransactionTotal.month;
+    const sortedTotals = monthlyTotals.sort((a, b) => (a.month < b.month ? -1 : 1));
+    const newestDate = sortedTotals[sortedTotals.length - 1].month
+    const oldestDate = sortedTotals[0].month
 
-        for (const monthlyIncomeTotal of monthlyIncomeTotals) {
-            const incomeMonth = monthlyIncomeTotal.month;
+    const allMonths = getMonthsBetweenDates(oldestDate, newestDate)
 
-            if (transactionMonth === incomeMonth) {
-                const totalSaved = calculateDifference(monthlyTransactionTotal.value, monthlyIncomeTotal.value)
+    for (const month of allMonths) {
+        const monthTotals = getMonthTotalItems(month, monthlyTotals);
+        const monthTransaction = monthTotals.find((monthTotal) => monthTotal.transaction == true)?.value;
+        const monthIncome = monthTotals.find((monthTotal) => monthTotal.transaction == false)?.value;
 
-                const monthSavings: savingsObject = {
-                    date: monthlyTransactionTotal.month,
-                    value: totalSaved
-                }
-
-                console.log(monthSavings)
-            }
+        const monthSaving: savingsObject = {
+            date: month,
+            value: calculateDifference(monthTransaction ?? 0, monthIncome ?? 0)
         }
+        monthlySavings.push(monthSaving);
     }
+
+    return monthlySavings;
+
 }
 
-export async function getOldestAndNewestTransactions(filter: TransactionFilter) {
+async function getOldestAndNewestTransactions(filter: TransactionFilter) {
     const { transaction: oldestTransaction, transactionFound: oldestTransactionFound } = await getOldestOrNewestTransaction(filter, true);
     const { transaction: newestTransaction, transactionFound: newestTransactionFound } = await getOldestOrNewestTransaction(filter, false);
 
@@ -183,4 +191,12 @@ export function getMonthsBetweenDates(startDate: Date, endDate: Date) {
     }
 
     return months;
+}
+
+function getMonthTotalItems(month: Date, monthlyTotals: transactionIncomeTotal[]) {
+    const monthTotal = monthlyTotals.filter(function (monthlyTotal) {
+        return monthlyTotal.month.getTime() === month.getTime();
+    })
+
+    return monthTotal;
 }
