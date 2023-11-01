@@ -4,6 +4,8 @@ import { TransactionFilter } from "../lib/transaction-db"
 import { calculateDifference, calculateIncomeTotal, calculateTransactionTotal } from "./target-calculation-functions"
 import { IncomeClass } from "../models/Income";
 import { TransactionClass } from "../models/Transaction";
+import { createSavingAction } from "../_savingActions";
+import { dateToString } from "../lib/utils";
 
 interface transactionIncomeTotal {
     month: Date;
@@ -83,7 +85,10 @@ export async function calculateInitialSavings(userId: string) {
 }
 
 export function createSavings(savings: savingsObject[], userId: string){
-    savings.forEach((saving) => {
+    savings.forEach(async (saving) => {
+        const monthStart = dateToString(saving.date);
+        const value = saving.value;
+        await createSavingAction({monthStart, value, userId, path: "/"})
         console.log(saving)
     })
 }
