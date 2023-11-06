@@ -15,7 +15,7 @@ export default async function Home() {
     const userId = session.user.id;
 
     let filter: CategoryFilter = {
-        limit: 50,
+        limit: 0,
         userId: session.user.id
     }
 
