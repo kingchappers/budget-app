@@ -143,6 +143,8 @@ export function createSavings(savings: savingsObject[], userId: string) {
 export async function calculateTotalSaved(userId: string) {
     const filter: SavingFilter = {
         userId: userId,
+        // limit of 0 is the same as not setting a limit
+        limit: 0,
     }
     const { savings } = await getSavings(filter);
     console.log(savings)
