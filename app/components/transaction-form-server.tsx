@@ -42,9 +42,6 @@ export function TransactionForm({ categories, userId }: TransactionFormProps) {
             return;
         }
 
-        //For testing / Troubleshooting
-        // console.log(typeof value)
-
         // Invoke server action to add new transaction
         await createTransactionAction({ transactionDate, vendor, value, category, items, notes, userId, path: "/" });
     }
