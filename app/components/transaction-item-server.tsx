@@ -1,6 +1,7 @@
 import { TransactionClass } from "../models/Transaction";
 import { DeleteTransaction } from "./delete-items-server";
 import { dateToString } from "../lib/utils";
+import { TransactionItemMenu } from "./menu-buttons";
 
 interface TransactionItemProps {
     transaction: TransactionClass
@@ -18,6 +19,7 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({ transaction })
                 <td className="px-5">{transaction.items}</td>
                 <td className="px-5">{transaction.notes}</td>
                 <td><DeleteTransaction transaction={transaction} /></td>
+                <td><TransactionItemMenu transaction={transaction} /></td>
             </tr>
         </tbody>
     );
