@@ -1,23 +1,40 @@
 "use client"
 
-import React from "react"
+import { PropaneSharp } from "@mui/icons-material"
+import React, { Dispatch, SetStateAction } from "react"
 import Datetime from "react-datetime"
 import "react-datetime/css/react-datetime.css"
+import { stringToDate } from "../lib/utils"
 
 interface DatePickerProps {
-    initialDate?: Date
+    initialDate?: Date,
+    selectedDate?: Date,
+    setSelectedDate?: Dispatch<SetStateAction<Date>>
 }
 
-export function DatePicker({initialDate}:DatePickerProps) {
-
+export function DatePicker({ initialDate, selectedDate, setSelectedDate }: DatePickerProps) {
     let inputProps = {
         name: 'pickedDate',
         size: 9,
     };
 
+    function setDateSelection(value: string | moment.Moment) {
+        if (setSelectedDate) {
+            if (value) {
+                if (typeof (value) == 'string') {
+                    const valueAsDate = stringToDate(value)
+                    setSelectedDate(valueAsDate)
+                } else if (typeof (value) == 'object') {
+                    const valueAsDate = value.toDate()
+                    setSelectedDate(valueAsDate)
+                }
+            }
+        }
+    }
+
     return (
         <div>
-            <Datetime dateFormat="DD/MM/YYYY" inputProps={inputProps} initialValue={initialDate} timeFormat={false} className="bg-white border rounded px-1 py-1 flex-1" />
+            <Datetime dateFormat="DD/MM/YYYY" inputProps={inputProps} initialValue={initialDate} timeFormat={false} onChange={(value) => setDateSelection(value)} className="bg-white border rounded px-1 py-1 flex-1" />
         </div>
     )
 }

@@ -64,6 +64,8 @@ export default async function Home({
                         <th className="px-5 w-24">Amount</th>
                         <th className="px-5 w-48">Category</th>
                         <th className="px-5 w-80">Notes</th>
+                        <th className="px-5 w-5"></th>
+                        <th className="px-5 w-16"></th>
                     </tr>
                 </thead>
 

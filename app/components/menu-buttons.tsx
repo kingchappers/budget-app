@@ -10,6 +10,19 @@ import Login from '@mui/icons-material/Login';
 import PersonAdd from "@mui/icons-material/PersonAdd";
 import ManageAccounts from "@mui/icons-material/ManageAccounts";
 import { signIn, signOut } from "next-auth/react";
+import { TransactionClass } from "../models/Transaction";
+import { IconButton } from "@mui/material";
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { DeleteTransaction } from "./delete-items-server";
+import EditIcon from '@mui/icons-material/Edit';
+import { Dispatch, SetStateAction } from "react";
+
+type transactionItemMenuProps = {
+    transaction: TransactionClass;
+    isEditingTransaction: boolean;
+    setIsEditingTransaction: Dispatch<SetStateAction<boolean>>
+};
 
 export function BudgetMenu() {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -124,4 +137,56 @@ export function AccountMenu() {
             </Menu>
         </div>
     );
+}
+
+export function TransactionItemMenu({ transaction, isEditingTransaction, setIsEditingTransaction }: transactionItemMenuProps ) {
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+    return (
+        <div>
+            <IconButton
+                aria-label="more"
+                id="transaction-more-button"
+                aria-controls={open ? 'transaction-Item-menu' : undefined}
+                aria-expanded={open ? 'true' : undefined}
+                aria-haspopup="true"
+                onClick={handleClick}
+            >
+                <MoreVertIcon />
+            </IconButton>
+            <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                MenuListProps={{
+                    'aria-labelledby': 'basic-button',
+                }}
+            >
+                <MenuItem onClick={handleClose}>
+                    <EditIcon>
+                        <Logout fontSize="small" />
+                    </EditIcon>
+                    <button onClick={() => setIsEditingTransaction(true)}>
+                        Edit Transaction
+                    </button>
+                </MenuItem>
+
+                <MenuItem onClick={handleClose}>
+                    <ListItemIcon>
+                        <DeleteIcon fontSize="small" />
+                    </ListItemIcon>
+                    <DeleteTransaction transaction={transaction} />
+
+                </MenuItem>
+
+            </Menu>
+        </div>
+    )
 }

@@ -65,6 +65,8 @@ export default async function Transactions({
                         <th className="px-5 w-48">Category</th>
                         <th className="px-5 w-48">Items</th>
                         <th className="px-5 w-80">Notes</th>
+                        <th className="px-5 w-5"></th>
+                        <th className="px-5 w-16"></th>
                     </tr>
                 </thead>
 
@@ -74,7 +76,7 @@ export default async function Transactions({
                     </tbody>
                 ) : (
                     transactions?.map((transaction) => (
-                        <TransactionItem key={transaction.id} transaction={transaction} />
+                        <TransactionItem key={transaction.id} transaction={transaction} categories={listOfCategories}/>
                     ))
                 )}
 
