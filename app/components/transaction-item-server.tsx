@@ -19,12 +19,12 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({ transaction, c
     const transactionDateString = dateToString(transaction.transactionDate);
     const [isEditingTransaction, setIsEditingTransaction] = useState(false);
 
-    const [transactionDate, setTransactionDate] = useState(new Date());
-    const [vendor, setVendor] = useState("");
-    const [value, setValue] = useState(0);
-    const [categoriesSelection, setCategoriesSelection] = useState("");
-    const [items, setItems] = useState("");
-    const [notes, setNotes] = useState("");
+    const [transactionDate, setTransactionDate] = useState(transaction.transactionDate);
+    const [vendor, setVendor] = useState(transaction.vendor);
+    const [value, setValue] = useState(transaction.value);
+    const [categoriesSelection, setCategoriesSelection] = useState(transaction.category);
+    const [items, setItems] = useState(transaction.items);
+    const [notes, setNotes] = useState(transaction.notes);
 
     function handleInputFieldChange(event: ChangeEvent<HTMLInputElement>, vendor: string, value: number, category: string, items: string, notes: string) {
         const target = event.target as HTMLInputElement;
@@ -55,46 +55,21 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({ transaction, c
         }
 
         if (typeof transactionDate !== 'object') {
-            console.log(typeof (transactionDate))
-            console.log(transactionDate)
             return;
         }
-
         if (typeof vendor !== 'string') {
-            console.log(typeof (vendor))
-            console.log(vendor)
-            console.log("vendor")
             return;
         }
-
         if (typeof value !== 'number') {
-            console.log(typeof (value))
-            console.log(value)
-            console.log("value")
             return;
         }
-
         if (typeof categoriesSelection !== 'string') {
-            console.log(typeof (categoriesSelection))
-            console.log(categoriesSelection)
-            console.log("categoriesSelection")
-
             return;
         }
-
         if (typeof items !== 'string') {
-            console.log(typeof (items))
-            console.log(items)
-            console.log("items")
-
             return;
         }
-
         if (typeof notes !== 'string') {
-            console.log(typeof (notes))
-            console.log(notes)
-            console.log("notes")
-
             return;
         }
 
