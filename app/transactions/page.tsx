@@ -65,8 +65,7 @@ export default async function Transactions({
                         <th className="px-5 w-48">Category</th>
                         <th className="px-5 w-48">Items</th>
                         <th className="px-5 w-80">Notes</th>
-                        <th className="px-5 w-5"></th>
-                        <th className="px-5 w-16"></th>
+                        <th className="px-5 w-20"></th>
                     </tr>
                 </thead>
 

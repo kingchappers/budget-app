@@ -88,9 +88,7 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({ transaction, c
                     <td className="px-5"><CategoryComboBox categories={categories} categoriesSelection={categoriesSelection} setCategoriesSelection={setCategoriesSelection} /></td>
                     <td className="px-5"><input type="text" name="items" placeholder="Items" defaultValue={transaction.items} onChange={(event) => handleInputFieldChange(event, transaction.vendor, transaction.value, transaction.category, transaction.items, transaction.notes)} className="border rounded px-1 py-1 w-44" /></td>
                     <td className="px-5"><input type="text" name="notes" placeholder="Notes" defaultValue={transaction.notes} onChange={(event) => handleInputFieldChange(event, transaction.vendor, transaction.value, transaction.category, transaction.items, transaction.notes)} className="border rounded px-1 py-1 w-80" /></td>
-                    {/* <td><TransactionItemMenu transaction={transaction} isEditingTransaction={isEditingTransaction} setIsEditingTransaction={setIsEditingTransaction} /></td> */}
-                    <td></td>
-                    <td><button onClick={() => handleClick(transaction.id)} className="px-4 py-1 text-white rounded bg-green-500">Save Changes</button></td>
+                    <td><button onClick={() => handleClick(transaction.id)} className="px-4 py-1 text-white rounded bg-green-500">Save</button></td>
                 </tr>
             ) : (
                 <tr>
@@ -101,8 +99,6 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({ transaction, c
                     <td className="px-5">{transaction.items}</td>
                     <td className="px-5">{transaction.notes}</td>
                     <td><TransactionItemMenu transaction={transaction} isEditingTransaction={isEditingTransaction} setIsEditingTransaction={setIsEditingTransaction} /></td>
-                    {/* <td><TransactionItemMenu transaction={transaction} isEditingTransaction={isEditingTransaction} /></td> */}
-                    <td>{isEditingTransaction ? (<p>true</p>) : (<p>false</p>)}</td>
                 </tr>
             )}
 
