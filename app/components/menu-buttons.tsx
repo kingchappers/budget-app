@@ -139,7 +139,7 @@ export function AccountMenu() {
     );
 }
 
-export function TransactionItemMenu({ transaction, isEditingTransaction, setIsEditingTransaction }: transactionItemMenuProps ) {
+export function TransactionItemMenu({ transaction, isEditingTransaction, setIsEditingTransaction }: transactionItemMenuProps) {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -183,9 +183,7 @@ export function TransactionItemMenu({ transaction, isEditingTransaction, setIsEd
                         <DeleteIcon fontSize="small" />
                     </ListItemIcon>
                     <DeleteTransaction transaction={transaction} />
-
                 </MenuItem>
-
             </Menu>
         </div>
     )
