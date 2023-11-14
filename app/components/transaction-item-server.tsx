@@ -11,14 +11,14 @@ import { CategoryClass } from "../models/Category";
 import { updateTransactionAction } from "../_transactionActions";
 
 interface TransactionItemProps {
-    transaction: TransactionClass
+    transaction: TransactionClass;
     categories: CategoryClass[];
 }
 
 export const TransactionItem: React.FC<TransactionItemProps> = ({ transaction, categories }) => {
     const transactionDateString = dateToString(transaction.transactionDate);
-    const [isEditingTransaction, setIsEditingTransaction] = useState(false);
 
+    const [isEditingTransaction, setIsEditingTransaction] = useState(false);
     const [transactionDate, setTransactionDate] = useState(transaction.transactionDate);
     const [vendor, setVendor] = useState(transaction.vendor);
     const [value, setValue] = useState(transaction.value);
