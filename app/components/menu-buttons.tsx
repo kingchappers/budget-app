@@ -14,14 +14,21 @@ import { TransactionClass } from "../models/Transaction";
 import { IconButton } from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { DeleteTransaction } from "./delete-items-server";
+import { DeleteIncome, DeleteTransaction } from "./delete-items-server";
 import EditIcon from '@mui/icons-material/Edit';
 import { Dispatch, SetStateAction } from "react";
+import { Income, IncomeClass } from "../models/Income";
 
 type transactionItemMenuProps = {
     transaction: TransactionClass;
     isEditingTransaction: boolean;
     setIsEditingTransaction: Dispatch<SetStateAction<boolean>>
+};
+
+type incomeItemMenuProps = {
+    income: IncomeClass;
+    isEditingIncome: boolean;
+    setIsEditingIncome: Dispatch<SetStateAction<boolean>>
 };
 
 export function BudgetMenu() {
@@ -183,6 +190,56 @@ export function TransactionItemMenu({ transaction, isEditingTransaction, setIsEd
                         <DeleteIcon fontSize="small" />
                     </ListItemIcon>
                     <DeleteTransaction transaction={transaction} />
+                </MenuItem>
+            </Menu>
+        </div>
+    )
+}
+
+export function IncomeItemMenu({ income, isEditingIncome, setIsEditingIncome }: incomeItemMenuProps) {
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+    return (
+        <div>
+            <IconButton
+                aria-label="more"
+                id="income-more-button"
+                aria-controls={open ? 'income-Item-menu' : undefined}
+                aria-expanded={open ? 'true' : undefined}
+                aria-haspopup="true"
+                onClick={handleClick}
+            >
+                <MoreVertIcon />
+            </IconButton>
+            <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                MenuListProps={{
+                    'aria-labelledby': 'basic-button',
+                }}
+            >
+                <MenuItem onClick={handleClose}>
+                    <EditIcon>
+                        <Logout fontSize="small" />
+                    </EditIcon>
+                    <button onClick={() => setIsEditingIncome(true)}>
+                        Edit Income
+                    </button>
+                </MenuItem>
+
+                <MenuItem onClick={handleClose}>
+                    <ListItemIcon>
+                        <DeleteIcon fontSize="small" />
+                    </ListItemIcon>
+                    <DeleteIncome income={income} />
                 </MenuItem>
             </Menu>
         </div>

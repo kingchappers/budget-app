@@ -65,7 +65,6 @@ export default async function Home({
                         <th className="px-5 w-48">Category</th>
                         <th className="px-5 w-80">Notes</th>
                         <th className="px-5 w-5"></th>
-                        <th className="px-5 w-16"></th>
                     </tr>
                 </thead>
 
@@ -75,7 +74,7 @@ export default async function Home({
                     </tbody>
                 ) : (
                     incomes?.map((income) => (
-                        <IncomeItem key={income.id} income={income} />
+                        <IncomeItem key={income.id} income={income} categories={listOfCategories} />
                     ))
                 )}
 

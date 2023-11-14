@@ -1,7 +1,6 @@
 "use client"
 
 import { TransactionClass } from "../models/Transaction";
-import { DeleteTransaction } from "./delete-items-server";
 import { dateToString, stringToDate } from "../lib/utils";
 import { TransactionItemMenu } from "./menu-buttons";
 import { ChangeEvent, useState } from "react";
