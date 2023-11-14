@@ -48,8 +48,9 @@ export function DeleteIncome({ income }: incomeDeleteButtonProps) {
                 path: "/"
             })
         })
-        } className="px-2 py-1 ml-2 my-1 text-white rounded bg-red-500">Delete</button>
-
+        }>
+            Delete
+        </button>
     );
 }
 
