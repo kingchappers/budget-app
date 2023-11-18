@@ -59,7 +59,7 @@ export async function deleteTargetAction({
  */
 export async function deleteTargetsByNameAction(category: CategoryClass, userId: string) {
     let filter: TargetFilter = {
-        limit: 50,
+        limit: 0,
         userId: userId,
     }
 
@@ -74,9 +74,20 @@ export async function deleteTargetsByNameAction(category: CategoryClass, userId:
     }
 }
 
+export async function getTargetsByNameAction(categoryName: string, userId: string) {
+    let filter: TargetFilter = {
+        limit: 0,
+        userId: userId,
+    }
+
+    const targets = await getTargetsByName(filter, categoryName);
+    return targets;
+
+}
+
 export async function updateTargetsByNameAction(category: CategoryClass, changedValue: string, userId: string) {
     let filter: TargetFilter = {
-        limit: 50,
+        limit: 0,
         userId: userId,
     }
 
