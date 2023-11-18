@@ -69,6 +69,7 @@ export const IncomeItem: React.FC<IncomeItemProps> = ({ income, categories }) =>
         updateIncomeAction(id, update, "/")
         setIsEditingIncome(false)
     }
+    
     return (
         <tbody>
             {isEditingIncome ? (
