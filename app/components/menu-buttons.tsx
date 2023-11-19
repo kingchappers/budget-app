@@ -81,6 +81,9 @@ export function BudgetMenu() {
                 <MenuItem onClick={handleClose}>
                     <Link href="/savings">Savings</Link>
                 </MenuItem>
+                <MenuItem onClick={handleClose}>
+                    <Link href="/trends">Trends</Link>
+                </MenuItem>
             </Menu>
         </div>
     );
