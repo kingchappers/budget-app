@@ -1,11 +1,11 @@
 import { YearlySpendTrend } from '../components/trend-graphs';
 
 export default async function Trends() {
-    const data = [
-        { quarter: 1, earnings: 13000 },
-        { quarter: 2, earnings: 16500 },
-        { quarter: 3, earnings: 14250 },
-        { quarter: 4, earnings: 19000 }
+    const yearSpendData = [
+        { month: 1, monthsSpend: 13000 },
+        { month: 2, monthsSpend: 16500 },
+        { month: 3, monthsSpend: 14250 },
+        { month: 4, monthsSpend: 19000 }
     ];
 
     return (
@@ -13,7 +13,7 @@ export default async function Trends() {
 
             <h1 className="text-2xl font-bold mb-4">Spending and Income Trends</h1>
 
-            <YearlySpendTrend />
+            <YearlySpendTrend yearSpendData={yearSpendData} />
 
         </div>
     );
