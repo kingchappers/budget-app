@@ -37,3 +37,22 @@ export function dateToString(date: Date) {
 
     return dateString
 }
+
+export function getMonthsBetweenDates(startDate: Date, endDate: Date) {
+    const months: Date[] = [];
+
+    let currentDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+    while (currentDate <= endDate) {
+        months.push(new Date(currentDate));
+        currentDate.setMonth(currentDate.getMonth() + 1);
+    }
+    console.log(months)
+    return months;
+}
+
+export function getLastTwelveMonths() {
+    const endDate = new Date;
+    const startDate = new Date(endDate.getFullYear() - 1, endDate.getMonth(), endDate.getDate());
+    const monthsBetweenDates = getMonthsBetweenDates(startDate, endDate);
+    return monthsBetweenDates;
+}
