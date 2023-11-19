@@ -46,13 +46,12 @@ export function getMonthsBetweenDates(startDate: Date, endDate: Date) {
         months.push(new Date(currentDate));
         currentDate.setMonth(currentDate.getMonth() + 1);
     }
-    console.log(months)
     return months;
 }
 
 export function getLastTwelveMonths() {
     const endDate = new Date;
-    const startDate = new Date(endDate.getFullYear() - 1, endDate.getMonth(), endDate.getDate());
+    const startDate = new Date(endDate.getFullYear() - 1, endDate.getMonth(), 1);
     const monthsBetweenDates = getMonthsBetweenDates(startDate, endDate);
     return monthsBetweenDates;
 }
