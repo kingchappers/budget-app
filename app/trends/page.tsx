@@ -12,8 +12,8 @@ export default async function Trends() {
     }
 
     const userId = session.user.id;
-    const date = new Date(2009, 10, 10);  // 2009-11-10
-    const month = date.toLocaleString('default', { month: 'short' });
+    // const date = new Date(2009, 10, 10);  // 2009-11-10
+    // const month = date.toLocaleString('default', { month: 'short' });
     // const yearSpendData: {
     //     month: string;
     //     monthSpend: number;

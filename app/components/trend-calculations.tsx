@@ -28,7 +28,7 @@ export async function getListOfYearsTransactionsByMonth(userId: string) {
 
         const { transactions } = await getTransactionsBetweenDatesAction({ userId, startDate, endDate })
         const monthTotal = calculateTransactionTotal(transactions)
-        const monthAsString = month.toLocaleString('default', { month: 'long' })
+        const monthAsString = month.toLocaleString('default', { month: 'short' })
         monthlySpendData.push({ month: monthAsString, monthSpend: monthTotal })
         // testSpendData.yearSpendData.push({ month: monthAsString, monthSpend: monthTotal })
         // console.log(yearSpendData)
