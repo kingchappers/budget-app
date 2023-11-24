@@ -9,10 +9,14 @@ export async function getListOfYearsTransactionsByMonth(userId: string) {
     //     monthSpend: number
     // }]
 
-    var yearSpendData: {
-        month: string;
-        monthSpend: number;
-    }[] = []
+    // var yearSpendData: {
+    //     month: string;
+    //     monthSpend: number;
+    // }[] = []
+
+    var monthlySpendData: monthSpendData[] = []
+
+    // var testSpendData: SpendProps
 
     const lastTwelveMonths = getLastTwelveMonths()
 
@@ -25,7 +29,8 @@ export async function getListOfYearsTransactionsByMonth(userId: string) {
         const { transactions } = await getTransactionsBetweenDatesAction({ userId, startDate, endDate })
         const monthTotal = calculateTransactionTotal(transactions)
         const monthAsString = month.toLocaleString('default', { month: 'long' })
-        yearSpendData.push({ month: monthAsString, monthSpend: monthTotal })
+        monthlySpendData.push({ month: monthAsString, monthSpend: monthTotal })
+        // testSpendData.yearSpendData.push({ month: monthAsString, monthSpend: monthTotal })
         // console.log(yearSpendData)
     })
 
@@ -33,7 +38,7 @@ export async function getListOfYearsTransactionsByMonth(userId: string) {
 
     // console.log(yearSpendData)
 
-    return { yearSpendData };
+    return { monthlySpendData };
 }
 
 

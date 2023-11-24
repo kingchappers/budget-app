@@ -26,8 +26,8 @@ export default async function Trends() {
     //     { month: "4", monthsSpend: 19000 }
     // ];
 
-    const yearSpendData = await getListOfYearsTransactionsByMonth(userId)
-    console.log(yearSpendData)
+    const {monthlySpendData} = await getListOfYearsTransactionsByMonth(userId)
+    console.log(monthlySpendData)
 
 
     return (
@@ -35,7 +35,7 @@ export default async function Trends() {
 
             <h1 className="text-2xl font-bold mb-4">Spending and Income Trends</h1>
 
-            <YearlySpendTrend yearSpendData={yearSpendData} />
+            <YearlySpendTrend monthlySpendData={monthlySpendData} />
 
         </div>
     );
