@@ -4,19 +4,8 @@ import { calculateTransactionTotal } from "./target-calculation-functions";
 import { monthSpendData } from "./trend-graphs";
 
 export async function getListOfYearsTransactionsByMonth(userId: string) {
-    // type spendData= [{
-    //     month: string,
-    //     monthSpend: number
-    // }]
-
-    // var yearSpendData: {
-    //     month: string;
-    //     monthSpend: number;
-    // }[] = []
 
     var monthlySpendData: monthSpendData[] = []
-
-    // var testSpendData: SpendProps
 
     const lastTwelveMonths = getLastTwelveMonths()
 
@@ -24,19 +13,16 @@ export async function getListOfYearsTransactionsByMonth(userId: string) {
         const startDate = month
         const endDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0)
 
-
-
         const { transactions } = await getTransactionsBetweenDatesAction({ userId, startDate, endDate })
         const monthTotal = calculateTransactionTotal(transactions)
-        const monthAsString = month.toLocaleString('default', { month: 'short' })
+        const monthAsString = month.toLocaleString('default', { month: 'short' }) + " " + month.getFullYear().toLocaleString().substring(3)
         monthlySpendData.push({ month: monthAsString, monthSpend: monthTotal })
-        // testSpendData.yearSpendData.push({ month: monthAsString, monthSpend: monthTotal })
-        // console.log(yearSpendData)
     })
 
     await Promise.all(monthPromises);
 
-    // console.log(yearSpendData)
+    // monthlySpendData[0].month = monthlySpendData[0].month + " " + lastTwelveMonths[0].getFullYear().toString().substring(2)
+    // console.log(lastTwelveMonths[0].getFullYear().toString().substring(2))
 
     return { monthlySpendData };
 }
