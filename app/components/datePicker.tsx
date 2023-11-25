@@ -12,6 +12,8 @@ interface DatePickerProps {
 }
 
 export function DatePicker({ initialDate, selectedDate, setSelectedDate }: DatePickerProps) {
+    initialDate = initialDate ?? new Date()
+    
     let inputProps = {
         name: 'pickedDate',
         size: 9,
