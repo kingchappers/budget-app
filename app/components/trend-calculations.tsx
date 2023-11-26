@@ -1,5 +1,5 @@
+import { getIncomesBetweenDatesAction } from "../_incomeActions";
 import { getTransactionsBetweenDatesAction } from "../_transactionActions";
-import { getIncomesBetweenDates } from "../lib/income-db";
 import { getLastTwelveMonths } from "../lib/utils";
 import { calculateIncomeTotal, calculateTransactionTotal } from "./target-calculation-functions";
 import { monthIncomeData, monthSpendData } from "./trend-graphs";
@@ -37,7 +37,7 @@ export async function getListOfYearsIncomesByMonth(userId: string) {
     const monthPromises = lastTwelveMonths.map(async (month) => {
         const startDate = month
         const endDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0)
-        const { incomes } = await getIncomesBetweenDates(incomeFilter, startDate, endDate)
+        const { incomes } = await getIncomesBetweenDatesAction({ userId, startDate, endDate })
         const monthTotal = calculateIncomeTotal(incomes)
         const monthAsString = month.toLocaleString('default', { month: 'short' }) + " " + month.getFullYear().toLocaleString().substring(3)
         monthlyIncomeData.push({ month: monthAsString, monthIncome: monthTotal })

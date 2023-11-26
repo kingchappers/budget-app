@@ -1,6 +1,6 @@
 import { getServerSession } from 'next-auth/next';
 import { getListOfYearsIncomesByMonth, getListOfYearsTransactionsByMonth } from '../components/trend-calculations';
-import { YearlyIncomeBarTrend, YearlySpendBarTrend } from '../components/trend-graphs';
+import { YearlyIncomeBarTrend, YearlyIncomeVsSpendingGroupChart, YearlySpendBarTrend } from '../components/trend-graphs';
 import { authOptions } from '../lib/auth';
 import { redirect } from 'next/navigation';
 
@@ -12,8 +12,8 @@ export default async function Trends() {
     }
 
     const userId = session.user.id;
-    const {monthlySpendData} = await getListOfYearsTransactionsByMonth(userId)
-    const {monthlyIncomeData} = await getListOfYearsIncomesByMonth(userId)
+    const { monthlySpendData } = await getListOfYearsTransactionsByMonth(userId)
+    const { monthlyIncomeData } = await getListOfYearsIncomesByMonth(userId)
 
     return (
         <div className="container mx-auto max-w-screen-2xl p-4">
@@ -23,6 +23,8 @@ export default async function Trends() {
             <YearlySpendBarTrend monthlySpendData={monthlySpendData} />
 
             <YearlyIncomeBarTrend monthlyIncomeData={monthlyIncomeData} />
+
+            <YearlyIncomeVsSpendingGroupChart monthSpendData={monthlySpendData} monthIncomeData={monthlyIncomeData} />
 
         </div>
     );
