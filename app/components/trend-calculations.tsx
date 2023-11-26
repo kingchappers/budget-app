@@ -48,13 +48,12 @@ export async function getListOfYearsIncomesByMonth(userId: string) {
     return { monthlyIncomeData };
 }
 
-export function twelveMonthsInOrder(){
+export function twelveMonthsInOrder() {
     const lastTwelveMonths = getLastTwelveMonths()
     var dateOrder: string[] = []
     const monthPromises = lastTwelveMonths.map((month) => {
         const monthAsString = month.toLocaleString('default', { month: 'short' }) + " " + month.getFullYear().toLocaleString().substring(3)
         dateOrder.push(monthAsString)
     })
-
     return dateOrder;
 }
