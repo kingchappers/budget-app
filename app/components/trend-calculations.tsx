@@ -24,7 +24,7 @@ export async function getListOfYearsTransactionTotalsByMonth(userId: string) {
     return { monthlySpendData };
 }
 
-export async function getListOfYearsIncomesByMonth(userId: string) {
+export async function getListOfYearsIncomeTotalsByMonth(userId: string) {
 
     var monthlyIncomeData: monthIncomeData[] = []
     const lastTwelveMonths = getLastTwelveMonths()
