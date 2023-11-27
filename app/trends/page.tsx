@@ -1,5 +1,5 @@
 import { getServerSession } from 'next-auth/next';
-import { getListOfYearsIncomesByMonth, getListOfYearsTransactionsByMonth } from '../components/trend-calculations';
+import { getListOfYearsIncomesByMonth, getListOfYearsTransactionTotalsByMonth } from '../components/trend-calculations';
 import { YearlyIncomeBarTrend, YearlyIncomeVsSpendingGroupChart, YearlySpendBarTrend } from '../components/trend-graphs';
 import { authOptions } from '../lib/auth';
 import { redirect } from 'next/navigation';
@@ -12,7 +12,7 @@ export default async function Trends() {
     }
 
     const userId = session.user.id;
-    const { monthlySpendData } = await getListOfYearsTransactionsByMonth(userId)
+    const { monthlySpendData } = await getListOfYearsTransactionTotalsByMonth(userId)
     const { monthlyIncomeData } = await getListOfYearsIncomesByMonth(userId)
 
     return (
@@ -20,10 +20,10 @@ export default async function Trends() {
 
             <h1 className="text-2xl font-bold mb-4">Spending and Income Trends</h1>
 
-            <YearlySpendBarTrend monthlySpendData={monthlySpendData} />
+            {/* <YearlySpendBarTrend monthlySpendData={monthlySpendData} />
 
-            <YearlyIncomeBarTrend monthlyIncomeData={monthlyIncomeData} />
-            
+            <YearlyIncomeBarTrend monthlyIncomeData={monthlyIncomeData} /> */}
+
             <h1 className="text-xl font-bold mb-4">Income vs Expenses</h1>
             <YearlyIncomeVsSpendingGroupChart monthSpendData={monthlySpendData} monthIncomeData={monthlyIncomeData} />
 
