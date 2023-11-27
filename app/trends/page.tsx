@@ -1,5 +1,5 @@
 import { getServerSession } from 'next-auth/next';
-import { getListOfYearsIncomeTotalsByMonth, getListOfYearsTransactionTotalsByMonth } from '../components/trend-calculations';
+import { getCategoryTransactionTotalBetweenDates, getListOfYearsIncomeTotalsByMonth, getListOfYearsTransactionTotalsByMonth } from '../components/trend-calculations';
 import { YearlyIncomeVsSpendingGroupChart } from '../components/trend-graphs';
 import { authOptions } from '../lib/auth';
 import { redirect } from 'next/navigation';
@@ -14,6 +14,12 @@ export default async function Trends() {
     const userId = session.user.id;
     const { monthlySpendData } = await getListOfYearsTransactionTotalsByMonth(userId)
     const { monthlyIncomeData } = await getListOfYearsIncomeTotalsByMonth(userId)
+
+
+    const date = new Date();
+    const startDate = new Date(date.getFullYear(), date.getMonth(), 1);
+    const endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    const foo = await getCategoryTransactionTotalBetweenDates(userId, startDate, endDate)
 
     return (
         <div className="container mx-auto max-w-screen-2xl p-4">
