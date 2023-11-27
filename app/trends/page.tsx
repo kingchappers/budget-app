@@ -23,7 +23,8 @@ export default async function Trends() {
             <YearlySpendBarTrend monthlySpendData={monthlySpendData} />
 
             <YearlyIncomeBarTrend monthlyIncomeData={monthlyIncomeData} />
-
+            
+            <h1 className="text-xl font-bold mb-4">Income vs Expenses</h1>
             <YearlyIncomeVsSpendingGroupChart monthSpendData={monthlySpendData} monthIncomeData={monthlyIncomeData} />
 
         </div>

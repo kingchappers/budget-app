@@ -1,7 +1,6 @@
 "use client"
 
-import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme, VictoryGroup } from 'victory';
-import { getLastTwelveMonths } from '../lib/utils';
+import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme, VictoryGroup, VictoryLegend } from 'victory';
 import { twelveMonthsInOrder } from './trend-calculations';
 
 interface spendTrendProps {
@@ -84,7 +83,19 @@ export function YearlyIncomeVsSpendingGroupChart({ monthSpendData, monthIncomeDa
             <VictoryChart domainPadding={20} theme={VictoryTheme.material} style={{ parent: { maxWidth: "50%" } }} width={550}>
                 <VictoryAxis label="Month" style={{ tickLabels: { padding: 5, fontSize: 8 }, axisLabel: { padding: 25, fontSize: 9 } }} />
                 <VictoryAxis dependentAxis tickFormat={(x) => (`£${x}`)} style={{ tickLabels: { fontSize: 8 }, axisLabel: { padding: 20, fontSize: 8 } }} />
+                <VictoryLegend x={200}
+                    title="Legend"
+                    centerTitle
+                    orientation="horizontal"
+                    gutter={20}
+                    style={{ border: { stroke: "black" }, title: { fontSize: 20 } }}
+                    data={[
+                        { name: "Income", symbol: { fill: "green" } },
+                        { name: "Expenses", symbol: { fill: "red" } },
+                    ]}
+                />
                 <VictoryGroup offset={20} colorScale={["green", "red"]}>
+
                     <VictoryBar
                         style={{ data: { opacity: 0.7 } }}
                         data={monthIncomeData}
@@ -95,18 +106,16 @@ export function YearlyIncomeVsSpendingGroupChart({ monthSpendData, monthIncomeDa
                         y="monthIncome"
                     />
                     <VictoryBar
-                    style={{ data: { opacity: 0.7 } }}
-                    data={monthSpendData}
-                    categories={{ x: months }}
-                    // data accessor for x values
-                    x="month"
-                    // data accessor for y values
-                    y="monthSpend"
-                />
+                        style={{ data: { opacity: 0.7 } }}
+                        data={monthSpendData}
+                        categories={{ x: months }}
+                        // data accessor for x values
+                        x="month"
+                        // data accessor for y values
+                        y="monthSpend"
+                    />
                 </VictoryGroup>
             </VictoryChart>
         </div >
     );
 }
-
-
