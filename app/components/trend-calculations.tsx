@@ -2,12 +2,7 @@ import { getIncomesBetweenDatesAction } from "../_incomeActions";
 import { getTransactionsBetweenDatesAction } from "../_transactionActions";
 import { getLastTwelveMonths } from "../lib/utils";
 import { calculateIncomeTotal, calculateTransactionTotal } from "./target-calculation-functions";
-import { monthData } from "./trend-graphs";
-
-export interface categorySpendData {
-    category: string,
-    categorySpend: number,
-}
+import { categoryData, monthData } from "./trend-graphs";
 
 export async function getListOfYearsTransactionTotalsByMonth(userId: string) {
     var monthlySpendData: monthData[] = [];
@@ -70,13 +65,12 @@ export async function getCategoryTransactionTotalBetweenDates(userId: string, st
         }
     }
 
-    const categorySpendData: categorySpendData[] = Object.entries(categorySpendRecord).map(([category, value]) => ({
+    const categorySpendData: categoryData[] = Object.entries(categorySpendRecord).map(([category, value]) => ({
         category: category,
-        categorySpend: value
+        value: value
     }))
 
     const monthTotal = calculateTransactionTotal(transactions)
 
     return { categorySpendData, monthTotal };
 }
-

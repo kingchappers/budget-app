@@ -1,6 +1,6 @@
 "use client"
 
-import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme, VictoryGroup, VictoryLegend } from 'victory';
+import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme, VictoryGroup, VictoryLegend, VictoryPie } from 'victory';
 import { twelveMonthsInOrder } from './trend-calculations';
 
 interface barTrendProps {
@@ -17,8 +17,14 @@ interface groupChartProps {
     monthIncomeData: monthData[]
 }
 
-interface categorySplitPieProps {
+export interface categoryData {
+    category: string,
+    value: number,
+}
 
+interface categorySplitPieProps {
+    categoryData: categoryData[],
+    monthTotal: number,
 }
 
 export function YearlySpendBarTrend({ monthlyData }: barTrendProps) {
@@ -115,4 +121,19 @@ export function YearlyIncomeVsSpendingGroupChart({ monthSpendData, monthIncomeDa
     );
 }
 
-export function MonthSpendingCategorySplit({categoryData, monthTotal}: categorySplitPieProps)
+export function MonthSpendingCategorySplit({ categoryData, monthTotal }: categorySplitPieProps) {
+
+    return (
+        <div className="container mx-auto max-w-screen-2xl p-4">
+            <VictoryPie
+                data={categoryData}
+                // labels={({ datum }) => datum.y}
+                x="category"
+                y="value"
+                theme={VictoryTheme.material}
+                style={{ parent: { maxWidth: "50%" } }}
+                width={550}
+            />
+        </div>
+    )
+}
