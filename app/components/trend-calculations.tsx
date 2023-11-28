@@ -56,43 +56,27 @@ export function twelveMonthsInOrder() {
 }
 
 export async function getCategoryTransactionTotalBetweenDates(userId: string, startDate: Date, endDate: Date) {
-    var categorySpendData: categorySpendData[] = []
-
-    var bar: categorySpendData[] = []
-
-    const test: Record<string, number> = {}
-
-    // const lastTwelveMonths = getLastTwelveMonths()
-
-    // const monthPromises = lastTwelveMonths.map(async (month) => {
+    const categorySpendRecord: Record<string, number> = {}
     const { transactions } = await getTransactionsBetweenDatesAction({ userId, startDate, endDate })
 
     if (transactions) {
         for (const transaction of transactions) {
             const category = transaction.category;
             const value = transaction.value;
-
-            if (!test[category]) {
-                test[category] = 0;
+            if (!categorySpendRecord[category]) {
+                categorySpendRecord[category] = 0;
             }
-            test[category] += value
+            categorySpendRecord[category] += value
         }
     }
 
-    const boop: categorySpendData[] = Object.entries(test).map(([category, value]) => ({
+    const categorySpendData: categorySpendData[] = Object.entries(categorySpendRecord).map(([category, value]) => ({
         category: category,
         categorySpend: value
     }))
 
-    console.log(boop)
-
     const monthTotal = calculateTransactionTotal(transactions)
-    // const monthAsString = month.toLocaleString('default', { month: 'short' }) + " " + month.getFullYear().toLocaleString().substring(3)
-    // categorySpendData.push({ category: monthAsString, categorySpend: monthTotal })
-    // })
 
-    // await Promise.all(monthPromises);
-
-    return { categorySpendData };
+    return { categorySpendData, monthTotal };
 }
 
