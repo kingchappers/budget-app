@@ -122,12 +122,10 @@ export function YearlyIncomeVsSpendingGroupChart({ monthSpendData, monthIncomeDa
 }
 
 export function MonthSpendingCategorySplit({ categoryData, monthTotal }: categorySplitPieProps) {
-
     return (
         <div className="container mx-auto max-w-screen-2xl p-4">
             <VictoryPie
                 data={categoryData}
-                // labels={({ datum }) => datum.y}
                 x="category"
                 y="value"
                 theme={VictoryTheme.material}

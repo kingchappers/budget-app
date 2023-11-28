@@ -53,10 +53,11 @@ export function twelveMonthsInOrder() {
 export async function getCategoryTransactionTotalBetweenDates(userId: string, startDate: Date, endDate: Date) {
     const categorySpendRecord: Record<string, number> = {}
     const { transactions } = await getTransactionsBetweenDatesAction({ userId, startDate, endDate })
+    const monthTotal = calculateTransactionTotal(transactions)
 
     if (transactions) {
         for (const transaction of transactions) {
-            const category = transaction.category;
+            var category = transaction.category;
             const value = transaction.value;
             if (!categorySpendRecord[category]) {
                 categorySpendRecord[category] = 0;
@@ -66,11 +67,9 @@ export async function getCategoryTransactionTotalBetweenDates(userId: string, st
     }
 
     const categorySpendData: categoryData[] = Object.entries(categorySpendRecord).map(([category, value]) => ({
-        category: category,
+        category: category + `:\n ${((value / monthTotal) * 100).toFixed(2)}%`,
         value: value
     }))
-
-    const monthTotal = calculateTransactionTotal(transactions)
 
     return { categorySpendData, monthTotal };
 }
