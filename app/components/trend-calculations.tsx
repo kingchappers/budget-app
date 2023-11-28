@@ -2,7 +2,7 @@ import { getIncomesBetweenDatesAction } from "../_incomeActions";
 import { getTransactionsBetweenDatesAction } from "../_transactionActions";
 import { getLastTwelveMonths } from "../lib/utils";
 import { calculateIncomeTotal, calculateTransactionTotal } from "./target-calculation-functions";
-import { monthIncomeData, monthSpendData } from "./trend-graphs";
+import { monthData } from "./trend-graphs";
 
 export interface categorySpendData {
     category: string,
@@ -10,7 +10,7 @@ export interface categorySpendData {
 }
 
 export async function getListOfYearsTransactionTotalsByMonth(userId: string) {
-    var monthlySpendData: monthSpendData[] = [];
+    var monthlySpendData: monthData[] = [];
     const lastTwelveMonths = getLastTwelveMonths();
 
     const monthPromises = lastTwelveMonths.map(async (month) => {
@@ -19,7 +19,7 @@ export async function getListOfYearsTransactionTotalsByMonth(userId: string) {
         const { transactions } = await getTransactionsBetweenDatesAction({ userId, startDate, endDate });
         const monthTotal = calculateTransactionTotal(transactions);
         const monthAsString = month.toLocaleString('default', { month: 'short' }) + " " + month.getFullYear().toLocaleString().substring(3);
-        monthlySpendData.push({ month: monthAsString, monthSpend: monthTotal });
+        monthlySpendData.push({ month: monthAsString, value: monthTotal });
     })
 
     await Promise.all(monthPromises);
@@ -28,7 +28,7 @@ export async function getListOfYearsTransactionTotalsByMonth(userId: string) {
 }
 
 export async function getListOfYearsIncomeTotalsByMonth(userId: string) {
-    var monthlyIncomeData: monthIncomeData[] = [];
+    var monthlyIncomeData: monthData[] = [];
     const lastTwelveMonths = getLastTwelveMonths();
 
     const monthPromises = lastTwelveMonths.map(async (month) => {
@@ -37,7 +37,7 @@ export async function getListOfYearsIncomeTotalsByMonth(userId: string) {
         const { incomes } = await getIncomesBetweenDatesAction({ userId, startDate, endDate });
         const monthTotal = calculateIncomeTotal(incomes);
         const monthAsString = month.toLocaleString('default', { month: 'short' }) + " " + month.getFullYear().toLocaleString().substring(3);
-        monthlyIncomeData.push({ month: monthAsString, monthIncome: monthTotal });
+        monthlyIncomeData.push({ month: monthAsString, value: monthTotal });
     })
 
     await Promise.all(monthPromises);

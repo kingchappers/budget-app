@@ -19,7 +19,10 @@ export default async function Trends() {
     const date = new Date();
     const startDate = new Date(date.getFullYear(), date.getMonth(), 1);
     const endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-    const foo = await getCategoryTransactionTotalBetweenDates(userId, startDate, endDate)
+    const { categorySpendData, monthTotal } = await getCategoryTransactionTotalBetweenDates(userId, startDate, endDate)
+
+    console.log(categorySpendData)
+    console.log(monthTotal)
 
     return (
         <div className="container mx-auto max-w-screen-2xl p-4">

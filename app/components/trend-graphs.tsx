@@ -3,30 +3,25 @@
 import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme, VictoryGroup, VictoryLegend } from 'victory';
 import { twelveMonthsInOrder } from './trend-calculations';
 
-interface spendTrendProps {
-    monthlySpendData: monthSpendData[],
+interface barTrendProps {
+    monthlyData: monthData[],
 }
 
-export interface monthSpendData {
+export interface monthData {
     month: string,
-    monthSpend: number,
-}
-
-interface incomeTrendProps {
-    monthlyIncomeData: monthIncomeData[],
-}
-
-export interface monthIncomeData {
-    month: string,
-    monthIncome: number,
+    value: number,
 }
 
 interface groupChartProps {
-    monthSpendData: monthSpendData[],
-    monthIncomeData: monthIncomeData[]
+    monthSpendData: monthData[],
+    monthIncomeData: monthData[]
 }
 
-export function YearlySpendBarTrend({ monthlySpendData }: spendTrendProps) {
+interface categorySplitPieProps {
+
+}
+
+export function YearlySpendBarTrend({ monthlyData }: barTrendProps) {
     const months = twelveMonthsInOrder()
 
     return (
@@ -37,7 +32,7 @@ export function YearlySpendBarTrend({ monthlySpendData }: spendTrendProps) {
                 <VictoryAxis dependentAxis tickFormat={(x) => (`£${x}`)} style={{ tickLabels: { fontSize: 8 }, axisLabel: { padding: 20, fontSize: 8 } }} />
                 <VictoryBar
                     style={{ data: { fill: "tomato", opacity: 0.7 } }}
-                    data={monthlySpendData}
+                    data={monthlyData}
                     categories={{ x: months }}
                     // data accessor for x values
                     x="month"
@@ -50,7 +45,7 @@ export function YearlySpendBarTrend({ monthlySpendData }: spendTrendProps) {
     );
 }
 
-export function YearlyIncomeBarTrend({ monthlyIncomeData }: incomeTrendProps) {
+export function YearlyIncomeBarTrend({ monthlyData }: barTrendProps) {
     const months = twelveMonthsInOrder()
 
     return (
@@ -61,7 +56,7 @@ export function YearlyIncomeBarTrend({ monthlyIncomeData }: incomeTrendProps) {
                 <VictoryAxis dependentAxis tickFormat={(x) => (`£${x}`)} style={{ tickLabels: { fontSize: 8 }, axisLabel: { padding: 20, fontSize: 8 } }} />
                 <VictoryBar
                     style={{ data: { fill: "tomato", opacity: 0.7 } }}
-                    data={monthlyIncomeData}
+                    data={monthlyData}
                     categories={{ x: months }}
                     // data accessor for x values
                     x="month"
@@ -103,7 +98,7 @@ export function YearlyIncomeVsSpendingGroupChart({ monthSpendData, monthIncomeDa
                         // data accessor for x values
                         x="month"
                         // data accessor for y values
-                        y="monthIncome"
+                        y="value"
                     />
                     <VictoryBar
                         style={{ data: { opacity: 0.7 } }}
@@ -112,10 +107,12 @@ export function YearlyIncomeVsSpendingGroupChart({ monthSpendData, monthIncomeDa
                         // data accessor for x values
                         x="month"
                         // data accessor for y values
-                        y="monthSpend"
+                        y="value"
                     />
                 </VictoryGroup>
             </VictoryChart>
         </div >
     );
 }
+
+export function MonthSpendingCategorySplit({categoryData, monthTotal}: categorySplitPieProps)
