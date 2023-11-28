@@ -22,7 +22,7 @@ export interface categoryData {
     value: number,
 }
 
-interface categorySplitPieProps {
+export interface categorySplitPieProps {
     categoryData: categoryData[],
     monthTotal: number,
 }
@@ -129,7 +129,7 @@ export function MonthSpendingCategorySplit({ categoryData, monthTotal }: categor
                 x="category"
                 y="value"
                 theme={VictoryTheme.material}
-                style={{ parent: { maxWidth: "50%" } }}
+                style={{ parent: { maxWidth: "40%" } }}
                 width={550}
             />
         </div>

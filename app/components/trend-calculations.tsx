@@ -2,7 +2,7 @@ import { getIncomesBetweenDatesAction } from "../_incomeActions";
 import { getTransactionsBetweenDatesAction } from "../_transactionActions";
 import { getLastTwelveMonths } from "../lib/utils";
 import { calculateIncomeTotal, calculateTransactionTotal } from "./target-calculation-functions";
-import { categoryData, monthData } from "./trend-graphs";
+import { categoryData, categorySplitPieProps, monthData } from "./trend-graphs";
 
 export async function getListOfYearsTransactionTotalsByMonth(userId: string) {
     var monthlySpendData: monthData[] = [];
@@ -72,4 +72,15 @@ export async function getCategoryTransactionTotalBetweenDates(userId: string, st
     }))
 
     return { categorySpendData, monthTotal };
+}
+
+export async function getYearCategorySplit(userId: string, months: Date[]) {
+    var yearOfCategorySplits: categorySplitPieProps[] = [];
+    const monthPromises = months.map(async (month) => {
+        const endDate = new Date(month.getFullYear(), month.getMonth() + 1, 0);
+        const { categorySpendData, monthTotal } = await getCategoryTransactionTotalBetweenDates(userId, month, endDate);
+        yearOfCategorySplits.push({ categoryData: categorySpendData, monthTotal });
+    })
+    await Promise.all(monthPromises);
+    return yearOfCategorySplits;
 }

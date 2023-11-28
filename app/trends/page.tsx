@@ -1,8 +1,9 @@
 import { getServerSession } from 'next-auth/next';
-import { getCategoryTransactionTotalBetweenDates, getListOfYearsIncomeTotalsByMonth, getListOfYearsTransactionTotalsByMonth } from '../components/trend-calculations';
+import { getCategoryTransactionTotalBetweenDates, getListOfYearsIncomeTotalsByMonth, getListOfYearsTransactionTotalsByMonth, getYearCategorySplit } from '../components/trend-calculations';
 import { MonthSpendingCategorySplit, YearlyIncomeVsSpendingGroupChart } from '../components/trend-graphs';
 import { authOptions } from '../lib/auth';
 import { redirect } from 'next/navigation';
+import { getLastTwelveMonths } from '../lib/utils';
 
 export default async function Trends() {
     const session = await getServerSession(authOptions);
@@ -11,6 +12,7 @@ export default async function Trends() {
         redirect("/api/auth/signin");
     }
 
+    const months = getLastTwelveMonths()
     const userId = session.user.id;
     const { monthlySpendData } = await getListOfYearsTransactionTotalsByMonth(userId)
     const { monthlyIncomeData } = await getListOfYearsIncomeTotalsByMonth(userId)
@@ -19,9 +21,7 @@ export default async function Trends() {
     const startDate = new Date(date.getFullYear(), date.getMonth(), 1);
     const endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
     const { categorySpendData, monthTotal } = await getCategoryTransactionTotalBetweenDates(userId, startDate, endDate)
-
-    console.log(categorySpendData)
-    console.log(monthTotal)
+    const yearOfCategorySplits = await getYearCategorySplit(userId, months)
 
     return (
         <div className="container mx-auto max-w-screen-2xl p-4">
@@ -32,7 +32,13 @@ export default async function Trends() {
             <YearlyIncomeVsSpendingGroupChart monthSpendData={monthlySpendData} monthIncomeData={monthlyIncomeData} />
 
             <h1 className="text-xl font-bold mb-4">Pies</h1>
-            <MonthSpendingCategorySplit categoryData={categorySpendData} monthTotal={monthTotal}/>
+            <MonthSpendingCategorySplit categoryData={categorySpendData} monthTotal={monthTotal} />
+
+            <h1>monthOfCategorySplits</h1>
+
+            {yearOfCategorySplits.map((monthOfCategorySplits) => (
+                <MonthSpendingCategorySplit categoryData={monthOfCategorySplits.categoryData} monthTotal={monthOfCategorySplits.monthTotal} />
+            ))}
 
         </div>
     );
