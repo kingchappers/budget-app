@@ -24,6 +24,7 @@ export interface categoryData {
 
 export interface categorySplitPieProps {
     categoryData: categoryData[],
+    month: Date,
     monthTotal: number,
 }
 
@@ -121,15 +122,17 @@ export function YearlyIncomeVsSpendingGroupChart({ monthSpendData, monthIncomeDa
     );
 }
 
-export function MonthSpendingCategorySplit({ categoryData, monthTotal }: categorySplitPieProps) {
+export function MonthSpendingCategorySplit({ categoryData, month, monthTotal }: categorySplitPieProps) {
+    const monthAsString = month.toLocaleString('default', { month: 'short' }) + " " + month.getFullYear().toLocaleString().substring(3)
     return (
         <div className="container mx-auto max-w-screen-2xl p-4">
+            <h1 className="text-l font-bold text-center">{monthAsString}</h1>
             <VictoryPie
                 data={categoryData}
                 x="category"
                 y="value"
                 theme={VictoryTheme.material}
-                style={{ parent: { maxWidth: "40%" } }}
+                style={{ parent: { maxWidth: "100%" } }}
                 width={550}
             />
         </div>

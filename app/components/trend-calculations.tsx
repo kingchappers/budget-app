@@ -79,8 +79,10 @@ export async function getYearCategorySplit(userId: string, months: Date[]) {
     const monthPromises = months.map(async (month) => {
         const endDate = new Date(month.getFullYear(), month.getMonth() + 1, 0);
         const { categorySpendData, monthTotal } = await getCategoryTransactionTotalBetweenDates(userId, month, endDate);
-        yearOfCategorySplits.push({ categoryData: categorySpendData, monthTotal });
+        yearOfCategorySplits.push({ categoryData: categorySpendData, month, monthTotal });
     })
     await Promise.all(monthPromises);
-    return yearOfCategorySplits;
+    const results = yearOfCategorySplits.length
+
+    return { yearOfCategorySplits, results };
 }

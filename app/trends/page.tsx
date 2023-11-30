@@ -21,7 +21,7 @@ export default async function Trends() {
     const startDate = new Date(date.getFullYear(), date.getMonth(), 1);
     const endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
     const { categorySpendData, monthTotal } = await getCategoryTransactionTotalBetweenDates(userId, startDate, endDate)
-    const yearOfCategorySplits = await getYearCategorySplit(userId, months)
+    const { yearOfCategorySplits, results } = await getYearCategorySplit(userId, months)
 
     return (
         <div className="container mx-auto max-w-screen-2xl p-4">
@@ -31,15 +31,20 @@ export default async function Trends() {
             <h1 className="text-xl font-bold mb-4">Income vs Expenses</h1>
             <YearlyIncomeVsSpendingGroupChart monthSpendData={monthlySpendData} monthIncomeData={monthlyIncomeData} />
 
-            <h1 className="text-xl font-bold mb-4">Pies</h1>
-            <MonthSpendingCategorySplit categoryData={categorySpendData} monthTotal={monthTotal} />
+            {/* <h1 className="text-xl font-bold mb-4">Pies</h1>
+            <MonthSpendingCategorySplit categoryData={categorySpendData} monthTotal={monthTotal} /> */}
 
             <h1>monthOfCategorySplits</h1>
 
-            {yearOfCategorySplits.map((monthOfCategorySplits) => (
-                <MonthSpendingCategorySplit categoryData={monthOfCategorySplits.categoryData} monthTotal={monthOfCategorySplits.monthTotal} />
-            ))}
-
+            <div className="columns-3">
+                {results === 0 ? (
+                    <p>No splits found</p>
+                ) : (
+                    yearOfCategorySplits.map((monthOfCategorySplits) => (
+                        <MonthSpendingCategorySplit categoryData={monthOfCategorySplits.categoryData} month={monthOfCategorySplits.month} monthTotal={monthOfCategorySplits.monthTotal} />
+                    ))
+                )}
+            </div>
         </div>
     );
 }
