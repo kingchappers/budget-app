@@ -4,8 +4,6 @@ import { SavingItem } from "../components/savings-item-server";
 import { authOptions } from "../lib/auth";
 import { redirect } from "next/navigation";
 import { createSaving, getSavingByDate, getSavings, SavingFilter, updateSaving } from "../lib/saving-db";
-import { TransactionFilter } from "../lib/transaction-db";
-import { IncomeFilter } from "../lib/income-db";
 import Link from "next/link";
 import clsx from "clsx";
 import { calculateInitialSavings, calculateSavingsUpdate, calculateTotalSaved, createSavings } from "../components/savings-calculations";
