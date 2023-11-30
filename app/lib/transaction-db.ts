@@ -1,5 +1,4 @@
-import { typographyClasses } from "@mui/material";
-import { Transaction, TransactionClass } from "../models/Transaction";
+import { Transaction } from "../models/Transaction";
 import connectDB from "./mongoose-connect-db";
 import { stringToObjectId } from "./utils";
 import { startOfMonth, endOfMonth } from "date-fns";
