@@ -33,7 +33,6 @@ export function YearlySpendBarTrend({ monthlyData }: barTrendProps) {
 
     return (
         <div className="container mx-auto max-w-screen-2xl p-4">
-
             <VictoryChart domainPadding={20} theme={VictoryTheme.material} style={{ parent: { maxWidth: "50%" } }} width={550}>
                 <VictoryAxis label="Month" style={{ tickLabels: { padding: 5, fontSize: 8 }, axisLabel: { padding: 25, fontSize: 9 } }} />
                 <VictoryAxis dependentAxis tickFormat={(x) => (`£${x}`)} style={{ tickLabels: { fontSize: 8 }, axisLabel: { padding: 20, fontSize: 8 } }} />
@@ -47,7 +46,6 @@ export function YearlySpendBarTrend({ monthlyData }: barTrendProps) {
                     y="monthSpend"
                 />
             </VictoryChart>
-
         </div>
     );
 }
@@ -57,7 +55,6 @@ export function YearlyIncomeBarTrend({ monthlyData }: barTrendProps) {
 
     return (
         <div className="container mx-auto max-w-screen-2xl p-4">
-
             <VictoryChart domainPadding={20} theme={VictoryTheme.material} style={{ parent: { maxWidth: "50%" } }} width={550}>
                 <VictoryAxis label="Month" style={{ tickLabels: { padding: 5, fontSize: 8 }, axisLabel: { padding: 25, fontSize: 9 } }} />
                 <VictoryAxis dependentAxis tickFormat={(x) => (`£${x}`)} style={{ tickLabels: { fontSize: 8 }, axisLabel: { padding: 20, fontSize: 8 } }} />
@@ -71,7 +68,6 @@ export function YearlyIncomeBarTrend({ monthlyData }: barTrendProps) {
                     y="monthIncome"
                 />
             </VictoryChart>
-
         </div>
     );
 }
@@ -81,7 +77,6 @@ export function YearlyIncomeVsSpendingGroupChart({ monthSpendData, monthIncomeDa
 
     return (
         <div className="container mx-auto max-w-screen-2xl p-4">
-
             <VictoryChart domainPadding={20} theme={VictoryTheme.material} style={{ parent: { maxWidth: "50%" } }} width={550}>
                 <VictoryAxis label="Month" style={{ tickLabels: { padding: 5, fontSize: 8 }, axisLabel: { padding: 25, fontSize: 9 } }} />
                 <VictoryAxis dependentAxis tickFormat={(x) => (`£${x}`)} style={{ tickLabels: { fontSize: 8 }, axisLabel: { padding: 20, fontSize: 8 } }} />
@@ -126,15 +121,22 @@ export function MonthSpendingCategorySplit({ categoryData, month, monthTotal }: 
     const monthAsString = month.toLocaleString('default', { month: 'short' }) + " " + month.getFullYear().toLocaleString().substring(3)
     return (
         <div className="container mx-auto max-w-screen-2xl p-4">
-            <h1 className="text-l font-bold text-center">{monthAsString}</h1>
-            <VictoryPie
-                data={categoryData}
-                x="category"
-                y="value"
-                theme={VictoryTheme.material}
-                style={{ parent: { maxWidth: "100%" } }}
-                width={550}
-            />
+            {monthTotal === 0 ? (
+                <div><h1 className="text-l text-center">No transactions found for {monthAsString}</h1></div>
+            ) : (
+                <div>
+                    <h1 className="text-l font-bold text-center">{monthAsString}</h1>
+                    <VictoryPie
+                        data={categoryData}
+                        x="category"
+                        y="value"
+                        theme={VictoryTheme.material}
+                        style={{ parent: { maxWidth: "100%" } }}
+                        width={550}
+                    />
+                </div>
+            )}
+
         </div>
     )
 }
