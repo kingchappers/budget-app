@@ -82,7 +82,11 @@ export async function getYearCategorySplit(userId: string, months: Date[]) {
         yearOfCategorySplits.push({ categoryData: categorySpendData, month, monthTotal });
     })
     await Promise.all(monthPromises);
-    const results = yearOfCategorySplits.length
+    const results = yearOfCategorySplits.length;
+
+    yearOfCategorySplits.sort((a, b) => {
+        return b.month.getTime() - a.month.getTime();
+    })
 
     return { yearOfCategorySplits, results };
 }
