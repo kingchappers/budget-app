@@ -1,6 +1,6 @@
 "use client"
 
-import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme, VictoryGroup, VictoryLegend, VictoryPie } from 'victory';
+import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme, VictoryGroup, VictoryLegend, VictoryPie, Border } from 'victory';
 import { twelveMonthsInOrder } from './trend-calculations';
 
 interface barTrendProps {
@@ -97,7 +97,7 @@ export function YearlyIncomeVsSpendingGroupChart({ monthSpendData, monthIncomeDa
                     centerTitle
                     orientation="horizontal"
                     gutter={20}
-                    style={{ border: { stroke: "black" }, title: { fontSize: 20 } }}
+                    style={{ title: { fontSize: 15 }, labels: { fontSize: 10 } }}
                     data={[
                         { name: "Income", symbol: { fill: "green" } },
                         { name: "Expenses", symbol: { fill: "red" } },
