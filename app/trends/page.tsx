@@ -1,5 +1,5 @@
 import { getServerSession } from 'next-auth/next';
-import { getListOfYearsIncomeTotalsByMonth, getListOfYearsTransactionTotalsByMonth, getYearCategorySplit } from '../components/trend-calculations';
+import { getListOfYearsIncomeTotalsByMonth, getListOfYearsTransactionTotalsByMonth, getYearOfCategorySpend } from '../components/trend-calculations';
 import { MonthSpendingCategorySplit, YearlyIncomeVsSpendingGroupChart } from '../components/trend-graphs';
 import { authOptions } from '../lib/auth';
 import { redirect } from 'next/navigation';
@@ -16,7 +16,7 @@ export default async function Trends() {
     const userId = session.user.id;
     const { monthlySpendData } = await getListOfYearsTransactionTotalsByMonth(userId)
     const { monthlyIncomeData } = await getListOfYearsIncomeTotalsByMonth(userId)
-    const { yearOfCategorySplits, results } = await getYearCategorySplit(userId, months)
+    const { yearOfCategorySpend, results } = await getYearOfCategorySpend(userId, months)
 
     return (
         <div className="container mx-auto max-w-screen-2xl p-4">
@@ -32,11 +32,13 @@ export default async function Trends() {
                 {results === 0 ? (
                     <p>No data found</p>
                 ) : (
-                    yearOfCategorySplits.map((monthOfCategorySplits) => (
-                        <MonthSpendingCategorySplit categoryData={monthOfCategorySplits.categoryData} month={monthOfCategorySplits.month} monthTotal={monthOfCategorySplits.monthTotal} />
+                    yearOfCategorySpend.map((monthOfCategorySpend) => (
+                        <MonthSpendingCategorySplit categoryData={monthOfCategorySpend.categoryData} month={monthOfCategorySpend.month} monthTotal={monthOfCategorySpend.monthTotal} />
                     ))
                 )}
             </div>
+
+            <h1 className="text-xl font-bold mb-4">Category Income Per Month</h1>
         </div>
     );
 }

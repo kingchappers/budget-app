@@ -74,19 +74,19 @@ export async function getCategoryTransactionTotalBetweenDates(userId: string, st
     return { categorySpendData, monthTotal };
 }
 
-export async function getYearCategorySplit(userId: string, months: Date[]) {
-    var yearOfCategorySplits: categorySplitPieProps[] = [];
+export async function getYearOfCategorySpend(userId: string, months: Date[]) {
+    var yearOfCategorySpend: categorySplitPieProps[] = [];
     const monthPromises = months.map(async (month) => {
         const endDate = new Date(month.getFullYear(), month.getMonth() + 1, 0);
         const { categorySpendData, monthTotal } = await getCategoryTransactionTotalBetweenDates(userId, month, endDate);
-        yearOfCategorySplits.push({ categoryData: categorySpendData, month, monthTotal });
+        yearOfCategorySpend.push({ categoryData: categorySpendData, month, monthTotal });
     })
     await Promise.all(monthPromises);
-    const results = yearOfCategorySplits.length;
+    const results = yearOfCategorySpend.length;
 
-    yearOfCategorySplits.sort((a, b) => {
+    yearOfCategorySpend.sort((a, b) => {
         return b.month.getTime() - a.month.getTime();
     })
 
-    return { yearOfCategorySplits, results };
+    return { yearOfCategorySpend, results };
 }
