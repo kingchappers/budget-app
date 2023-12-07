@@ -79,7 +79,7 @@ async function getCategoryTransactionTotalBetweenDates(userId: string, startDate
     }
 
     const categorySpendData: categoryData[] = Object.entries(categorySpendRecord).map(([category, value]) => ({
-        category: category + `:\n ${((value / monthTotal) * 100).toFixed(2)}%`,
+        category: category + `:\n£${value} | ${((value / monthTotal) * 100).toFixed(2)}%`,
         value: value
     }))
 
@@ -107,7 +107,7 @@ async function getCategoryIncomeTotalBetweenDates(userId: string, startDate: Dat
     }
 
     const categoryIncomeData: categoryData[] = Object.entries(categoryIncomeRecord).map(([incomeCategory, value]) => ({
-        category: incomeCategory + `:\n ${((value / monthTotal) * 100).toFixed(2)}%`,
+        category: incomeCategory + `:\n£${value} | ${((value / monthTotal) * 100).toFixed(2)}%`,
         value: value
     }))
 
