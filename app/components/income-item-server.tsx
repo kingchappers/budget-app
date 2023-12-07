@@ -15,6 +15,10 @@ interface IncomeItemProps {
     categories: CategoryClass[];
 }
 
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+
 export const IncomeItem: React.FC<IncomeItemProps> = ({ income, categories }) => {
     const incomeDateString = dateToString(income.incomeDate)
 
@@ -69,7 +73,7 @@ export const IncomeItem: React.FC<IncomeItemProps> = ({ income, categories }) =>
         updateIncomeAction(id, update, "/")
         setIsEditingIncome(false)
     }
-    
+
     return (
         <tbody>
             {isEditingIncome ? (

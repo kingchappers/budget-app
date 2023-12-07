@@ -14,9 +14,12 @@ interface TransactionItemProps {
     categories: CategoryClass[];
 }
 
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+
 export const TransactionItem: React.FC<TransactionItemProps> = ({ transaction, categories }) => {
     const transactionDateString = dateToString(transaction.transactionDate);
-
     const [isEditingTransaction, setIsEditingTransaction] = useState(false);
     const [transactionDate, setTransactionDate] = useState(transaction.transactionDate);
     const [vendor, setVendor] = useState(transaction.vendor);
