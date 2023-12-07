@@ -22,6 +22,10 @@ export async function getListOfYearsTransactionTotalsByMonth(userId: string) {
     return { monthlySpendData };
 }
 
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+
 export async function getListOfYearsIncomeTotalsByMonth(userId: string) {
     var monthlyIncomeData: monthData[] = [];
     const lastTwelveMonths = getLastTwelveMonths();
@@ -40,6 +44,10 @@ export async function getListOfYearsIncomeTotalsByMonth(userId: string) {
     return { monthlyIncomeData };
 }
 
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+
 export function twelveMonthsInOrder() {
     const lastTwelveMonths = getLastTwelveMonths()
     var dateOrder: string[] = [];
@@ -50,10 +58,14 @@ export function twelveMonthsInOrder() {
     return dateOrder;
 }
 
-export async function getCategoryTransactionTotalBetweenDates(userId: string, startDate: Date, endDate: Date) {
-    const categorySpendRecord: Record<string, number> = {}
-    const { transactions } = await getTransactionsBetweenDatesAction({ userId, startDate, endDate })
-    const monthTotal = calculateTransactionTotal(transactions)
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+
+async function getCategoryTransactionTotalBetweenDates(userId: string, startDate: Date, endDate: Date) {
+    const categorySpendRecord: Record<string, number> = {};
+    const { transactions } = await getTransactionsBetweenDatesAction({ userId, startDate, endDate });
+    const monthTotal = calculateTransactionTotal(transactions);
 
     if (transactions) {
         for (const transaction of transactions) {
@@ -62,7 +74,7 @@ export async function getCategoryTransactionTotalBetweenDates(userId: string, st
             if (!categorySpendRecord[category]) {
                 categorySpendRecord[category] = 0;
             }
-            categorySpendRecord[category] += value
+            categorySpendRecord[category] += value;
         }
     }
 
@@ -73,6 +85,38 @@ export async function getCategoryTransactionTotalBetweenDates(userId: string, st
 
     return { categorySpendData, monthTotal };
 }
+
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+
+async function getCategoryIncomeTotalBetweenDates(userId: string, startDate: Date, endDate: Date) {
+    const categoryIncomeRecord: Record<string, number> = {};
+    const { incomes } = await getIncomesBetweenDatesAction({ userId, startDate, endDate });
+    const monthTotal = calculateIncomeTotal(incomes);
+
+    if (incomes) {
+        for (const income of incomes) {
+            var incomeCategory = income.incomeCategory;
+            const value = income.amount;
+            if (!categoryIncomeRecord[incomeCategory]) {
+                categoryIncomeRecord[incomeCategory] = 0;
+            }
+            categoryIncomeRecord[incomeCategory] += value;
+        }
+    }
+
+    const categoryIncomeData: categoryData[] = Object.entries(categoryIncomeRecord).map(([incomeCategory, value]) => ({
+        category: incomeCategory + `:\n ${((value / monthTotal) * 100).toFixed(2)}%`,
+        value: value
+    }))
+
+    return { categoryIncomeData, monthTotal }
+}
+
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
 
 export async function getYearOfCategorySpend(userId: string, months: Date[]) {
     var yearOfCategorySpend: categorySplitPieProps[] = [];
@@ -89,4 +133,25 @@ export async function getYearOfCategorySpend(userId: string, months: Date[]) {
     })
 
     return { yearOfCategorySpend, results };
+}
+
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+
+export async function getYearOfCategoryIncome(userId: string, months: Date[]) {
+    var yearOfCategoryIncome: categorySplitPieProps[] = [];
+    const monthPromises = months.map(async (month) => {
+        const endDate = new Date(month.getFullYear(), month.getMonth() + 1, 0);
+        const { categoryIncomeData, monthTotal } = await getCategoryIncomeTotalBetweenDates(userId, month, endDate);
+        yearOfCategoryIncome.push({ categoryData: categoryIncomeData, month, monthTotal });
+    })
+    await Promise.all(monthPromises);
+    const results = yearOfCategoryIncome.length;
+
+    yearOfCategoryIncome.sort((a, b) => {
+        return b.month.getTime() - a.month.getTime();
+    })
+
+    return { yearOfCategoryIncome, results };
 }

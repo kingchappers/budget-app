@@ -1,5 +1,5 @@
 import { getServerSession } from 'next-auth/next';
-import { getListOfYearsIncomeTotalsByMonth, getListOfYearsTransactionTotalsByMonth, getYearOfCategorySpend } from '../components/trend-calculations';
+import { getListOfYearsIncomeTotalsByMonth, getListOfYearsTransactionTotalsByMonth, getYearOfCategoryIncome, getYearOfCategorySpend } from '../components/trend-calculations';
 import { MonthSpendingCategorySplit, YearlyIncomeVsSpendingGroupChart } from '../components/trend-graphs';
 import { authOptions } from '../lib/auth';
 import { redirect } from 'next/navigation';
@@ -17,6 +17,9 @@ export default async function Trends() {
     const { monthlySpendData } = await getListOfYearsTransactionTotalsByMonth(userId)
     const { monthlyIncomeData } = await getListOfYearsIncomeTotalsByMonth(userId)
     const { yearOfCategorySpend, results } = await getYearOfCategorySpend(userId, months)
+    const { yearOfCategoryIncome, results: incomeResults } = await getYearOfCategoryIncome(userId, months)
+
+    console.log(yearOfCategoryIncome)
 
     return (
         <div className="container mx-auto max-w-screen-2xl p-4">
@@ -39,6 +42,15 @@ export default async function Trends() {
             </div>
 
             <h1 className="text-xl font-bold mb-4">Category Income Per Month</h1>
+            <div className="grid grid-cols-3">
+                {results === 0 ? (
+                    <p>No data found</p>
+                ) : (
+                    yearOfCategoryIncome.map((monthOfCategoryIncome) => (
+                        <MonthSpendingCategorySplit categoryData={monthOfCategoryIncome.categoryData} month={monthOfCategoryIncome.month} monthTotal={monthOfCategoryIncome.monthTotal} />
+                    ))
+                )}
+            </div>
         </div>
     );
 }
