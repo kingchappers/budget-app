@@ -19,8 +19,6 @@ export default async function Trends() {
     const { yearOfCategorySpend, results } = await getYearOfCategorySpend(userId, months)
     const { yearOfCategoryIncome, results: incomeResults } = await getYearOfCategoryIncome(userId, months)
 
-    console.log(yearOfCategoryIncome)
-
     return (
         <div className="container mx-auto max-w-screen-2xl p-4">
 
