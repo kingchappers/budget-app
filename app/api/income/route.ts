@@ -9,12 +9,13 @@ export async function GET(request: NextRequest) {
 
         const page_str = request.nextUrl.searchParams.get("page");
         const limit_str = request.nextUrl.searchParams.get("limit");
+        const userId_str = request.nextUrl.searchParams.get("userId");
 
         const page = page_str ? parseInt(page_str, 10) : 1;
         const limit = limit_str ? parseInt(limit_str, 10) : 10;
+        const userId = userId_str ?? "unknown" ;
 
-        const { incomes, results, error } = await getIncomes({ page, limit });
-
+        const { incomes, results, error } = await getIncomes({ page, limit, userId });
         if (error) {
             throw error;
         }
@@ -56,7 +57,7 @@ export async function POST(request: Request) {
             return createErrorResponse("Transaction must have a notes or empty string", 400);
         }
 
-        const { income, error } = await createIncome(body.incomeDate, body.company, body.amount, body.incomeCategory, body.notes);
+        const { income, error } = await createIncome(body.incomeDate, body.company, body.amount, body.incomeCategory, body.notes, body.userId);
         if (error) {
             throw error;
         }
