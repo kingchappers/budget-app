@@ -2,7 +2,7 @@
 import { MongoClient } from "mongodb"
 
 if (!process.env.REACT_APP_MONGODB_URI) {
-    throw new Error('Invalid/Missing environment variable: "MONGODB_URI"')
+    throw new Error('Invalid/Missing environment variable: "REACT_APP_MONGODB_URI" this is not auto generated')
 }
 
 const uri = process.env.REACT_APP_MONGODB_URI
