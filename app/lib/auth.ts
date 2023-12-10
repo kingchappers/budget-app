@@ -9,22 +9,6 @@ import GithubProvider from "next-auth/providers/github"
 import RedditProvider from "next-auth/providers/reddit";
 import GoogleProvider from "next-auth/providers/google";
 
-// const {
-//     AUTH0_CLIENT_ID = '',
-//     AUTH0_CLIENT_SECRET = '',
-//     AUTH0_ISSUER = '',
-//     DISCORD_CLIENT_ID = '',
-//     DISCORD_CLIENT_SECRET = '',
-//     FACEBOOK_CLIENT_ID = '',
-//     FACEBOOK_CLIENT_SECRET = '',
-//     GITHUB_ID = '',
-//     GITHUB_SECRET = '',
-//     GOOGLE_CLIENT_ID = '',
-//     GOOGLE_CLIENT_SECRET = '',
-//     REDDIT_CLIENT_ID = '',
-//     REDDIT_CLIENT_SECRET = '',
-// } = process.env;
-
 export const authOptions: NextAuthOptions = {
     adapter: MongoDBAdapter(clientPromise),
     session: {
@@ -32,29 +16,29 @@ export const authOptions: NextAuthOptions = {
     },
     providers: [
         Auth0Provider({
-            clientId: process.env.AUTH0_CLIENT_ID ?? '',
-            clientSecret: process.env.AUTH0_CLIENT_SECRET ?? '',
-            issuer: process.env.AUTH0_ISSUER ?? ''
+            clientId: process.env.REACT_APP_AUTH0_CLIENT_ID ?? '',
+            clientSecret: process.env.REACT_APP_AUTH0_CLIENT_SECRET ?? '',
+            issuer: process.env.REACT_APP_AUTH0_ISSUER ?? ''
         }),
         DiscordProvider({
-            clientId: process.env.DISCORD_CLIENT_ID ?? '',
-            clientSecret: process.env.DISCORD_CLIENT_SECRET ?? ''
+            clientId: process.env.REACT_APP_DISCORD_CLIENT_ID ?? '',
+            clientSecret: process.env.REACT_APP_DISCORD_CLIENT_SECRET ?? ''
         }),
         FacebookProvider({
-            clientId: process.env.FACEBOOK_CLIENT_ID ?? '',
-            clientSecret: process.env.FACEBOOK_CLIENT_SECRET ?? ''
+            clientId: process.env.REACT_APP_FACEBOOK_CLIENT_ID ?? '',
+            clientSecret: process.env.REACT_APP_FACEBOOK_CLIENT_SECRET ?? ''
         }),
         GithubProvider({
-            clientId: process.env.GITHUB_ID ?? '',
-            clientSecret: process.env.GITHUB_SECRET ?? '',
+            clientId: process.env.REACT_APP_GITHUB_ID ?? '',
+            clientSecret: process.env.REACT_APP_GITHUB_SECRET ?? '',
         }),
         GoogleProvider({
-            clientId: process.env.GOOGLE_CLIENT_ID ?? '',
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? ''
+            clientId: process.env.REACT_APP_GOOGLE_CLIENT_ID ?? '',
+            clientSecret: process.env.REACT_APP_GOOGLE_CLIENT_SECRET ?? ''
         }),
         RedditProvider({
-            clientId: process.env.REDDIT_CLIENT_ID ?? '',
-            clientSecret: process.env.REDDIT_CLIENT_SECRET ?? '',
+            clientId: process.env.REACT_APP_REDDIT_CLIENT_ID ?? '',
+            clientSecret: process.env.REACT_APP_REDDIT_CLIENT_SECRET ?? '',
             authorization: {
                 params: {
                     duration: 'permanent',
