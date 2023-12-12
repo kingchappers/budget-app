@@ -10,6 +10,9 @@ if (!process.env.REACT_APP_MONGODB_URI) {
     throw new Error('Invalid/Missing environment variable: "REACT_APP_MONGODB_URI" this is not auto generated')
 }
 
+var test2 = secret('REACT_APP_TEST_SECRET')
+console.log(`${test2}`)
+
 const uri = process.env.REACT_APP_MONGODB_URI
 const options = {}
 
