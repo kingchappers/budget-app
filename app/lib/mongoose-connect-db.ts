@@ -1,4 +1,5 @@
 import _mongoose, { connect } from "mongoose";
+import { secret } from "@aws-amplify/backend"
 
 declare global {
     var mongoose: {
