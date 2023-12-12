@@ -1,10 +1,11 @@
 // This approach is taken from https://github.com/vercel/next.js/tree/canary/examples/with-mongodb
 import { MongoClient } from "mongodb"
+import { secret } from "@aws-amplify/backend"
 
 if (!process.env.REACT_APP_MONGODB_URI) {
     var test = process.env.REACT_APP_NEXTAUTH_URL
     console.log(`${test}`)
-    var test2 = process.env.secrets.REACT_APP_TEST_SECRET
+    var test2 = secret('REACT_APP_TEST_SECRET')
     console.log(`${test2}`)
     throw new Error('Invalid/Missing environment variable: "REACT_APP_MONGODB_URI" this is not auto generated')
 }
