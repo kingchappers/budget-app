@@ -13,7 +13,7 @@ if (!secret('REACT_APP_MONGODB_URI')) {
 var test2 = secret('REACT_APP_TEST_SECRET')
 console.log(`${test2}`)
 
-const uri = secret('REACT_APP_MONGODB_URI')
+const uri = secret('REACT_APP_MONGODB_URI').toString()
 const options = {}
 
 let client
