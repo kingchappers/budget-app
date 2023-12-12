@@ -2,7 +2,7 @@
 import { MongoClient } from "mongodb"
 import { secret } from "@aws-amplify/backend"
 
-if (!process.env.REACT_APP_MONGODB_URI) {
+if (!secret('REACT_APP_MONGODB_URI')) {
     var test = process.env.REACT_APP_NEXTAUTH_URL
     console.log(`${test}`)
     var test2 = secret('REACT_APP_TEST_SECRET')
@@ -13,7 +13,7 @@ if (!process.env.REACT_APP_MONGODB_URI) {
 var test2 = secret('REACT_APP_TEST_SECRET')
 console.log(`${test2}`)
 
-const uri = process.env.REACT_APP_MONGODB_URI
+const uri = secret('REACT_APP_MONGODB_URI')
 const options = {}
 
 let client
