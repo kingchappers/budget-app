@@ -9,11 +9,6 @@ declare global {
     };
 }
 
-
-
-
-
-
 const MONGODB_URI = secret('REACT_APP_MONGODB_URI').toString()
 console.log("the test secret should be under here:")
 const test = secret('REACT_APP_TEST_SECRET') as unknown as string;;

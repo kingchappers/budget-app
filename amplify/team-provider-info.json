@@ -1,0 +1,15 @@
+{
+  "prod": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-budgetapp-prod-170631-authRole",
+      "UnauthRoleArn": "arn:aws:iam::192350001975:role/amplify-budgetapp-prod-170631-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::192350001975:role/amplify-budgetapp-prod-170631-authRole",
+      "Region": "eu-west-1",
+      "DeploymentBucketName": "amplify-budgetapp-prod-170631-deployment",
+      "UnauthRoleName": "amplify-budgetapp-prod-170631-unauthRole",
+      "StackName": "amplify-budgetapp-prod-170631",
+      "StackId": "arn:aws:cloudformation:eu-west-1:192350001975:stack/amplify-budgetapp-prod-170631/f72341e0-99d9-11ee-b65f-0a6acd04eb29",
+      "AmplifyAppId": "dnh14y5y45q69"
+    }
+  }
+}
