@@ -1,6 +1,7 @@
 import _mongoose, { connect } from "mongoose";
 import { defineAuth, secret } from "@aws-amplify/backend"
 import { Amplify } from "aws-amplify";
+import { getType } from "@typegoose/typegoose/lib/internal/utils";
 
 declare global {
     var mongoose: {
@@ -16,6 +17,7 @@ const test = secret('REACT_APP_TEST_SECRET')
 
 console.log(test)
 console.log(test.toString())
+console.log(getType(test))
 
 
 if (!MONGODB_URI || MONGODB_URI.length === 0) {
