@@ -10,15 +10,12 @@ declare global {
     };
 }
 
-const MONGODB_URI = secret('REACT_APP_MONGODB_URI').toString()
+const MONGODB_URI = process.env.REACT_APP_MONGODB_URI
 console.log("the test secret should be under here:")
-const test = secret('REACT_APP_TEST_SECRET')
-// const test = process.env.REACT_APP_TEST_SECRET
+const test = process.env.REACT_APP_TEST_SECRET
 
 console.log(test)
-console.log(test.toString())
 console.log(getType(test))
-
 
 if (!MONGODB_URI || MONGODB_URI.length === 0) {
     throw new Error("Please add your MongoDB URI to .env.local");
