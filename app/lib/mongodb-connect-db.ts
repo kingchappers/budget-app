@@ -3,7 +3,7 @@ import { MongoClient } from "mongodb"
 import { secret } from "@aws-amplify/backend"
 
 if (!secret('REACT_APP_MONGODB_URI')) {
-    throw new Error('Invalid/Missing environment variable: "REACT_APP_MONGODB_URI" this is not auto generated')
+    throw new Error('Invalid/Missing environment variable: "REACT_APP_MONGODB_URI" -> not auto generated')
 }
 const uri = secret('REACT_APP_MONGODB_URI').toString();
 const options = {}
