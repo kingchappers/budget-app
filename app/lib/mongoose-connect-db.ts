@@ -1,5 +1,6 @@
 import _mongoose, { connect } from "mongoose";
-import { secret } from "@aws-amplify/backend"
+import { defineAuth, secret } from "@aws-amplify/backend"
+import { Amplify } from "aws-amplify";
 
 declare global {
     var mongoose: {
@@ -8,10 +9,16 @@ declare global {
     };
 }
 
-const MONGODB_URI = secret('REACT_APP_MONGODB_URI').toString();
+
+
+
+
+
+const MONGODB_URI = secret('REACT_APP_MONGODB_URI').toString()
 console.log("the test secret should be under here:")
-const test = secret('REACT_APP_TEST_SECRET').toString();
+const test = secret('REACT_APP_TEST_SECRET') as unknown as string;;
 console.log(test)
+
 
 if (!MONGODB_URI || MONGODB_URI.length === 0) {
     throw new Error("Please add your MongoDB URI to .env.local");
