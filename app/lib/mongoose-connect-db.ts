@@ -1,7 +1,6 @@
 import _mongoose, { connect } from "mongoose";
 import { defineAuth, secret } from "@aws-amplify/backend"
 import { Amplify } from "aws-amplify";
-import { getSecret } from "./aws-config";
 
 declare global {
     var mongoose: {
@@ -12,10 +11,11 @@ declare global {
 
 const MONGODB_URI = secret('REACT_APP_MONGODB_URI').toString()
 console.log("the test secret should be under here:")
-// const test = secret('REACT_APP_TEST_SECRET') as unknown as string;
+const test = secret('REACT_APP_TEST_SECRET')
 // const test = process.env.REACT_APP_TEST_SECRET
-const test = getSecret()
+
 console.log(test)
+console.log(test.toString())
 
 
 if (!MONGODB_URI || MONGODB_URI.length === 0) {
