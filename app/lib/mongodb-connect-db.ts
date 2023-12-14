@@ -1,6 +1,5 @@
 // This approach is taken from https://github.com/vercel/next.js/tree/canary/examples/with-mongodb
 import { MongoClient } from "mongodb"
-import { secret } from "@aws-amplify/backend"
 
 if (!process.env.REACT_APP_MONGODB_URI) {
     throw new Error('Invalid/Missing environment variable: "REACT_APP_MONGODB_URI" -> not auto generated')

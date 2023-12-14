@@ -1,7 +1,4 @@
 import _mongoose, { connect } from "mongoose";
-import { defineAuth, secret } from "@aws-amplify/backend"
-import { Amplify } from "aws-amplify";
-import { getType } from "@typegoose/typegoose/lib/internal/utils";
 
 declare global {
     var mongoose: {
