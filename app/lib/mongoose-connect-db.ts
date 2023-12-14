@@ -7,9 +7,7 @@ declare global {
     };
 }
 
-// const MONGODB_URI = process.env.REACT_APP_MONGODB_URI
-
-if (!process.env.REACT_APP_MONGODB_URI || process.env.REACT_APP_MONGODB_URI.length === 0) {
+if (!process.env.MONGODB_URI || process.env.MONGODB_URI.length === 0) {
     throw new Error("Please add your MongoDB URI to .env.local");
 }
 
@@ -39,7 +37,7 @@ async function connectDB() {
             bufferCommands: false,
         };
 
-        cached.promise = connect(process.env.REACT_APP_MONGODB_URI!, opts)
+        cached.promise = connect(process.env.MONGODB_URI!, opts)
             .then((mongoose) => {
                 console.log("✅ New connection established");
                 return mongoose;
