@@ -71,4 +71,6 @@ export const authOptions: NextAuthOptions = {
             return token;
         },
     },
+
+    secret: process.env.REACT_APP_NEXTAUTH_SECRET
 };
