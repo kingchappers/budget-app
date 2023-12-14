@@ -2,6 +2,7 @@ import './globals.css'
 import Link from 'next/link'
 import Image from 'next/image'
 import { AccountMenu, BudgetMenu } from "./components/menu-buttons"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 export const metadata = {
     title: 'Budget App',
