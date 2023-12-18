@@ -7,7 +7,10 @@ import Link from "next/link";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Logout from "@mui/icons-material/Logout";
 import Login from '@mui/icons-material/Login';
-import PersonAdd from "@mui/icons-material/PersonAdd";
+import FormatListBulleted from "@mui/icons-material/FormatListBulleted";
+import BarChartOutlinedIcon from '@mui/icons-material/BarChartOutlined';
+import AccountBalanceOutlinedIcon from '@mui/icons-material/AccountBalanceOutlined';
+import DifferenceOutlinedIcon from '@mui/icons-material/DifferenceOutlined';
 import ManageAccounts from "@mui/icons-material/ManageAccounts";
 import { signIn, signOut } from "next-auth/react";
 import { TransactionClass } from "../models/Transaction";
@@ -74,18 +77,30 @@ export function BudgetMenu() {
                 }}
             >
                 <MenuItem onClick={handleClose}>
+                    <FormatListBulleted>
+                        <Logout fontSize="small" />
+                    </FormatListBulleted>
                     <Link href="/category">Configure Categories</Link>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
                     <Link href="/targets">Targets</Link>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
+                    <DifferenceOutlinedIcon>
+                        <Logout fontSize="small" />
+                    </DifferenceOutlinedIcon>
                     <Link href="/variance">Variance</Link>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
+                    <AccountBalanceOutlinedIcon>
+                        <Logout fontSize="small" />
+                    </AccountBalanceOutlinedIcon>
                     <Link href="/savings">Savings</Link>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
+                    <BarChartOutlinedIcon>
+                        <Logout fontSize="small" />
+                    </BarChartOutlinedIcon>
                     <Link href="/trends">Trends</Link>
                 </MenuItem>
             </Menu>
