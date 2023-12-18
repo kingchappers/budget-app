@@ -11,6 +11,7 @@ import FormatListBulleted from "@mui/icons-material/FormatListBulleted";
 import BarChartOutlinedIcon from '@mui/icons-material/BarChartOutlined';
 import AccountBalanceOutlinedIcon from '@mui/icons-material/AccountBalanceOutlined';
 import DifferenceOutlinedIcon from '@mui/icons-material/DifferenceOutlined';
+import TrackChangesOutlinedIcon from '@mui/icons-material/TrackChangesOutlined';
 import ManageAccounts from "@mui/icons-material/ManageAccounts";
 import { signIn, signOut } from "next-auth/react";
 import { TransactionClass } from "../models/Transaction";
@@ -83,6 +84,9 @@ export function BudgetMenu() {
                     <Link href="/category">Configure Categories</Link>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
+                    <TrackChangesOutlinedIcon>
+                        <Logout fontSize="small" />
+                    </TrackChangesOutlinedIcon>
                     <Link href="/targets">Targets</Link>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
