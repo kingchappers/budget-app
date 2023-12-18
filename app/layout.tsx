@@ -57,9 +57,6 @@ export default function RootLayout({
                             <li className="mx-5">
                                 <Link href="/income">Income</Link>
                             </li>
-                            <li className="mx-5">
-                                <Link href="/admin">Admin Page</Link>
-                            </li>
                         </ul>
                     </div>
                 </header>

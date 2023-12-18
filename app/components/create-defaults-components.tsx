@@ -214,7 +214,7 @@ export function DefaultCategoriesButton({ userId }: DefaultCategoriesButtonProps
 
     return (
         <form action={action} key={Math.random()} className="flex items-center space-x-3 mb-4">
-            <button className="px-4 py-1 text-white rounded bg-green-500">Create Default Categories</button>
+            <button className="px-4 py-1 text-white rounded bg-green-500">Add Default Categories</button>
         </form>
     );
 }

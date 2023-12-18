@@ -1,5 +1,6 @@
 import { createCategoryAction } from "../_categoryActions";
 import { createTargetAction } from "../_targetActions";
+import { DefaultCategoriesButton } from "./create-defaults-components";
 
 interface CategoryFormProps {
     userId: string;
@@ -41,14 +42,17 @@ export function CategoryForm({ userId }: CategoryFormProps) {
     }
 
     return (
+        <div>
+            <DefaultCategoriesButton userId={userId} />
 
-        <form action={action} key={Math.random()} className="flex items-center space-x-3 mb-4">
-            <input type="text" name="label" placeholder="Category" className="border rounded px-1 py-1 w-52" />
-            <input type="checkbox" name="transactionCategoryCheck" id="transactionCategoryCheck" className="h-6 w-6 border-gray-300 disabled:bg-gray-300 disabled:border-gray-300 disabled:cursor-not-allowed" defaultChecked />
-            <label htmlFor="transactionCategoryCheck">Transaction Category</label>
-            <input type="checkbox" name="incomeCategoryCheck" id="incomeCategoryCheck" className="h-6 w-6 border-gray-300 disabled:bg-gray-300 disabled:border-gray-300 disabled:cursor-not-allowed" defaultChecked />
-            <label htmlFor="incomeCategoryCheck">Income Category</label>
-            <button className="px-4 py-1 text-white rounded bg-green-500">Add</button>
-        </form>
+            <form action={action} key={Math.random()} className="flex items-center space-x-3 mb-4">
+                <input type="text" name="label" placeholder="Category" className="border rounded px-1 py-1 w-52" />
+                <input type="checkbox" name="transactionCategoryCheck" id="transactionCategoryCheck" className="h-6 w-6 border-gray-300 disabled:bg-gray-300 disabled:border-gray-300 disabled:cursor-not-allowed" defaultChecked />
+                <label htmlFor="transactionCategoryCheck">Transaction Category</label>
+                <input type="checkbox" name="incomeCategoryCheck" id="incomeCategoryCheck" className="h-6 w-6 border-gray-300 disabled:bg-gray-300 disabled:border-gray-300 disabled:cursor-not-allowed" defaultChecked />
+                <label htmlFor="incomeCategoryCheck">Income Category</label>
+                <button className="px-4 py-1 text-white rounded bg-green-500">Add</button>
+            </form>
+        </div>
     );
 }
