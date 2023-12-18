@@ -133,7 +133,7 @@ export function AccountMenu() {
                         <Login fontSize="small" />
                     </ListItemIcon>
                     <button onClick={() => signIn()}>
-                        Sign in
+                        Sign in / Register
                     </button>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
@@ -144,15 +144,9 @@ export function AccountMenu() {
                         Sign Out
                     </button>
                 </MenuItem>
-                <MenuItem onClick={handleClose}>
-                    <ListItemIcon>
-                        <PersonAdd fontSize="small" />
-                    </ListItemIcon>
-                    <Link href="/register">Register</Link>
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
+                {/* <MenuItem onClick={handleClose}>
                     <Link href="/api/session">Get Session Info</Link>
-                </MenuItem>
+                </MenuItem> */}
                 <MenuItem onClick={handleClose}>
                     <ListItemIcon>
                         <ManageAccounts fontSize="small" />
