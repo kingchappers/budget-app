@@ -22,7 +22,7 @@ export default function RootLayout({
 
             <body className="bg-slate-300">
                 <header>
-                    <div className="max-w-screen-2xl flex justify-center mx-auto p-4">
+                    <div className="max-w-screen-2xl sm:max-w-screen-sm flex justify-center mx-auto p-4">
                         <Link className="mr-1" href="/">
                             <Image
                                 src="/images/fin-wide.png"
@@ -61,7 +61,7 @@ export default function RootLayout({
                     </div>
                 </header>
 
-                <main>
+                <main className="flex justify-center container py-10">
                     {children}
                 </main>
                 <SpeedInsights />
