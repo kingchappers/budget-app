@@ -12,6 +12,8 @@ import BarChartOutlinedIcon from '@mui/icons-material/BarChartOutlined';
 import AccountBalanceOutlinedIcon from '@mui/icons-material/AccountBalanceOutlined';
 import DifferenceOutlinedIcon from '@mui/icons-material/DifferenceOutlined';
 import TrackChangesOutlinedIcon from '@mui/icons-material/TrackChangesOutlined';
+import ReceiptLongOutlinedIcon from '@mui/icons-material/ReceiptLongOutlined';
+import CurrencyPoundOutlinedIcon from '@mui/icons-material/CurrencyPoundOutlined';
 import ManageAccounts from "@mui/icons-material/ManageAccounts";
 import { signIn, signOut } from "next-auth/react";
 import { TransactionClass } from "../models/Transaction";
@@ -78,34 +80,46 @@ export function BudgetMenu() {
                 }}
             >
                 <MenuItem onClick={handleClose}>
+                    <ReceiptLongOutlinedIcon>
+                        <Logout fontSize="small" />
+                    </ReceiptLongOutlinedIcon>
+                    <Link href="/transactions" className="pl-3">Transactions</Link>
+                </MenuItem>
+                <MenuItem onClick={handleClose}>
+                    <CurrencyPoundOutlinedIcon>
+                        <Logout fontSize="small" />
+                    </CurrencyPoundOutlinedIcon>
+                    <Link href="/income" className="pl-3">Income</Link>
+                </MenuItem>
+                <MenuItem onClick={handleClose}>
                     <FormatListBulleted>
                         <Logout fontSize="small" />
                     </FormatListBulleted>
-                    <Link href="/category">Configure Categories</Link>
+                    <Link href="/category" className="pl-3">Configure Categories</Link>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
                     <TrackChangesOutlinedIcon>
                         <Logout fontSize="small" />
                     </TrackChangesOutlinedIcon>
-                    <Link href="/targets">Targets</Link>
+                    <Link href="/targets" className="pl-3">Targets</Link>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
                     <DifferenceOutlinedIcon>
                         <Logout fontSize="small" />
                     </DifferenceOutlinedIcon>
-                    <Link href="/variance">Variance</Link>
+                    <Link href="/variance" className="pl-3">Variance</Link>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
                     <AccountBalanceOutlinedIcon>
                         <Logout fontSize="small" />
                     </AccountBalanceOutlinedIcon>
-                    <Link href="/savings">Savings</Link>
+                    <Link href="/savings" className="pl-3">Savings</Link>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
                     <BarChartOutlinedIcon>
                         <Logout fontSize="small" />
                     </BarChartOutlinedIcon>
-                    <Link href="/trends">Trends</Link>
+                    <Link href="/trends" className="pl-3">Trends</Link>
                 </MenuItem>
             </Menu>
         </div>
