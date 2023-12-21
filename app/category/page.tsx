@@ -23,16 +23,15 @@ export default async function Home() {
 
     return (
         <div>
-
             <CategoryForm userId={userId} />
 
             <h1 className="text-2xl font-bold mb-4">Income List</h1>
             <table className="divide-y-2 table-fixed">
                 <thead>
-                    <tr className="text-left text-1xl">
-                        <th className="px-5 w-10">Category</th>
-                        <th className="px-5 w-52">Transaction Category</th>
-                        <th className="px-5 w-48">Income Category</th>
+                    <tr className="text-left">
+                        <th className="px-3 w-36 lg:px-5 lg:w-44">Category</th>
+                        <th className="px-3 w-5 lg:px-5 lg:w-52">Transaction Category</th>
+                        <th className="px-3 w-5 lg:px-5 lg:w-48">Income Category</th>
                     </tr>
                 </thead>
 

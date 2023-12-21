@@ -46,7 +46,7 @@ export function CategoryForm({ userId }: CategoryFormProps) {
             <DefaultCategoriesButton userId={userId} />
 
             <form action={action} key={Math.random()} className="flex items-center space-x-3 mb-4">
-                <input type="text" name="label" placeholder="Category" className="border rounded px-1 py-1 w-52" />
+                <input type="text" name="label" placeholder="Category" className="border rounded px-1 py-1 w-36 lg:w-44" />
                 <input type="checkbox" name="transactionCategoryCheck" id="transactionCategoryCheck" className="h-6 w-6 border-gray-300 disabled:bg-gray-300 disabled:border-gray-300 disabled:cursor-not-allowed" defaultChecked />
                 <label htmlFor="transactionCategoryCheck">Transaction Category</label>
                 <input type="checkbox" name="incomeCategoryCheck" id="incomeCategoryCheck" className="h-6 w-6 border-gray-300 disabled:bg-gray-300 disabled:border-gray-300 disabled:cursor-not-allowed" defaultChecked />
