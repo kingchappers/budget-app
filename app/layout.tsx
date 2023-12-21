@@ -43,9 +43,6 @@ export default function RootLayout({
                                 <Link href="/utilities">Utilities</Link>
                             </li>
                             <li className="lg:mx-5 mx-2">
-                                <Link href="/">Home</Link>
-                            </li>
-                            <li className="lg:mx-5 mx-2">
                                 <Link href="/help">Help</Link>
                             </li>
                         </ul>
