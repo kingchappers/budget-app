@@ -36,7 +36,7 @@ export default async function Home() {
                 </thead>
 
                 {results === 0 ? (
-                    <p className="text-center">No Categories Found</p>
+                    <td colSpan={3} className="text-center">No Categories Found</td>
                 ) : (
                     categories?.map((category) => (
                         <CategoryItem key={category.id} category={category} userId={userId}/>
