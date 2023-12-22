@@ -59,12 +59,12 @@ export default async function Home({
             <table className="divide-y-2 table-fixed">
                 <thead>
                     <tr className="text-left text-1xl">
-                        <th className="px-5 w-10">Date</th>
-                        <th className="px-5 w-52">Company</th>
-                        <th className="px-5 w-24">Amount</th>
-                        <th className="px-5 w-48">Category</th>
-                        <th className="px-5 w-80">Notes</th>
-                        <th className="px-5 w-5"></th>
+                        <th className="px-3 w-5 lg:px-5 lg:w-10">Date</th>
+                        <th className="px-3 lg:px-5 lg:w-52">Company</th>
+                        <th className="px-3 lg:px-5 lg:w-24">Amount</th>
+                        <th className="px-3 lg:px-5 lg:w-48">Category</th>
+                        <th className="px-3 lg:px-5 lg:w-80">Notes</th>
+                        <th className="px-3 lg:px-5 lg:w-5"></th>
                     </tr>
                 </thead>
 
