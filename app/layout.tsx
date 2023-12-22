@@ -32,7 +32,7 @@ export default function RootLayout({
                                 className="mr-3"
                             />
                         </Link>
-                        <ul className="flex mt-5">
+                        <ul className="flex mt-5 lg:text-xl">
                             <li className="lg:mx-5 mx-2">
                                 <BudgetMenu />
                             </li>
