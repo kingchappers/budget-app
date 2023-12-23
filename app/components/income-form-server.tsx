@@ -49,12 +49,12 @@ export function IncomeForm({ categories, userId }: incomeFormProps) {
     }
 
     return (
-        <form action={action} key={Math.random()} className="flex items-center space-x-3 mb-4">
+        <form action={action} key={Math.random()} className="flex items-center space-x-1 lg:space-x-3 mb-4">
             <DatePicker />
-            <input type="text" name="company" placeholder="Company" className="border rounded px-1 py-1 w-52" />
-            <input type="number" step="any" name="amount" placeholder="Amount" className="border rounded px-1 py-1 w-24" />
+            <input type="text" name="company" placeholder="Company" className="border rounded px-1 py-1 w-24 lg:w-48" />
+            <input type="number" step="any" name="amount" placeholder="Amount" className="border rounded px-1 py-1 w-16 lg:w-24" />
             <CategoryComboBox categories={categories} />
-            <input type="text" name="notes" placeholder="Notes" className="border rounded px-1 py-1 w-80" />
+            <input type="text" name="notes" placeholder="Notes" className="border rounded px-1 py-1 w-24 lg:w-80" />
             <button className="px-4 py-1 text-white rounded bg-green-500">Add</button>
         </form>
     );

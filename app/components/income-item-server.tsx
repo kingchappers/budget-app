@@ -78,26 +78,26 @@ export const IncomeItem: React.FC<IncomeItemProps> = ({ income, categories }) =>
         <tbody>
             {isEditingIncome ? (
                 <tr>
-                    <td className="px-5"><DatePicker initialDate={income.incomeDate} selectedDate={incomeDate} setSelectedDate={setIncomeDate} /></td>
-
-                    <td className="px-5"><input type="text" name="company" placeholder="Company" defaultValue={income.company} onChange={(event) => handleInputFieldChange(event, income.company, income.amount, income.incomeCategory, income.notes)} className="border rounded px-1 py-1 w-52" /></td>
-                    <td className="px-5"><input type="number" step="any" name="amount" placeholder="Amount" defaultValue={income.amount} onChange={(event) => handleInputFieldChange(event, income.company, income.amount, income.incomeCategory, income.notes)} className="border rounded px-1 py-1 w-24" /></td>
-                    <td className="px-5"><CategoryComboBox categories={categories} categoriesSelection={categoriesSelection} setCategoriesSelection={setCategoriesSelection} /></td>
-                    <td className="px-5"><input type="text" name="notes" placeholder="Notes" defaultValue={income.notes} onChange={(event) => handleInputFieldChange(event, income.company, income.amount, income.incomeCategory, income.notes)} className="border rounded px-1 py-1 w-80" /></td>
-                    <td className="px-5"><button onClick={() => handleClick(income.id)} className="px-4 py-1 text-white rounded bg-green-500">Save</button></td>
+                    <td className="px-3 lg:px-5"><DatePicker initialDate={income.incomeDate} selectedDate={incomeDate} setSelectedDate={setIncomeDate} /></td>
+                    <td className="px-3 lg:px-5"><input type="text" name="company" placeholder="Company" defaultValue={income.company} onChange={(event) => handleInputFieldChange(event, income.company, income.amount, income.incomeCategory, income.notes)} className="border rounded px-1 py-1 w-24 lg:w-48" /></td>
+                    <td className="px-3 lg:px-5"><input type="number" step="any" name="amount" placeholder="Amount" defaultValue={income.amount} onChange={(event) => handleInputFieldChange(event, income.company, income.amount, income.incomeCategory, income.notes)} className="border rounded px-1 py-1 w-16 lg:w-24" /></td>
+                    <td className="px-3 lg:px-5"><CategoryComboBox categories={categories} categoriesSelection={categoriesSelection} setCategoriesSelection={setCategoriesSelection} /></td>
+                    <td className="px-3 lg:px-5"><input type="text" name="notes" placeholder="Notes" defaultValue={income.notes} onChange={(event) => handleInputFieldChange(event, income.company, income.amount, income.incomeCategory, income.notes)} className="border rounded px-1 py-1 w-24 lg:w-80" /></td>
+                    <td className="px-3 lg:px-5"><button onClick={() => handleClick(income.id)} className="px-4 py-1 text-white rounded bg-green-500">Save</button></td>
 
 
                 </tr>
             ) : (
                 <tr>
-                    <td className="px-5">{incomeDateString}</td>
-                    <td className="px-5">{income.company}</td>
-                    <td className="px-5">£{income.amount.toFixed(2)}</td>
-                    <td className="px-5">{income.incomeCategory}</td>
-                    <td className="px-5">{income.notes}</td>
+                    <td className="px-3 lg:px-5">{incomeDateString}</td>
+                    <td className="px-3 lg:px-5">{income.company}</td>
+                    <td className="px-3 lg:px-5">£{income.amount.toFixed(2)}</td>
+                    <td className="px-3 lg:px-5">{income.incomeCategory}</td>
+                    <td className="px-3 lg:px-5">{income.notes}</td>
                     <td><IncomeItemMenu income={income} isEditingIncome={isEditingIncome} setIsEditingIncome={setIsEditingIncome} /></td>
                 </tr >
             )}
         </tbody >
     );
 };
+
