@@ -19,7 +19,7 @@ export function DatePicker({ initialDate, selectedDate, setSelectedDate }: DateP
     initialDate = initialDate ?? new Date()
     let inputProps = {
         name: 'pickedDate',
-        size: 9,
+        size: 7,
     };
 
     function setDateSelection(value: string | moment.Moment) {
