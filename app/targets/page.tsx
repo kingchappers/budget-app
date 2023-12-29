@@ -86,7 +86,7 @@ export default async function Home() {
 
             <h1 className="text-2xl font-bold mb-4">Monthly Expense Targets</h1>
             <form action={action} key={Math.random()} >
-                <div className="grid grid-cols-3">
+                <div className="grid grid-cols-2 lg:grid-cols-3">
                     {expenseResults === 0 ? (
                         <p className="text-center">No Expense Targets Found</p>
                     ) : (
@@ -100,7 +100,7 @@ export default async function Home() {
 
             <h1 className="text-2xl font-bold mt-5 mb-3">Monthly Income Targets</h1>
             <form action={action} key={Math.random()}>
-                <div className="grid grid-cols-3">
+                <div className="grid grid-cols-2 lg:grid-cols-3">
                     {incomeResults === 0 ? (
                         <p className="text-center">No Income Targets Found</p>
                     ) : (
