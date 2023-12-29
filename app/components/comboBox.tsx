@@ -35,7 +35,7 @@ export function CategoryComboBox({ categories, categoriesSelection, setCategorie
             options={categoryList}
             isClearable={true}
             backspaceRemovesValue={true}
-            classNames={{ control: () => "h-6 lg:h-10 w-28 lg:w-44" }}
+            classNames={{ control: () => "w-36 lg:w-44" }}
             placeholder="Category..."
             onChange={(choice) => setCategorySelection(choice)}
         />
