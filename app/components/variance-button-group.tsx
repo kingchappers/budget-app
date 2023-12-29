@@ -222,7 +222,7 @@ export function VarianceTimeButton({ userId }: VarianceTimeButtonProps) {
 
     return (
         <div>
-            <div className="flex items-center">
+            <div className="flex flex-wrap items-center">
                 <ToggleButtonGroup
                     color="primary"
                     value={alignment}
@@ -236,7 +236,7 @@ export function VarianceTimeButton({ userId }: VarianceTimeButtonProps) {
                     <ToggleButton onClick={toggleCustomButtonChange} value="custom">Custom</ToggleButton>
                 </ToggleButtonGroup>
 
-                <form action={betweenTwoDatesFormAction} key={Math.random()} className="flex items-center space-x-3 mb-4">
+                <form action={betweenTwoDatesFormAction} key={Math.random()} className="flex items-center space-x-3 mb-4 mt-3 md:mt-3">
                     <Datetime dateFormat="DD/MM/YYYY" inputProps={startDateInputProps} initialValue={dateSelectorStart} timeFormat={false} className="bg-white border rounded px-1 py-1 ml-5" />
                     <p className="mx-2"> to </p>
                     <Datetime dateFormat="DD/MM/YYYY" inputProps={endDateInputProps} initialValue={dateSelectorEnd} timeFormat={false} className="bg-white border rounded px-1 py-1" />
