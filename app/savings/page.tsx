@@ -60,7 +60,6 @@ export default async function Savings({
     }
 
     const totalSaved = await calculateTotalSaved(userId)
-    console.log(totalSaved)
 
     return (
         <div className="container mx-auto max-w-screen-2xl p-4">

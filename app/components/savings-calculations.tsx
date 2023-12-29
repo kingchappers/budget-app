@@ -151,15 +151,11 @@ export async function calculateTotalSaved(userId: string) {
         limit: 0,
     }
     const { savings } = await getSavings(filter);
-    console.log(savings)
     let totalSaved: number = 0;
 
-        savings?.forEach((saving) => {
-            totalSaved += saving.value;
-            console.log(totalSaved)
-        })
-
-    console.log(totalSaved)
+    savings?.forEach((saving) => {
+        totalSaved += saving.value;
+    })
 }
 
 // ___________________________________________________________________________________________________________________________________________________
