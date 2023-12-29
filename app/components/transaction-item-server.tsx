@@ -84,22 +84,22 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({ transaction, c
         <tbody>
             {isEditingTransaction ? (
                 <tr>
-                    <td className="px-5"><DatePicker initialDate={transaction.transactionDate} selectedDate={transactionDate} setSelectedDate={setTransactionDate} /></td>
-                    <td className="px-5"><input autoComplete="off" type="text" name="vendor" placeholder="Vendor" defaultValue={transaction.vendor} onChange={(event) => handleInputFieldChange(event, transaction.vendor, transaction.value, transaction.category, transaction.items, transaction.notes)} className="border rounded px-1 py-1 w-52" /></td>
-                    <td className="px-5"><input autoComplete="off" type="number" step="any" name="value" placeholder="Value" defaultValue={transaction.value} onChange={(event) => handleInputFieldChange(event, transaction.vendor, transaction.value, transaction.category, transaction.items, transaction.notes)} className="border rounded px-1 py-1 w-20" /></td>
-                    <td className="px-5"><CategoryComboBox categories={categories} categoriesSelection={categoriesSelection} setCategoriesSelection={setCategoriesSelection} /></td>
-                    <td className="px-5"><input autoComplete="off" type="text" name="items" placeholder="Items" defaultValue={transaction.items} onChange={(event) => handleInputFieldChange(event, transaction.vendor, transaction.value, transaction.category, transaction.items, transaction.notes)} className="border rounded px-1 py-1 w-44" /></td>
-                    <td className="px-5"><input autoComplete="off" type="text" name="notes" placeholder="Notes" defaultValue={transaction.notes} onChange={(event) => handleInputFieldChange(event, transaction.vendor, transaction.value, transaction.category, transaction.items, transaction.notes)} className="border rounded px-1 py-1 w-80" /></td>
+                    <td className="px-3 lg:px-5"><DatePicker initialDate={transaction.transactionDate} selectedDate={transactionDate} setSelectedDate={setTransactionDate} /></td>
+                    <td className="px-3 lg:px-5"><input autoComplete="off" type="text" name="vendor" placeholder="Vendor" defaultValue={transaction.vendor} onChange={(event) => handleInputFieldChange(event, transaction.vendor, transaction.value, transaction.category, transaction.items, transaction.notes)} className="border rounded px-1 py-1 w-24 lg:w-44" /></td>
+                    <td className="px-3 lg:px-5"><input autoComplete="off" type="number" step="any" name="value" placeholder="Value" defaultValue={transaction.value} onChange={(event) => handleInputFieldChange(event, transaction.vendor, transaction.value, transaction.category, transaction.items, transaction.notes)} className="border rounded px-1 py-1 w-20" /></td>
+                    <td className="px-3 lg:px-5"><CategoryComboBox categories={categories} categoriesSelection={categoriesSelection} setCategoriesSelection={setCategoriesSelection} /></td>
+                    <td className="px-3 lg:px-5"><input autoComplete="off" type="text" name="items" placeholder="Items" defaultValue={transaction.items} onChange={(event) => handleInputFieldChange(event, transaction.vendor, transaction.value, transaction.category, transaction.items, transaction.notes)} className="border rounded px-1 py-1 w-44" /></td>
+                    <td className="px-3 lg:px-5"><input autoComplete="off" type="text" name="notes" placeholder="Notes" defaultValue={transaction.notes} onChange={(event) => handleInputFieldChange(event, transaction.vendor, transaction.value, transaction.category, transaction.items, transaction.notes)} className="border rounded px-1 py-1 w-80" /></td>
                     <td><button onClick={() => handleClick(transaction.id)} className="px-4 py-1 text-white rounded bg-green-500">Save</button></td>
                 </tr>
             ) : (
                 <tr>
-                    <td className="px-5">{transactionDateString}</td>
-                    <td className="px-5">{transaction.vendor}</td>
-                    <td className="px-5">£{transaction.value.toFixed(2)}</td>
-                    <td className="px-5">{transaction.category}</td>
-                    <td className="px-5">{transaction.items}</td>
-                    <td className="px-5">{transaction.notes}</td>
+                    <td className="px-3 lg:px-5">{transactionDateString}</td>
+                    <td className="px-3 lg:px-5">{transaction.vendor}</td>
+                    <td className="px-3 lg:px-5">£{transaction.value.toFixed(2)}</td>
+                    <td className="px-3 lg:px-5">{transaction.category}</td>
+                    <td className="px-3 lg:px-5">{transaction.items}</td>
+                    <td className="px-3 lg:px-5">{transaction.notes}</td>
                     <td><TransactionItemMenu transaction={transaction} isEditingTransaction={isEditingTransaction} setIsEditingTransaction={setIsEditingTransaction} /></td>
                 </tr>
             )}

@@ -58,14 +58,14 @@ export default async function Transactions({
             <h1 className="text-2xl font-bold mb-4">Transaction List</h1>
             <table className="divide-y-2 table-fixed">
                 <thead>
-                    <tr className="text-left text-1xl">
-                        <th className="px-5 w-10">Date</th>
-                        <th className="px-5 w-52">Vendor</th>
-                        <th className="px-5 w-20">Value</th>
-                        <th className="px-5 w-48">Category</th>
-                        <th className="px-5 w-48">Items</th>
-                        <th className="px-5 w-80">Notes</th>
-                        <th className="px-5 w-20"></th>
+                    <tr className="text-left">
+                        <th className="px-3 lg:px-5 w-5 lg:w-20">Date</th>
+                        <th className="px-3 lg:px-5 w-24 lg:w-44">Vendor</th>
+                        <th className="px-3 lg:px-5 w-20">Value</th>
+                        <th className="px-3 lg:px-5 lg:w-48">Category</th>
+                        <th className="px-3 lg:px-5 lg:w-48">Items</th>
+                        <th className="px-3 lg:px-5 lg:w-80">Notes</th>
+                        <th className="px-3 lg:px-5 lg:w-5"></th>
                     </tr>
                 </thead>
 
