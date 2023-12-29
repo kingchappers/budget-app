@@ -29,7 +29,7 @@ export default async function Trends() {
 
             <h1 className="text-xl font-bold mb-4">Category Spending Per Month</h1>
 
-            <div className="grid grid-cols-3">
+            <div className="grid grid-cols-1 lg:grid-cols-3">
                 {results === 0 ? (
                     <p>No data found</p>
                 ) : (
@@ -40,7 +40,7 @@ export default async function Trends() {
             </div>
 
             <h1 className="text-xl font-bold mb-4">Category Income Per Month</h1>
-            <div className="grid grid-cols-3">
+            <div className="grid grid-cols-1 lg:grid-cols-3">
                 {results === 0 ? (
                     <p>No data found</p>
                 ) : (
