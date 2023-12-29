@@ -52,7 +52,7 @@ export function TransactionForm({ categories, userId }: TransactionFormProps) {
 
     return (
 
-        <form action={action} key={Math.random()} className="flex items-center space-x-3 mb-4">
+        <form autoComplete="off" action={action} key={Math.random()} className="flex items-center space-x-3 mb-4">
             <DatePicker />
             <input type="text" name="vendor" placeholder="Vendor" className="border rounded px-1 py-1 w-52" />
             <input type="number" step="any" name="value" placeholder="Value" className="border rounded px-1 py-1 w-20" />

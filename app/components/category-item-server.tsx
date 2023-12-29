@@ -52,7 +52,7 @@ export const CategoryItem: React.FC<CategoryItemProps> = ({ category, userId }) 
         <tbody>
             {isEditingCategory ? (
                 <tr>
-                    <td className="px-5"><input type="text" name="label" placeholder="Category" defaultValue={category.label} onChange={(event) => handleInputFieldChange(event, category.label)} className="border rounded px-1 py-1 w-52" /></td>
+                    <td className="px-5"><input autoComplete="off" type="text" name="label" placeholder="Category" defaultValue={category.label} onChange={(event) => handleInputFieldChange(event, category.label)} className="border rounded px-1 py-1 w-52" /></td>
                     <td className="text-center"><TransactionCategoryCheckBox category={category} userId={userId} /></td>
                     <td className="text-center"><IncomeCategoryCheckBox category={category} userId={userId} /></td>
                     <td className="px-5"><button onClick={() => handleClick(category.id)} className="px-4 py-1 text-white rounded bg-green-500">Save</button></td>

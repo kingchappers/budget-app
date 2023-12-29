@@ -49,7 +49,7 @@ export function IncomeForm({ categories, userId }: incomeFormProps) {
     }
 
     return (
-        <form action={action} key={Math.random()} className="flex items-center space-x-1 lg:space-x-3 mb-4">
+        <form autoComplete="off" action={action} key={Math.random()} className="flex items-center space-x-1 lg:space-x-3 mb-4">
             <DatePicker />
             <input type="text" name="company" placeholder="Company" className="border rounded px-1 py-1 w-24 lg:w-48" />
             <input type="number" step="any" name="amount" placeholder="Amount" className="border rounded px-1 py-1 w-16 lg:w-24" />

@@ -25,8 +25,8 @@ export function SplitBill() {
             <h1 className="text-2xl font-bold mb-4">Bill Splitter</h1>
 
             <form action={action} key={Math.random()} className="flex items-center space-x-3 mb-4">
-                <input type="number" step="any" name="cost" placeholder="Cost" className="border rounded px-1 py-1 w-52" />
-                <input type="number" name="numberOfPeople" placeholder="Number of People" className="border rounded px-1 py-1 w-52" />
+                <input autoComplete="off" type="number" step="any" name="cost" placeholder="Cost" className="border rounded px-1 py-1 w-52" />
+                <input autoComplete="off" type="number" name="numberOfPeople" placeholder="Number of People" className="border rounded px-1 py-1 w-52" />
                 <button className="px-4 py-1 text-white rounded bg-green-500">Split</button>
             </form>
 
