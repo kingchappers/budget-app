@@ -34,3 +34,31 @@ input::-webkit-inner-spin-button {
 input[type=number] {
     -moz-appearance:textfield; /* Firefox */
 }
+
+.Select__value-container {
+    font-size: 1rem;
+    min-height: 5px;
+    padding: 0px;
+}
+.Select__control--is-focused {
+    font-size: 5px;
+    min-height: 25px;
+}
+.Select__dropdown-indicator{
+    padding: 1px;
+    padding-right: 3px;
+    padding-left: 5px;
+}
+.Select__control{
+    font-size: 5px;
+    min-height: 25px;
+}
+.Select__clear-indicator{
+    font-size: 5px;
+    min-height: 25px;
+    padding: 1px;
+}
+.Select__input-container{
+    min-height: 25px;
+    padding: 1px;
+}
