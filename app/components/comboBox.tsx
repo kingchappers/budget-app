@@ -38,6 +38,7 @@ export function CategoryComboBox({ categories, categoriesSelection, setCategorie
             classNames={{ control: () => "w-36 lg:w-44" }}
             placeholder="Category..."
             onChange={(choice) => setCategorySelection(choice)}
+            classNamePrefix='Select'
         />
     )
 }

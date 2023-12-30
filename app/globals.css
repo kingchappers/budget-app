@@ -34,10 +34,3 @@ input::-webkit-inner-spin-button {
 input[type=number] {
     -moz-appearance:textfield; /* Firefox */
 }
-
-.customDatePickerWidth,
-.customDatePickerWidth > div.react-datepicker-wrapper,
-.customDatePickerWidth > div > div.react-datepicker__input-container
-.customDatePickerWidth > div > div.react-datepicker__input-container input {
-   width: 6rem;
-}

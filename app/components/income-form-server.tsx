@@ -41,9 +41,6 @@ export function IncomeForm({ categories, userId }: incomeFormProps) {
             return;
         }
 
-        //For testing / Troubleshooting
-        // console.log(typeof value)
-
         // Invoke server action to add new income
         await createIncomeAction({ incomeDate, company, amount, incomeCategory, notes, userId, path: "/" });
     }
