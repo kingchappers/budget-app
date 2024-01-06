@@ -2,6 +2,7 @@ import { createTransactionAction } from "../_transactionActions";
 import { DatePicker } from "./datePicker";
 import { CategoryComboBox } from "./comboBox";
 import { CategoryClass } from "../models/Category";
+import { FormAddButton } from "./form-submit-buttons";
 
 interface TransactionFormProps {
     categories: CategoryClass[];
@@ -59,7 +60,7 @@ export function TransactionForm({ categories, userId }: TransactionFormProps) {
             <CategoryComboBox categories={categories} />
             <input type="text" name="items" placeholder="Items" className="border rounded px-1 py-1 w-24 lg:w-44" />
             <input type="text" name="notes" placeholder="Notes" className="border rounded px-1 py-1 w-24 lg:w-80" />
-            <button className="px-4 py-1 text-white rounded bg-green-500">Add</button>
+            <FormAddButton />
         </form>
     );
 }

@@ -8,6 +8,7 @@ import { getIncomesBetweenDates } from "../lib/income-db";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/lib/auth";
 import { redirect } from "next/navigation";
+import { FormSaveButton } from "../components/form-submit-buttons";
 
 export default async function Home() {
     const session = await getServerSession(authOptions);
@@ -95,7 +96,7 @@ export default async function Home() {
                         ))
                     )}
                 </div>
-                <button className="mt-5 ml-10 px-4 py-1 text-white rounded bg-green-500">Save</button>
+                <FormSaveButton />
             </form>
 
             <h1 className="text-2xl font-bold mt-5 mb-3">Monthly Income Targets</h1>
@@ -109,7 +110,7 @@ export default async function Home() {
                         ))
                     )}
                 </div>
-                <button className="mt-5 ml-10 px-4 py-1 text-white rounded bg-green-500">Save</button>
+                <FormSaveButton />
             </form>
 
             <h1 className="text-2xl font-bold my-4">Monthly Budget Targets</h1>

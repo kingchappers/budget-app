@@ -1,6 +1,7 @@
 import { createCategoryAction } from "../_categoryActions";
 import { createTargetAction } from "../_targetActions";
 import { DefaultCategoriesButton } from "./create-defaults-components";
+import { FormAddButton } from "./form-submit-buttons";
 
 interface CategoryFormProps {
     userId: string;
@@ -51,7 +52,7 @@ export function CategoryForm({ userId }: CategoryFormProps) {
                 <label htmlFor="transactionCategoryCheck">Transaction Category</label>
                 <input type="checkbox" name="incomeCategoryCheck" id="incomeCategoryCheck" className="h-6 w-6 border-gray-300 disabled:bg-gray-300 disabled:border-gray-300 disabled:cursor-not-allowed" defaultChecked />
                 <label htmlFor="incomeCategoryCheck">Income Category</label>
-                <button className="px-4 py-1 text-white rounded bg-green-500">Add</button>
+                <FormAddButton />
             </form>
         </div>
     );
