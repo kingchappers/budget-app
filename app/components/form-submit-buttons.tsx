@@ -1,5 +1,6 @@
 'use client'
 
+//TypeScript error is currently expected until there is a proper update to react-dom
 import { useFormStatus } from 'react-dom'
 
 export function FormAddButton() {
