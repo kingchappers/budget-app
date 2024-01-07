@@ -4,13 +4,13 @@
 import { useFormStatus } from 'react-dom'
 
 export function FormAddButton() {
-  const { addButtonStatus } = useFormStatus()
+    const addButtonStatus = useFormStatus()
 
-  return (
-    <button type="submit" aria-disabled={addButtonStatus.pending} className="px-4 py-1 text-white rounded bg-green-500">
-      {addButtonStatus ? "Adding..." : "Add"}
-    </button>
-  )
+    return (
+        <button type="submit" aria-disabled={addButtonStatus.pending} className="px-4 py-1 text-white rounded bg-green-500">
+            {addButtonStatus.pending ? "Adding..." : "Add"}
+        </button>
+    )
 }
 
 // _________________________________________________________________________________________________________________________________________________________________________
@@ -18,11 +18,11 @@ export function FormAddButton() {
 // _________________________________________________________________________________________________________________________________________________________________________
 
 export function FormSaveButton() {
-    const { saveButtonStatus } = useFormStatus()
+    const saveButtonStatus = useFormStatus()
 
     return (
-      <button type="submit" aria-disabled={saveButtonStatus.pending} className="px-4 py-1 text-white rounded bg-green-500">
-        {saveButtonStatus ? "Saving..." : "Save"}
-      </button>
+        <button type="submit" aria-disabled={saveButtonStatus.pending} className="px-4 py-1 text-white rounded bg-green-500">
+            {saveButtonStatus ? "Saving..." : "Save"}
+        </button>
     )
-  }
+}
