@@ -10,7 +10,7 @@ export function FormAddButton() {
 
     return (
         <button type="submit" disabled={addButtonStatus.pending} className="px-4 py-1 text-white rounded bg-green-500">
-            {enableDisableBtn ? "Adding" : "Add"}
+            Add
         </button>
     )
 }
