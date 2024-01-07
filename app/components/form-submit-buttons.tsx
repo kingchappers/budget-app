@@ -6,10 +6,11 @@ import { useFormStatus } from 'react-dom'
 
 export function FormAddButton() {
     const addButtonStatus = useFormStatus()
+    var enableDisableBtn = addButtonStatus.pending
 
     return (
         <button type="submit" disabled={addButtonStatus.pending} className="px-4 py-1 text-white rounded bg-green-500">
-            Add
+            {enableDisableBtn ? "Adding" : "Add"}
         </button>
     )
 }
