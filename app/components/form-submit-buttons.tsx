@@ -9,7 +9,7 @@ export function FormAddButton() {
     var enableDisableBtn = addButtonStatus.pending
 
     return (
-        <button type="submit" disabled={addButtonStatus.pending} className="px-4 py-1 text-white rounded bg-green-500">
+        <button type="submit" disabled={addButtonStatus.pending} className="px-4 py-1 text-white rounded bg-green-500 disabled:border-gray-500 disabled:cursor-not-allowed">
             Add
         </button>
     )
@@ -23,7 +23,7 @@ export function FormSaveButton() {
     const saveButtonStatus = useFormStatus()
 
     return (
-        <button type="submit" aria-disabled={saveButtonStatus.pending} className="px-4 py-1 text-white rounded bg-green-500">
+        <button type="submit" aria-disabled={saveButtonStatus.pending} className="px-4 py-1 text-white rounded bg-green-500 disabled:border-gray-500 disabled:cursor-not-allowed">
             Save
         </button>
     )
