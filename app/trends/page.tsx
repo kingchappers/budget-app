@@ -19,6 +19,32 @@ export default async function Trends() {
     const { yearOfCategorySpend, results } = await getYearOfCategorySpend(userId, months)
     const { yearOfCategoryIncome, results: incomeResults } = await getYearOfCategoryIncome(userId, months)
 
+    //_______________________________________________________________________________________________________________________________________
+    // REMOVE THESE LOG LINE
+    //_______________________________________________________________________________________________________________________________________
+    console.log("Months collectect: " + months)
+    console.log("Monthly Spend Data:")
+    for (const element of monthlySpendData){
+        console.log(element)
+    }
+    
+    console.log("Monthly Income Data: ")
+    for (const element of monthlyIncomeData){
+        console.log(element)
+    }
+
+    console.log("Year of Category Spend: ")
+    for (const element of yearOfCategorySpend){
+        console.log(element)
+    }
+
+    console.log("Year of Category Income: ")
+    for (const element of yearOfCategoryIncome){
+        console.log(element)
+    }
+    //_______________________________________________________________________________________________________________________________________
+    //_______________________________________________________________________________________________________________________________________
+
     return (
         <div className="container mx-auto max-w-screen-2xl p-4">
 
