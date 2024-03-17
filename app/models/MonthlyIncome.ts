@@ -8,13 +8,13 @@ import {
 } from "@typegoose/typegoose"
 import mongoose from "mongoose"
 
-@post<TrendsSpendClass>("save", function (doc) {
+@post<MonthlyIncomeClass>("save", function (doc) {
     if (doc) {
         doc.id = doc._id.toString();
         doc._id = doc.id;
     }
 })
-@post<TrendsSpendClass[]>(/^find/, function (docs) {
+@post<MonthlyIncomeClass[]>(/^find/, function (docs) {
     // @ts-ignore
     if (this.op === "find") {
         docs.forEach((doc) => {
@@ -26,14 +26,14 @@ import mongoose from "mongoose"
 @ModelOptions({
     schemaOptions: {
         timestamps: true,
-        collection: "trendsSpends",
+        collection: "incomeTrends",
     },
     options: {
         allowMixed: Severity.ALLOW,
     },
 })
 @index({ vendor: 1 })
-class TrendsSpendClass {
+class MonthlyIncomeClass {
 
     @prop({ required: true })
     month: Date;
@@ -49,5 +49,5 @@ class TrendsSpendClass {
     id: string;
 }
 
-const TrendsSpend = getModelForClass(TrendsSpendClass);
-export { TrendsSpend, TrendsSpendClass };
+const MonthlyIncome = getModelForClass(MonthlyIncomeClass);
+export { MonthlyIncome, MonthlyIncomeClass };
