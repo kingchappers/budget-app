@@ -21,12 +21,12 @@ export async function getMonthlyIncomes(filter: MonthlyIncomeFilter) {
         const limit = filter.limit ?? 12;
         const skip = (page - 1) * limit;
 
-        const mothlyIncomes = await MonthlyIncome.find({ userId: filter.userId }).skip(skip).sort({ month: 1 }).limit(limit).lean().exec();
+        const monthlyIncomes = await MonthlyIncome.find({ userId: filter.userId }).skip(skip).sort({ month: 1 }).limit(limit).lean().exec();
 
-        const results = mothlyIncomes.length;
+        const results = monthlyIncomes.length;
 
         return {
-            mothlyIncomes: mothlyIncomes,
+            monthlyIncomes: monthlyIncomes,
             page,
             limit,
             results
@@ -47,12 +47,12 @@ export async function getMonthlyIncomesBetweenDates(filter: MonthlyIncomeFilter,
         const searchStartDate = startDate ?? startOfMonth(new Date())
         const searchEndDate = endDate ?? endOfMonth(new Date())
 
-        const mothlyIncomes = await MonthlyIncome.find({ userId: filter.userId, month: { $gte: searchStartDate, $lte: searchEndDate } }).sort({ month: -1 }).lean().exec();
+        const monthlyIncomes = await MonthlyIncome.find({ userId: filter.userId, month: { $gte: searchStartDate, $lte: searchEndDate } }).sort({ month: -1 }).lean().exec();
 
-        const results = mothlyIncomes.length;
+        const results = monthlyIncomes.length;
 
         return {
-            mothlyIncomes: mothlyIncomes,
+            monthlyIncomes: monthlyIncomes,
             results
         };
 
@@ -75,10 +75,10 @@ export async function getMonthlyIncome(id: string) {
             return { error: "Monthly Income not found" };
         }
 
-        const mothlyIncome = await MonthlyIncome.findById(parsedId).lean().exec();
-        if (mothlyIncome) {
+        const monthlyIncome = await MonthlyIncome.findById(parsedId).lean().exec();
+        if (monthlyIncome) {
             return {
-                mothlyIncome,
+                monthlyIncome,
             };
         } else {
             return { error: "Monthly Income not found" };
@@ -101,10 +101,10 @@ export async function createMonthlyIncome(
     try {
         await connectDB();
 
-        const mothlyIncome = await MonthlyIncome.create({ month, monthTotal, monthCategoryTotals, userId });
+        const monthlyIncome = await MonthlyIncome.create({ month, monthTotal, monthCategoryTotals, userId });
 
         return {
-            mothlyIncome
+            monthlyIncome
         };
     } catch (error) {
         return { error };
@@ -128,7 +128,7 @@ export async function updateMonthlyIncome(
             return { error: "Monthly Income not found" };
         }
 
-        const mothlyIncome = await MonthlyIncome.findByIdAndUpdate(
+        const monthlyIncome = await MonthlyIncome.findByIdAndUpdate(
             parsedId,
             { month, monthTotal, monthCategoryTotals },
             { new: true }
@@ -136,9 +136,9 @@ export async function updateMonthlyIncome(
             .lean()
             .exec();
 
-        if (mothlyIncome) {
+        if (monthlyIncome) {
             return {
-                mothlyIncome,
+                monthlyIncome,
             };
         } else {
             return { error: "Monthly Income not found" };
@@ -162,9 +162,9 @@ export async function deleteMonthlyIncome(id: string) {
             return { error: "Monthly Income not found" };
         }
 
-        const mothlyIncome = await MonthlyIncome.findByIdAndDelete(parsedId).exec();
+        const monthlyIncome = await MonthlyIncome.findByIdAndDelete(parsedId).exec();
 
-        if (mothlyIncome) {
+        if (monthlyIncome) {
             return {};
         } else {
             return { error: "Monthly Income not found" };

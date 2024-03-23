@@ -42,7 +42,7 @@ class MonthlySpendClass {
     monthTotal: number;
 
     @prop({required: true})
-    monthCategoryTotals: object;
+    monthCategoryTotals: object[];
 
     @prop({required: true})
     userId: string;

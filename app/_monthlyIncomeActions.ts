@@ -17,10 +17,10 @@ export async function getMonthlyIncomesBetweenDatesAction({
     startDate: Date;
     endDate: Date;
 }) {
-    const { mothlyIncomes, results } = await getMonthlyIncomesBetweenDates({ userId }, startDate, endDate)
+    const { monthlyIncomes, results } = await getMonthlyIncomesBetweenDates({ userId }, startDate, endDate)
 
     return {
-        mothlyIncomes: mothlyIncomes,
+        monthlyIncomes: monthlyIncomes,
         results
     };
 }
@@ -36,14 +36,13 @@ export async function createMonthlyIncomeAction({
     path,
     userId,
 }: {
-    month: string;
+    month: Date;
     monthTotal: number;
     monthCategoryTotals: object;
     path: string;
     userId: string;
 }) {
-    const parsedMonth = stringToDate(month)
-    await createMonthlyIncome(parsedMonth, monthTotal, monthCategoryTotals, userId);
+    await createMonthlyIncome(month, monthTotal, monthCategoryTotals, userId);
     revalidatePath(path);
 }
 

@@ -8,7 +8,7 @@ import { stringToDate } from "./lib/utils";
 // _________________________________________________________________________________________________________________________________________________________________________
 // _________________________________________________________________________________________________________________________________________________________________________
 
-export async function getMonthlyIncomesBetweenDatesAction({
+export async function getMonthlySpendsBetweenDatesAction({
     userId,
     startDate,
     endDate,
@@ -17,10 +17,10 @@ export async function getMonthlyIncomesBetweenDatesAction({
     startDate: Date;
     endDate: Date;
 }) {
-    const { mothlySpends, results } = await getMonthlySpendsBetweenDates({ userId }, startDate, endDate)
+    const { monthlySpends, results } = await getMonthlySpendsBetweenDates({ userId }, startDate, endDate)
 
     return {
-        mothlySpends: mothlySpends,
+        monthlySpends: monthlySpends,
         results
     };
 }
@@ -36,14 +36,13 @@ export async function createMonthlySpendAction({
     path,
     userId,
 }: {
-    month: string;
+    month: Date;
     monthTotal: number;
-    monthCategoryTotals: object;
+    monthCategoryTotals: object[];
     path: string;
     userId: string;
 }) {
-    const parsedMonth = stringToDate(month)
-    await createMonthlySpend(parsedMonth, monthTotal, monthCategoryTotals, userId);
+    await createMonthlySpend(month, monthTotal, monthCategoryTotals, userId);
     revalidatePath(path);
 }
 
@@ -53,7 +52,7 @@ export async function createMonthlySpendAction({
 
 export async function updateMonthlySpendAction(
     id: string,
-    update: { month?: Date; monthTotal?: number; monthCategoryTotals: object; },
+    update: { month?: Date; monthTotal?: number; monthCategoryTotals: object[]; },
     path: string
 ) {
     await updateMonthlySpend(id, update);

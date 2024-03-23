@@ -17,12 +17,12 @@ export async function getMonthlySpends(filter: MonthlySpendFilter) {
         const limit = filter.limit ?? 12;
         const skip = (page - 1) * limit;
 
-        const mothlySpends = await MonthlySpend.find({ userId: filter.userId }).skip(skip).sort({ month: 1 }).limit(limit).lean().exec();
+        const monthlySpends = await MonthlySpend.find({ userId: filter.userId }).skip(skip).sort({ month: 1 }).limit(limit).lean().exec();
 
-        const results = mothlySpends.length;
+        const results = monthlySpends.length;
 
         return {
-            mothlySpends: mothlySpends,
+            monthlySpends: monthlySpends,
             page,
             limit,
             results
@@ -43,12 +43,12 @@ export async function getMonthlySpendsBetweenDates(filter: MonthlySpendFilter, s
         const searchStartDate = startDate ?? startOfMonth(new Date())
         const searchEndDate = endDate ?? endOfMonth(new Date())
 
-        const mothlySpends = await MonthlySpend.find({ userId: filter.userId, month: { $gte: searchStartDate, $lte: searchEndDate } }).sort({ month: -1 }).lean().exec();
+        const monthlySpends = await MonthlySpend.find({ userId: filter.userId, month: { $gte: searchStartDate, $lte: searchEndDate } }).sort({ month: -1 }).lean().exec();
 
-        const results = mothlySpends.length;
+        const results = monthlySpends.length;
 
         return {
-            mothlySpends: mothlySpends,
+            monthlySpends: monthlySpends,
             results
         };
 
@@ -71,10 +71,10 @@ export async function getMonthlySpend(id: string) {
             return { error: "Monthly Spend not found" };
         }
 
-        const mothlySpend = await MonthlySpend.findById(parsedId).lean().exec();
-        if (mothlySpend) {
+        const monthlySpend = await MonthlySpend.findById(parsedId).lean().exec();
+        if (monthlySpend) {
             return {
-                mothlySpend,
+                monthlySpend,
             };
         } else {
             return { error: "Monthly Spend not found" };
@@ -91,16 +91,16 @@ export async function getMonthlySpend(id: string) {
 export async function createMonthlySpend(
     month: Date,
     monthTotal: number,
-    monthCategoryTotals: object,
+    monthCategoryTotals: object[],
     userId: string,
 ) {
     try {
         await connectDB();
 
-        const mothlySpend = await MonthlySpend.create({ month, monthTotal, monthCategoryTotals, userId });
+        const monthlySpend = await MonthlySpend.create({ month, monthTotal, monthCategoryTotals, userId });
 
         return {
-            mothlySpend
+            monthlySpend
         };
     } catch (error) {
         return { error };
@@ -113,7 +113,7 @@ export async function createMonthlySpend(
 
 export async function updateMonthlySpend(
     id: string,
-    { month, monthTotal, monthCategoryTotals }: { month?: Date; monthTotal?: number; monthCategoryTotals?: object; }
+    { month, monthTotal, monthCategoryTotals }: { month?: Date; monthTotal?: number; monthCategoryTotals?: object[]; }
 ) {
     try {
         await connectDB();
@@ -124,7 +124,7 @@ export async function updateMonthlySpend(
             return { error: "Monthly Spend not found" };
         }
 
-        const mothlySpend = await MonthlySpend.findByIdAndUpdate(
+        const monthlySpend = await MonthlySpend.findByIdAndUpdate(
             parsedId,
             { month, monthTotal, monthCategoryTotals},
             { new: true }
@@ -132,9 +132,9 @@ export async function updateMonthlySpend(
             .lean()
             .exec();
 
-        if (mothlySpend) {
+        if (monthlySpend) {
             return {
-                mothlySpend,
+                monthlySpend,
             };
         } else {
             return { error: "Monthly Spend not found" };
@@ -158,9 +158,9 @@ export async function deleteMonthlySpend(id: string) {
             return { error: "Monthly Spend not found" };
         }
 
-        const mothlySpend = await MonthlySpend.findByIdAndDelete(parsedId).exec();
+        const monthlySpend = await MonthlySpend.findByIdAndDelete(parsedId).exec();
 
-        if (mothlySpend) {
+        if (monthlySpend) {
             return {};
         } else {
             return { error: "Monthly Spend not found" };
