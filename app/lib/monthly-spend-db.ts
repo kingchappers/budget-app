@@ -61,6 +61,32 @@ export async function getMonthlySpendsBetweenDates(filter: MonthlySpendFilter, s
 // _________________________________________________________________________________________________________________________________________________________________________
 // _________________________________________________________________________________________________________________________________________________________________________
 
+export async function getMonthlySpendByMonth(filter: MonthlySpendFilter, month: Date) {
+    try {
+        await connectDB();
+
+        if (!month) {
+            return { error: "Monthly Spend not found" };
+        }
+
+        const monthlySpend = await MonthlySpend.findOne({ userId:filter.userId, month: month }).lean().exec();
+
+        if (monthlySpend) {
+            return {
+                monthlySpend,
+            };
+        } else {
+            return { error: "Monthly Spend not found" };
+        }
+    } catch (error) {
+        return { error };
+    }
+}
+
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+
 export async function getMonthlySpend(id: string) {
     try {
         await connectDB();
@@ -126,7 +152,7 @@ export async function updateMonthlySpend(
 
         const monthlySpend = await MonthlySpend.findByIdAndUpdate(
             parsedId,
-            { month, monthTotal, monthCategoryTotals},
+            { month, monthTotal, monthCategoryTotals },
             { new: true }
         )
             .lean()

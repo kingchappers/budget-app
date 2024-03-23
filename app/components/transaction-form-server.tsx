@@ -3,6 +3,9 @@ import { DatePicker } from "./datePicker";
 import { CategoryComboBox } from "./comboBox";
 import { CategoryClass } from "../models/Category";
 import { FormAddButton } from "./form-submit-buttons";
+import { startOfMonth } from "date-fns";
+import { stringToDate } from "../lib/utils";
+import { getMonthlySpendByMonthAction } from "../_monthlySpendActions";
 
 interface TransactionFormProps {
     categories: CategoryClass[];
@@ -49,6 +52,18 @@ export function TransactionForm({ categories, userId }: TransactionFormProps) {
 
         // Invoke server action to add new transaction
         await createTransactionAction({ transactionDate, vendor, value, category, items, notes, userId, path: "/" });
+
+        console.log("_________________________________________________________________________________________________________________________________________________________________________")
+        console.log(transactionDate)
+        console.log("_________________________________________________________________________________________________________________________________________________________________________")
+        const transactionDateMonthStart = startOfMonth(stringToDate(transactionDate))
+
+        const { monthlySpend } = await getMonthlySpendByMonthAction({ month: transactionDateMonthStart, userId })
+
+        monthlySpend?.monthCategoryTotals.map((test) => (
+            console.log("this is a test:\n" + test)
+        ))
+
     }
 
     return (

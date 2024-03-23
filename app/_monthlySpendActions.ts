@@ -1,6 +1,6 @@
 "use server";
 
-import { createMonthlySpend, deleteMonthlySpend, updateMonthlySpend, getMonthlySpend, getMonthlySpendsBetweenDates } from "./lib/monthly-spend-db";
+import { createMonthlySpend, deleteMonthlySpend, updateMonthlySpend, getMonthlySpend, getMonthlySpendsBetweenDates, getMonthlySpendByMonth } from "./lib/monthly-spend-db";
 import { revalidatePath } from "next/cache";
 import { stringToDate } from "./lib/utils";
 
@@ -23,6 +23,24 @@ export async function getMonthlySpendsBetweenDatesAction({
         monthlySpends: monthlySpends,
         results
     };
+}
+
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+
+export async function getMonthlySpendByMonthAction({
+    month,
+    userId,
+}: {
+    month: Date;
+    userId: string;
+}) {
+    const { monthlySpend } = await getMonthlySpendByMonth({ userId }, month)
+
+    return {
+        monthlySpend: monthlySpend
+    }
 }
 
 // _________________________________________________________________________________________________________________________________________________________________________

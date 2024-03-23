@@ -41,10 +41,10 @@ class MonthlyIncomeClass {
     @prop({ required: true })
     monthTotal: number;
 
-    @prop({required: true})
+    @prop({ required: true })
     monthCategoryTotals: Array<any>;
 
-    @prop({required: true})
+    @prop({ required: true })
     userId: string;
 
     _id: mongoose.Types.ObjectId | string;

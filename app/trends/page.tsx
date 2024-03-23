@@ -56,28 +56,26 @@ export default async function Trends() {
         userId: userId,
     }
 
-    const { monthlySpends, results: monthlySpendsResults } = await getMonthlySpendsBetweenDatesAction({ userId, startDate: months[0], endDate: months[months.length -1] })
-    const { monthlyIncomes, results: monthlyIncomesResults } = await getMonthlyIncomesBetweenDatesAction({ userId, startDate: months[0], endDate: months[months.length -1] })
+    const { monthlySpends, results: monthlySpendsResults } = await getMonthlySpendsBetweenDatesAction({ userId, startDate: months[0], endDate: months[months.length - 1] })
+    const { monthlyIncomes, results: monthlyIncomesResults } = await getMonthlyIncomesBetweenDatesAction({ userId, startDate: months[0], endDate: months[months.length - 1] })
 
-    if(monthlySpendsResults){
-        console.log(monthlySpendsResults)
+    if (monthlySpendsResults) {
         console.log("Spends found!")
     } else {
         console.log("No spends found :(")
         const { monthlySpendData } = await getListOfYearsTransactionTotalsByMonth(userId)
-        const checkSpendsExist = monthlySpendData.some(item => item.value !== 0)
-        if(checkSpendsExist){
+        const spendsExist = monthlySpendData.some(item => item.value !== 0)
+        if (spendsExist) {
             const { yearOfCategorySpend, results } = await getYearOfCategorySpend(userId, months)
-            console.log(yearOfCategorySpend[0].categoryData)
-            await createMonthlySpendAction({ month: yearOfCategorySpend[0].month, monthTotal: yearOfCategorySpend[0].monthTotal, monthCategoryTotals: yearOfCategorySpend[0].categoryData, userId, path: "/" })
-            const test = await getMonthlySpends(monthlySpendFilter)
-            console.log(test)
+            yearOfCategorySpend.map(async (monthOfCategorySpend) => (
+                await createMonthlySpendAction({ month: monthOfCategorySpend.month, monthTotal: monthOfCategorySpend.monthTotal, monthCategoryTotals: monthOfCategorySpend.categoryData, userId, path: "/" })
+            ))
         } else {
             console.log("No transactions currently exist")
         }
     }
 
-    if(monthlyIncomesResults){
+    if (monthlyIncomesResults) {
         console.log(monthlyIncomesResults)
         console.log("Incomes found!")
     } else {
@@ -86,6 +84,7 @@ export default async function Trends() {
 
     //_______________________________________________________________________________________________________________________________________
     //_______________________________________________________________________________________________________________________________________
+    // _______________________________________________________________________________________________________________________________________
 
     return (
         <div className="container mx-auto max-w-screen-2xl p-4">
