@@ -95,12 +95,13 @@ export async function getMonthlyIncome(id: string) {
 export async function createMonthlyIncome(
     month: Date,
     monthTotal: number,
+    monthCategoryTotals: object,
     userId: string,
 ) {
     try {
         await connectDB();
 
-        const mothlyIncome = await MonthlyIncome.create({ month, monthTotal, userId });
+        const mothlyIncome = await MonthlyIncome.create({ month, monthTotal, monthCategoryTotals, userId });
 
         return {
             mothlyIncome
@@ -116,7 +117,7 @@ export async function createMonthlyIncome(
 
 export async function updateMonthlyIncome(
     id: string,
-    { month, monthTotal }: { month?: Date; monthTotal?: number; }
+    { month, monthTotal, monthCategoryTotals }: { month?: Date; monthTotal?: number; monthCategoryTotals?: object; }
 ) {
     try {
         await connectDB();
@@ -129,7 +130,7 @@ export async function updateMonthlyIncome(
 
         const mothlyIncome = await MonthlyIncome.findByIdAndUpdate(
             parsedId,
-            { month, monthTotal },
+            { month, monthTotal, monthCategoryTotals },
             { new: true }
         )
             .lean()

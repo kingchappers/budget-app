@@ -32,16 +32,18 @@ export async function getMonthlyIncomesBetweenDatesAction({
 export async function createMonthlyIncomeAction({
     month,
     monthTotal,
+    monthCategoryTotals,
     path,
     userId,
 }: {
     month: string;
     monthTotal: number;
+    monthCategoryTotals: object;
     path: string;
     userId: string;
 }) {
     const parsedMonth = stringToDate(month)
-    await createMonthlyIncome(parsedMonth, monthTotal, userId);
+    await createMonthlyIncome(parsedMonth, monthTotal, monthCategoryTotals, userId);
     revalidatePath(path);
 }
 
@@ -51,7 +53,7 @@ export async function createMonthlyIncomeAction({
 
 export async function updateMonthlyIncomeAction(
     id: string,
-    update: { month?: Date; monthTotal?: number; },
+    update: { month?: Date; monthTotal?: number; monthCategoryTotals?: object; },
     path: string
 ) {
     await updateMonthlyIncome(id, update);

@@ -42,6 +42,9 @@ class MonthlyIncomeClass {
     monthTotal: number;
 
     @prop({required: true})
+    monthCategoryTotals: object;
+
+    @prop({required: true})
     userId: string;
 
     _id: mongoose.Types.ObjectId | string;
