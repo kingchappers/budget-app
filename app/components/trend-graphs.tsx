@@ -18,8 +18,10 @@ interface groupChartProps {
 }
 
 export interface categoryData {
-    category: string,
+    chartTitle: string,
     value: number,
+    categoryName: string,
+    percentage: number,
 }
 
 export interface categorySplitPieProps {
@@ -135,6 +137,7 @@ export function YearlyIncomeVsSpendingGroupChart({ monthSpendData, monthIncomeDa
 
 export function MonthSpendingCategorySplit({ categoryData, month, monthTotal }: categorySplitPieProps) {
     const monthAsString = month.toLocaleString('default', { month: 'short' }) + " " + month.getFullYear().toLocaleString().substring(3)
+
     return (
         <div className="container mx-auto max-w-screen-2xl p-4">
             {monthTotal === 0 ? (
@@ -144,7 +147,7 @@ export function MonthSpendingCategorySplit({ categoryData, month, monthTotal }: 
                     <h1 className="text-l font-bold text-center">{monthAsString}</h1>
                     <VictoryPie
                         data={categoryData}
-                        x="category"
+                        x="chartTitle"
                         y="value"
                         theme={VictoryTheme.material}
                         style={{ parent: { maxWidth: "100%" } }}

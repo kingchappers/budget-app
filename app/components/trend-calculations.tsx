@@ -4,6 +4,24 @@ import { getLastTwelveMonths } from "../lib/utils";
 import { calculateIncomeTotal, calculateTransactionTotal } from "./target-calculation-functions";
 import { categoryData, categorySplitPieProps, monthData } from "./trend-graphs";
 
+//_______________________________________________________________________________________________________________________________________
+// New Functions below
+//_______________________________________________________________________________________________________________________________________
+
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+
+// export async function get
+
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+
+//_______________________________________________________________________________________________________________________________________
+// New Functions above
+//_______________________________________________________________________________________________________________________________________
+
 export async function getListOfYearsTransactionTotalsByMonth(userId: string) {
     var monthlySpendData: monthData[] = [];
     const lastTwelveMonths = getLastTwelveMonths();
@@ -79,8 +97,10 @@ async function getCategoryTransactionTotalBetweenDates(userId: string, startDate
     }
 
     const categorySpendData: categoryData[] = Object.entries(categorySpendRecord).map(([category, value]) => ({
-        category: category + `:\n£${value} | ${((value / monthTotal) * 100).toFixed(2)}%`,
-        value: value
+        chartTitle: category + `:\n£${value} | ${((value / monthTotal) * 100).toFixed(2)}%`,
+        categoryName: category,
+        value: value,
+        percentage: ((value / monthTotal) * 100),
     }))
 
     return { categorySpendData, monthTotal };
@@ -107,8 +127,10 @@ async function getCategoryIncomeTotalBetweenDates(userId: string, startDate: Dat
     }
 
     const categoryIncomeData: categoryData[] = Object.entries(categoryIncomeRecord).map(([incomeCategory, value]) => ({
-        category: incomeCategory + `:\n£${value} | ${((value / monthTotal) * 100).toFixed(2)}%`,
-        value: value
+        chartTitle: incomeCategory + `:\n£${value} | ${((value / monthTotal) * 100).toFixed(2)}%`,
+        categoryName: incomeCategory,
+        value: value,
+        percentage: ((value / monthTotal) * 100),
     }))
 
     return { categoryIncomeData, monthTotal }
