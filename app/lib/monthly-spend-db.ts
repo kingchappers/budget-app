@@ -91,12 +91,13 @@ export async function getMonthlySpend(id: string) {
 export async function createMonthlySpend(
     month: Date,
     monthTotal: number,
+    monthCategoryTotals: object,
     userId: string,
 ) {
     try {
         await connectDB();
 
-        const mothlySpend = await MonthlySpend.create({ month, monthTotal, userId });
+        const mothlySpend = await MonthlySpend.create({ month, monthTotal, monthCategoryTotals, userId });
 
         return {
             mothlySpend
@@ -112,7 +113,7 @@ export async function createMonthlySpend(
 
 export async function updateMonthlySpend(
     id: string,
-    { month, monthTotal }: { month?: Date; monthTotal?: number; }
+    { month, monthTotal, monthCategoryTotals }: { month?: Date; monthTotal?: number; monthCategoryTotals?: object; }
 ) {
     try {
         await connectDB();
@@ -125,7 +126,7 @@ export async function updateMonthlySpend(
 
         const mothlySpend = await MonthlySpend.findByIdAndUpdate(
             parsedId,
-            { month, monthTotal },
+            { month, monthTotal, monthCategoryTotals},
             { new: true }
         )
             .lean()
