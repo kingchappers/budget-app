@@ -60,10 +60,13 @@ export function TransactionForm({ categories, userId }: TransactionFormProps) {
 
         const { monthlySpend } = await getMonthlySpendByMonthAction({ month: transactionDateMonthStart, userId })
 
-        monthlySpend?.monthCategoryTotals.map((test) => (
-            console.log("this is a test:\n" + test)
-        ))
+        // console.log(monthlySpend?.monthCategoryTotals[0])
 
+        if(monthlySpend){
+            monthlySpend.monthCategoryTotals.forEach((monthCategoryTotal) => {
+                console.log(monthCategoryTotal)
+            })
+        }
     }
 
     return (
