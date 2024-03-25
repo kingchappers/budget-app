@@ -2,8 +2,7 @@
 
 import { createMonthlySpend, deleteMonthlySpend, updateMonthlySpend, getMonthlySpend, getMonthlySpendsBetweenDates, getMonthlySpendByMonth } from "./lib/monthly-spend-db";
 import { revalidatePath } from "next/cache";
-import { stringToDate } from "./lib/utils";
-
+import { monthCategoryTotal } from "./models/MonthlySpend";
 // _________________________________________________________________________________________________________________________________________________________________________
 // _________________________________________________________________________________________________________________________________________________________________________
 // _________________________________________________________________________________________________________________________________________________________________________
@@ -56,7 +55,7 @@ export async function createMonthlySpendAction({
 }: {
     month: Date;
     monthTotal: number;
-    monthCategoryTotals: object[];
+    monthCategoryTotals: monthCategoryTotal[];
     path: string;
     userId: string;
 }) {
@@ -70,7 +69,7 @@ export async function createMonthlySpendAction({
 
 export async function updateMonthlySpendAction(
     id: string,
-    update: { month?: Date; monthTotal?: number; monthCategoryTotals: object[]; },
+    update: { month?: Date; monthTotal?: number; monthCategoryTotals: monthCategoryTotal[]; },
     path: string
 ) {
     await updateMonthlySpend(id, update);

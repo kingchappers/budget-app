@@ -1,4 +1,4 @@
-import { MonthlySpend } from "../models/MonthlySpend";
+import { MonthlySpend, monthCategoryTotal} from "../models/MonthlySpend";
 import connectDB from "./mongoose-connect-db";
 import { stringToObjectId } from "./utils";
 import { startOfMonth, endOfMonth } from "date-fns";
@@ -117,7 +117,7 @@ export async function getMonthlySpend(id: string) {
 export async function createMonthlySpend(
     month: Date,
     monthTotal: number,
-    monthCategoryTotals: object[],
+    monthCategoryTotals: monthCategoryTotal[],
     userId: string,
 ) {
     try {
@@ -139,7 +139,7 @@ export async function createMonthlySpend(
 
 export async function updateMonthlySpend(
     id: string,
-    { month, monthTotal, monthCategoryTotals }: { month?: Date; monthTotal?: number; monthCategoryTotals?: object[]; }
+    { month, monthTotal, monthCategoryTotals }: { month?: Date; monthTotal?: number; monthCategoryTotals?: monthCategoryTotal[]; }
 ) {
     try {
         await connectDB();

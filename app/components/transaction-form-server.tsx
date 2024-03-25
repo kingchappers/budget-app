@@ -64,7 +64,8 @@ export function TransactionForm({ categories, userId }: TransactionFormProps) {
 
         if(monthlySpend){
             monthlySpend.monthCategoryTotals.forEach((monthCategoryTotal) => {
-                console.log(monthCategoryTotal)
+                // if(monthCategoryTotal.categoryName)
+                console.log(monthCategoryTotal.categoryName)
             })
         }
     }

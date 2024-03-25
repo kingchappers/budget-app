@@ -8,6 +8,13 @@ import {
 } from "@typegoose/typegoose"
 import mongoose from "mongoose"
 
+export interface monthCategoryTotal {
+    chartTitle: string;
+    categoryName?: string;
+    value: number;
+    percentage: number;
+}
+
 @post<MonthlySpendClass>("save", function (doc) {
     if (doc) {
         doc.id = doc._id.toString();
@@ -42,7 +49,7 @@ class MonthlySpendClass {
     monthTotal: number;
 
     @prop({ required: true })
-    monthCategoryTotals: object[];
+    monthCategoryTotals: monthCategoryTotal[];
 
     @prop({ required: true })
     userId: string;
