@@ -5,7 +5,8 @@ import { CategoryClass } from "../models/Category";
 import { FormAddButton } from "./form-submit-buttons";
 import { startOfMonth } from "date-fns";
 import { stringToDate } from "../lib/utils";
-import { getMonthlySpendByMonthAction } from "../_monthlySpendActions";
+import { getMonthlySpendByMonthAction, updateMonthlySpendAction } from "../_monthlySpendActions";
+import { monthCategoryTotal } from "../models/MonthlySpend";
 
 interface TransactionFormProps {
     categories: CategoryClass[];
@@ -61,84 +62,56 @@ export function TransactionForm({ categories, userId }: TransactionFormProps) {
         const { monthlySpend } = await getMonthlySpendByMonthAction({ month: transactionDateMonthStart, userId })
         // console.log(monthlySpend)
 
-        if(monthlySpend){
-            monthlySpend.monthCategoryTotals.forEach((monthCategoryTotal) => {
-                console.log(monthCategoryTotal.categoryName)
+        if (monthlySpend) {
+            var monthlySpendUpdate: {
+                monthTotal: number,
+                monthCategoryTotals: monthCategoryTotal[]
+            }
 
-                console.log("Monthly Spend Total Before update: " + monthlySpend.monthTotal)
-                const monthTotalUpdate = monthlySpend.monthTotal + value
-                console.log("Monthly Spend Total After Update: " + monthTotalUpdate)
+            monthlySpend.monthCategoryTotals.forEach(async (monthCategoryTotal) => {
+                console.log("_________________________________________________________________________________________________________________________________________________________________________")
+                console.log("Current Version:")
+                console.log("_________________________________________________________________________________________________________________________________________________________________________")
+                console.log(monthlySpend)
 
-                if(monthCategoryTotal.categoryName == category){
-                    console.log("Category match!")
-                    console.log(monthCategoryTotal)
+                // console.log("Monthly Spend Total Before update: " + monthlySpend.monthTotal)
+                monthlySpend.monthTotal = monthlySpend.monthTotal + value
+                // console.log("Monthly Spend Total After Update: " + monthlySpend.monthTotal)
 
+                if (monthCategoryTotal.categoryName == category) {
+                    // console.log("Category match!")
+                    // console.log(monthCategoryTotal)
 
-
-                    const monthlySpendUpdate = {
-                        monthTotal: monthTotalUpdate,
-                        monthCategoryTotals: []
-                    }
-
-
-
-
-
-
-
-                    // EXAMPLE monthCategoryTotal OBJECT FOR REFERENCE
-                    // {
-                    //     chartTitle: 'boogey:\n£4 | 14.81%',
-                    //     categoryName: 'boogey',
-                    //     value: 4,
-                    //     percentage: 14.814814814814813
-                    //   }
+                    // console.log(monthCategoryTotal.categoryName)
+                    monthCategoryTotal.value = monthCategoryTotal.value + value
+                    monthCategoryTotal.percentage = (monthCategoryTotal.value / monthlySpend.monthTotal) * 100
+                    monthCategoryTotal.chartTitle = `:\n£${monthCategoryTotal.value} | ${((monthCategoryTotal.value / monthlySpend.monthTotal) * 100).toFixed(2)}%`
+                    // console.log(monthCategoryTotal)
 
 
-
-
-
-                    //GENERATING THE VALUES BELOW
-
-                    // const monthTotal = calculateTransactionTotal(transactions);
-                    // const categorySpendData: categoryData[] = Object.entries(categorySpendRecord).map(([category, value]) => ({
-                    //        chartTitle: category + `:\n£${value} | ${((value / monthTotal) * 100).toFixed(2)}%`,
-                    //        categoryName: category,
-                    //        value: value,
-                    //        percentage: ((value / monthTotal) * 100),
-                    //    }))
-
-
-
-                    // Full object for reference
-                    // {
-                    //     _id: new ObjectId('65ff3be396f195a2effd627f'),
-                    //     month: 2024-03-01T00:00:00.000Z,
-                    //     monthTotal: 27,
-                    //     monthCategoryTotals: [
-                    //       {
-                    //         chartTitle: 'boogey:\n£4 | 14.81%',
-                    //         categoryName: 'boogey',
-                    //         value: 4,
-                    //         percentage: 14.814814814814813
-                    //       },
-                    //       {
-                    //         chartTitle: 'test:\n£23 | 85.19%',
-                    //         categoryName: 'test',
-                    //         value: 23,
-                    //         percentage: 85.18518518518519
-                    //       }
-                    //     ],
-                    //     userId: '65391927de5c11a3e686c2f7',
-                    //     createdAt: 2024-03-23T20:30:27.970Z,
-                    //     updatedAt: 2024-03-23T20:30:27.970Z,
-                    //     __v: 0
-                    //   }
+                    // await updateMonthlySpendAction(monthlySpend.id, { monthlySpendUpdate }, "/")
 
                 } else {
                     // Logic for creating a new entry for monthlyCategoryTotals - updating the database
                 }
+
+
+
+
             })
+
+            monthlySpendUpdate = {
+                monthTotal: monthlySpend.monthTotal,
+                monthCategoryTotals: monthlySpend.monthCategoryTotals
+            }
+            
+            console.log("_________________________________________________________________________________________________________________________________________________________________________")
+                console.log("Updated Version:")
+                console.log("_________________________________________________________________________________________________________________________________________________________________________")
+                // console.log(monthlySpend)
+                console.log(monthlySpendUpdate)
+
+                await updateMonthlySpendAction(monthlySpend.id, monthlySpendUpdate, "/")
         }
     }
 
