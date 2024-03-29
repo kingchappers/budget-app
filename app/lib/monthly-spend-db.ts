@@ -72,6 +72,7 @@ export async function getMonthlySpendByMonth(filter: MonthlySpendFilter, month: 
         const monthlySpend = await MonthlySpend.findOne({ userId:filter.userId, month: month }).lean().exec();
 
         if (monthlySpend) {
+            monthlySpend.id=monthlySpend._id.toString()
             return {
                 monthlySpend,
             };
@@ -157,6 +158,12 @@ export async function updateMonthlySpend(
         )
             .lean()
             .exec();
+
+            console.log("_________________________________________________________________________________________________________________________________________________________________________")
+            console.log(parsedId)
+            console.log("Update for Monthly spend db change:")
+            console.log(monthlySpend)
+            console.log("_________________________________________________________________________________________________________________________________________________________________________")
 
         if (monthlySpend) {
             return {

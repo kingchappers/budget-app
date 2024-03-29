@@ -53,14 +53,9 @@ export function TransactionForm({ categories, userId }: TransactionFormProps) {
 
         // Invoke server action to add new transaction
         await createTransactionAction({ transactionDate, vendor, value, category, items, notes, userId, path: "/" });
-
-        console.log("_________________________________________________________________________________________________________________________________________________________________________")
-        console.log(transactionDate)
-        console.log("_________________________________________________________________________________________________________________________________________________________________________")
         const transactionDateMonthStart = startOfMonth(stringToDate(transactionDate))
 
         const { monthlySpend } = await getMonthlySpendByMonthAction({ month: transactionDateMonthStart, userId })
-        // console.log(monthlySpend)
 
         if (monthlySpend) {
             var monthlySpendUpdate: {
@@ -71,30 +66,17 @@ export function TransactionForm({ categories, userId }: TransactionFormProps) {
             monthlySpend.monthCategoryTotals.forEach(async (monthCategoryTotal) => {
                 console.log("_________________________________________________________________________________________________________________________________________________________________________")
                 console.log("Current Version:")
-                console.log("_________________________________________________________________________________________________________________________________________________________________________")
                 console.log(monthlySpend)
-
-                // console.log("Monthly Spend Total Before update: " + monthlySpend.monthTotal)
-                monthlySpend.monthTotal = monthlySpend.monthTotal + value
-                // console.log("Monthly Spend Total After Update: " + monthlySpend.monthTotal)
+                console.log("_________________________________________________________________________________________________________________________________________________________________________")
 
                 if (monthCategoryTotal.categoryName == category) {
-                    // console.log("Category match!")
-                    // console.log(monthCategoryTotal)
-
-                    // console.log(monthCategoryTotal.categoryName)
+                    monthlySpend.monthTotal = monthlySpend.monthTotal + value
                     monthCategoryTotal.value = monthCategoryTotal.value + value
                     monthCategoryTotal.percentage = (monthCategoryTotal.value / monthlySpend.monthTotal) * 100
                     monthCategoryTotal.chartTitle = `:\n£${monthCategoryTotal.value} | ${((monthCategoryTotal.value / monthlySpend.monthTotal) * 100).toFixed(2)}%`
-                    // console.log(monthCategoryTotal)
-
-
-                    // await updateMonthlySpendAction(monthlySpend.id, { monthlySpendUpdate }, "/")
-
                 } else {
                     // Logic for creating a new entry for monthlyCategoryTotals - updating the database
                 }
-
 
 
 
@@ -104,14 +86,12 @@ export function TransactionForm({ categories, userId }: TransactionFormProps) {
                 monthTotal: monthlySpend.monthTotal,
                 monthCategoryTotals: monthlySpend.monthCategoryTotals
             }
-            
             console.log("_________________________________________________________________________________________________________________________________________________________________________")
-                console.log("Updated Version:")
+                console.log("Updated version - before database:")
+                console.log(monthlySpend)
                 console.log("_________________________________________________________________________________________________________________________________________________________________________")
-                // console.log(monthlySpend)
-                console.log(monthlySpendUpdate)
 
-                await updateMonthlySpendAction(monthlySpend.id, monthlySpendUpdate, "/")
+            await updateMonthlySpendAction(monthlySpend.id, monthlySpendUpdate, "/")
         }
     }
 
