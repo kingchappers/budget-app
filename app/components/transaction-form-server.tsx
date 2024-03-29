@@ -53,9 +53,10 @@ export function TransactionForm({ categories, userId }: TransactionFormProps) {
 
         // Invoke server action to add new transaction
         await createTransactionAction({ transactionDate, vendor, value, category, items, notes, userId, path: "/" });
-        const transactionDateMonthStart = startOfMonth(stringToDate(transactionDate))
 
-        const { monthlySpend } = await getMonthlySpendByMonthAction({ month: transactionDateMonthStart, userId })
+        // Update the monthly spend tracker 
+        const transactionDateMonthStart = startOfMonth(stringToDate(transactionDate))
+        const { monthlySpend } = await getMonthlySpendByMonthAction({ month: transactionDateMonthStart, userId });
 
         if (monthlySpend) {
             var monthlySpendUpdate: {
@@ -63,35 +64,37 @@ export function TransactionForm({ categories, userId }: TransactionFormProps) {
                 monthCategoryTotals: monthCategoryTotal[]
             }
 
+            var newMonthCategoryTotal: monthCategoryTotal;
+            monthlySpend.monthTotal = monthlySpend.monthTotal + value;
+
             monthlySpend.monthCategoryTotals.forEach(async (monthCategoryTotal) => {
-                console.log("_________________________________________________________________________________________________________________________________________________________________________")
-                console.log("Current Version:")
-                console.log(monthlySpend)
-                console.log("_________________________________________________________________________________________________________________________________________________________________________")
+                monthCategoryTotal.percentage = (monthCategoryTotal.value / monthlySpend.monthTotal) * 100;
+                monthCategoryTotal.chartTitle = `:\n£${monthCategoryTotal.value} | ${(monthCategoryTotal.percentage).toFixed(2)}%`;
 
                 if (monthCategoryTotal.categoryName == category) {
-                    monthlySpend.monthTotal = monthlySpend.monthTotal + value
-                    monthCategoryTotal.value = monthCategoryTotal.value + value
-                    monthCategoryTotal.percentage = (monthCategoryTotal.value / monthlySpend.monthTotal) * 100
-                    monthCategoryTotal.chartTitle = `:\n£${monthCategoryTotal.value} | ${((monthCategoryTotal.value / monthlySpend.monthTotal) * 100).toFixed(2)}%`
+                    // If the category exists in the trends table update it
+                    monthCategoryTotal.value = monthCategoryTotal.value + value;
+                    monthCategoryTotal.percentage = (monthCategoryTotal.value / monthlySpend.monthTotal) * 100;
+                    monthCategoryTotal.chartTitle = `:\n£${monthCategoryTotal.value} | ${(monthCategoryTotal.percentage).toFixed(2)}%`;
                 } else {
                     // Logic for creating a new entry for monthlyCategoryTotals - updating the database
+                    newMonthCategoryTotal = {
+                        percentage: (value / monthlySpend.monthTotal) * 100,
+                        chartTitle: `:\n£${value} | ${((value / monthlySpend.monthTotal) * 100).toFixed(2)}%`,
+                        categoryName: category,
+                        value: value
+                    }
+                    monthlySpend.monthCategoryTotals.push(newMonthCategoryTotal)
                 }
-
-
-
             })
 
             monthlySpendUpdate = {
                 monthTotal: monthlySpend.monthTotal,
                 monthCategoryTotals: monthlySpend.monthCategoryTotals
             }
-            console.log("_________________________________________________________________________________________________________________________________________________________________________")
-                console.log("Updated version - before database:")
-                console.log(monthlySpend)
-                console.log("_________________________________________________________________________________________________________________________________________________________________________")
 
             await updateMonthlySpendAction(monthlySpend.id, monthlySpendUpdate, "/")
+
         }
     }
 
