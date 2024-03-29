@@ -62,13 +62,14 @@ export default async function Trends() {
     if (monthlySpendsResults) {
         console.log("Spends found!")
     } else {
+        // If there are no entries in the spends trend table, create them!
         console.log("No spends found :(")
         const { monthlySpendData } = await getListOfYearsTransactionTotalsByMonth(userId)
         const spendsExist = monthlySpendData.some(item => item.value !== 0)
         if (spendsExist) {
             const { yearOfCategorySpend, results } = await getYearOfCategorySpend(userId, months)
             yearOfCategorySpend.map(async (monthOfCategorySpend) => (
-                await createMonthlySpendAction({ month: monthOfCategorySpend.month, monthTotal: monthOfCategorySpend.monthTotal, monthCategoryTotals: monthOfCategorySpend.categoryData, userId, path: "/" })
+                await createMonthlySpendAction({ month: monthOfCategorySpend.month, monthTotal: monthOfCategorySpend.monthTotal, monthCategoryTotals: monthOfCategorySpend.monthCategoryTotal, userId, path: "/" })
             ))
         } else {
             console.log("No transactions currently exist")
@@ -97,24 +98,31 @@ export default async function Trends() {
             <h1 className="text-xl font-bold mb-4">Category Spending Per Month</h1>
 
             <div className="grid grid-cols-1 lg:grid-cols-3">
-                {results === 0 ? (
+                {/* {results === 0 ? (
                     <p>No data found</p>
                 ) : (
                     yearOfCategorySpend.map((monthOfCategorySpend) => (
                         <MonthSpendingCategorySplit categoryData={monthOfCategorySpend.categoryData} month={monthOfCategorySpend.month} monthTotal={monthOfCategorySpend.monthTotal} />
+                    ))
+                )} */}
+                {monthlySpendsResults === 0 ? (
+                    <p>No data found</p>
+                ) : (
+                    monthlySpends?.map((monthOfCategorySpend) => (
+                        <MonthSpendingCategorySplit monthCategoryTotal={monthOfCategorySpend.monthCategoryTotals} month={monthOfCategorySpend.month} monthTotal={monthOfCategorySpend.monthTotal} />
                     ))
                 )}
             </div>
 
             <h1 className="text-xl font-bold mb-4">Category Income Per Month</h1>
             <div className="grid grid-cols-1 lg:grid-cols-3">
-                {results === 0 ? (
+                {/* {results === 0 ? (
                     <p>No data found</p>
                 ) : (
                     yearOfCategoryIncome.map((monthOfCategoryIncome) => (
                         <MonthSpendingCategorySplit categoryData={monthOfCategoryIncome.categoryData} month={monthOfCategoryIncome.month} monthTotal={monthOfCategoryIncome.monthTotal} />
                     ))
-                )}
+                )} */}
             </div>
         </div>
     );

@@ -1,8 +1,9 @@
 import { getIncomesBetweenDatesAction } from "../_incomeActions";
 import { getTransactionsBetweenDatesAction } from "../_transactionActions";
 import { getLastTwelveMonths } from "../lib/utils";
+import { monthCategoryTotal } from "../models/MonthlySpend";
 import { calculateIncomeTotal, calculateTransactionTotal } from "./target-calculation-functions";
-import { categoryData, categorySplitPieProps, monthData } from "./trend-graphs";
+import { categorySplitPieProps, monthData } from "./trend-graphs";
 
 //_______________________________________________________________________________________________________________________________________
 // New Functions below
@@ -96,7 +97,7 @@ async function getCategoryTransactionTotalBetweenDates(userId: string, startDate
         }
     }
 
-    const categorySpendData: categoryData[] = Object.entries(categorySpendRecord).map(([category, value]) => ({
+    const categorySpendData: monthCategoryTotal[] = Object.entries(categorySpendRecord).map(([category, value]) => ({
         chartTitle: category + `:\n£${value} | ${((value / monthTotal) * 100).toFixed(2)}%`,
         categoryName: category,
         value: value,
@@ -126,7 +127,7 @@ async function getCategoryIncomeTotalBetweenDates(userId: string, startDate: Dat
         }
     }
 
-    const categoryIncomeData: categoryData[] = Object.entries(categoryIncomeRecord).map(([incomeCategory, value]) => ({
+    const categoryIncomeData: monthCategoryTotal[] = Object.entries(categoryIncomeRecord).map(([incomeCategory, value]) => ({
         chartTitle: incomeCategory + `:\n£${value} | ${((value / monthTotal) * 100).toFixed(2)}%`,
         categoryName: incomeCategory,
         value: value,
@@ -145,7 +146,7 @@ export async function getYearOfCategorySpend(userId: string, months: Date[]) {
     const monthPromises = months.map(async (month) => {
         const endDate = new Date(month.getFullYear(), month.getMonth() + 1, 0);
         const { categorySpendData, monthTotal } = await getCategoryTransactionTotalBetweenDates(userId, month, endDate);
-        yearOfCategorySpend.push({ categoryData: categorySpendData, month, monthTotal });
+        yearOfCategorySpend.push({ monthCategoryTotal: categorySpendData, month, monthTotal });
     })
     await Promise.all(monthPromises);
     const results = yearOfCategorySpend.length;
@@ -166,7 +167,7 @@ export async function getYearOfCategoryIncome(userId: string, months: Date[]) {
     const monthPromises = months.map(async (month) => {
         const endDate = new Date(month.getFullYear(), month.getMonth() + 1, 0);
         const { categoryIncomeData, monthTotal } = await getCategoryIncomeTotalBetweenDates(userId, month, endDate);
-        yearOfCategoryIncome.push({ categoryData: categoryIncomeData, month, monthTotal });
+        yearOfCategoryIncome.push({ monthCategoryTotal: categoryIncomeData, month, monthTotal });
     })
     await Promise.all(monthPromises);
     const results = yearOfCategoryIncome.length;

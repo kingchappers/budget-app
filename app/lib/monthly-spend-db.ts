@@ -1,4 +1,4 @@
-import { MonthlySpend, monthCategoryTotal} from "../models/MonthlySpend";
+import { MonthlySpend, monthCategoryTotal } from "../models/MonthlySpend";
 import connectDB from "./mongoose-connect-db";
 import { stringToObjectId } from "./utils";
 import { startOfMonth, endOfMonth } from "date-fns";
@@ -69,10 +69,10 @@ export async function getMonthlySpendByMonth(filter: MonthlySpendFilter, month: 
             return { error: "Monthly Spend not found" };
         }
 
-        const monthlySpend = await MonthlySpend.findOne({ userId:filter.userId, month: month }).lean().exec();
+        const monthlySpend = await MonthlySpend.findOne({ userId: filter.userId, month: month }).lean().exec();
 
         if (monthlySpend) {
-            monthlySpend.id=monthlySpend._id.toString()
+            monthlySpend.id = monthlySpend._id.toString()
             return {
                 monthlySpend,
             };
