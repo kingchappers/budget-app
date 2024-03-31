@@ -75,7 +75,7 @@ export default async function Transactions({
                     </tbody>
                 ) : (
                     transactions?.map((transaction) => (
-                        <TransactionItem key={transaction.id} transaction={transaction} categories={listOfCategories}/>
+                        <TransactionItem key={transaction.id} transaction={transaction} categories={listOfCategories} userId={userId}/>
                     ))
                 )}
 
