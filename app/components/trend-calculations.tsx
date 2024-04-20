@@ -28,6 +28,10 @@ export async function calulateMonthlySpendUpdateForNewTransactions(transactionVa
         var newMonthCategoryTotal: monthCategoryTotal;
         monthlySpend.monthTotal = monthlySpend.monthTotal + transactionValue;
 
+
+
+// LOGIC ON FOR EACH NEEDS CHANGING___________________________________________________________________________________________________________________________________________________________
+// READ NOTES TO FIX___________________________________________________________________________________________________________________________________________________________
         monthlySpend.monthCategoryTotals.forEach(async (monthCategoryTotal) => {
             monthCategoryTotal.percentage = (monthCategoryTotal.value / monthlySpend.monthTotal) * 100;
             monthCategoryTotal.chartTitle = monthCategoryTotal.categoryName + `:\n£${monthCategoryTotal.value} | ${(monthCategoryTotal.percentage).toFixed(2)}%`;
