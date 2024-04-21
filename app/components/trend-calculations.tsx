@@ -28,29 +28,27 @@ export async function calulateMonthlySpendUpdateForNewTransactions(transactionVa
         var newMonthCategoryTotal: monthCategoryTotal;
         monthlySpend.monthTotal = monthlySpend.monthTotal + transactionValue;
 
+        if (monthlySpend.monthCategoryTotals.some((monthCategoryTotal) => monthCategoryTotal.categoryName === transactionCategory)) {
+            // If the category exists in the trends table update it
+            const monthCategoryMatch = monthlySpend.monthCategoryTotals.findIndex((monthCategoryTotal) => monthCategoryTotal.categoryName === transactionCategory)
 
+            monthlySpend.monthCategoryTotals[monthCategoryMatch].value = monthlySpend.monthCategoryTotals[monthCategoryMatch].value + transactionValue;
+            monthlySpend.monthCategoryTotals[monthCategoryMatch].percentage = (monthlySpend.monthCategoryTotals[monthCategoryMatch].value / monthlySpend.monthTotal) * 100;
+            monthlySpend.monthCategoryTotals[monthCategoryMatch].chartTitle = monthlySpend.monthCategoryTotals[monthCategoryMatch].categoryName + `:\n£${monthlySpend.monthCategoryTotals[monthCategoryMatch].value} | ${(monthlySpend.monthCategoryTotals[monthCategoryMatch].percentage).toFixed(2)}%`;
+        } else {
+            // Logic for creating a new entry for monthlyCategoryTotals if the category doesn't already exist
+            newMonthCategoryTotal = {
+                percentage: (transactionValue / monthlySpend.monthTotal) * 100,
+                chartTitle: transactionCategory + `:\n£${transactionValue} | ${((transactionValue / monthlySpend.monthTotal) * 100).toFixed(2)}%`,
+                categoryName: transactionCategory,
+                value: transactionValue
+            }
+            monthlySpend.monthCategoryTotals.push(newMonthCategoryTotal)
+        }
 
-// LOGIC ON FOR EACH NEEDS CHANGING___________________________________________________________________________________________________________________________________________________________
-// READ NOTES TO FIX___________________________________________________________________________________________________________________________________________________________
-        monthlySpend.monthCategoryTotals.forEach(async (monthCategoryTotal) => {
+        monthlySpend.monthCategoryTotals.forEach((monthCategoryTotal) => {
             monthCategoryTotal.percentage = (monthCategoryTotal.value / monthlySpend.monthTotal) * 100;
             monthCategoryTotal.chartTitle = monthCategoryTotal.categoryName + `:\n£${monthCategoryTotal.value} | ${(monthCategoryTotal.percentage).toFixed(2)}%`;
-
-            if (monthCategoryTotal.categoryName == transactionCategory) {
-                // If the category exists in the trends table update it
-                monthCategoryTotal.value = monthCategoryTotal.value + transactionValue;
-                monthCategoryTotal.percentage = (monthCategoryTotal.value / monthlySpend.monthTotal) * 100;
-                monthCategoryTotal.chartTitle = monthCategoryTotal.categoryName + `:\n£${monthCategoryTotal.value} | ${(monthCategoryTotal.percentage).toFixed(2)}%`;
-            } else {
-                // Logic for creating a new entry for monthlyCategoryTotals - updating the database
-                newMonthCategoryTotal = {
-                    percentage: (transactionValue / monthlySpend.monthTotal) * 100,
-                    chartTitle: transactionCategory + `:\n£${transactionValue} | ${((transactionValue / monthlySpend.monthTotal) * 100).toFixed(2)}%`,
-                    categoryName: transactionCategory,
-                    value: transactionValue
-                }
-                monthlySpend.monthCategoryTotals.push(newMonthCategoryTotal)
-            }
         })
 
         monthlySpendUpdate = {
@@ -59,7 +57,6 @@ export async function calulateMonthlySpendUpdateForNewTransactions(transactionVa
         }
 
         await updateMonthlySpendAction(monthlySpend.id, monthlySpendUpdate, "/")
-
     }
 }
 
