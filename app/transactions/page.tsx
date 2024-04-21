@@ -8,6 +8,9 @@ import { authOptions } from "@/app/lib/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import clsx from "clsx";
+import { getLastTwelveMonths } from "../lib/utils";
+import { createMonthlySpendAction, getMonthlySpendsBetweenDatesAction } from "../_monthlySpendActions";
+import { getListOfYearsTransactionTotalsByMonth, getYearOfCategorySpend } from "../components/trend-calculations";
 
 export default async function Transactions({
     searchParams
@@ -50,6 +53,25 @@ export default async function Transactions({
         tansactionFilter.limit = 50;
     }
 
+    const months = getLastTwelveMonths()
+    const { monthlySpends, results: monthlySpendsResults } = await getMonthlySpendsBetweenDatesAction({ userId, startDate: months[0], endDate: months[months.length - 1] })
+    if (monthlySpendsResults) {
+        console.log("Spends found!")
+    } else {
+        // If there are no entries in the spends trend table, create them!
+        console.log("No spends found :(")
+        const { monthlySpendData } = await getListOfYearsTransactionTotalsByMonth(userId)
+        const spendsExist = monthlySpendData.some(item => item.value !== 0)
+        if (spendsExist) {
+            const { yearOfCategorySpend, results } = await getYearOfCategorySpend(userId, months)
+            yearOfCategorySpend.map(async (monthOfCategorySpend) => (
+                await createMonthlySpendAction({ month: monthOfCategorySpend.month, monthTotal: monthOfCategorySpend.monthTotal, monthCategoryTotals: monthOfCategorySpend.monthCategoryTotal, userId, path: "/" })
+            ))
+        } else {
+            console.log("No transactions currently exist")
+        }
+    }
+
     return (
         <div className="container mx-auto max-w-screen-2xl p-4">
 
@@ -75,7 +97,7 @@ export default async function Transactions({
                     </tbody>
                 ) : (
                     transactions?.map((transaction) => (
-                        <TransactionItem key={transaction.id} transaction={transaction} categories={listOfCategories} userId={userId}/>
+                        <TransactionItem key={transaction.id} transaction={transaction} categories={listOfCategories} userId={userId} />
                     ))
                 )}
 

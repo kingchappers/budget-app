@@ -5,7 +5,7 @@ import { getLastTwelveMonths, stringToDate } from "../lib/utils";
 import { monthCategoryTotal } from "../models/MonthlySpend";
 import { calculateIncomeTotal, calculateTransactionTotal } from "./target-calculation-functions";
 import { categorySplitPieProps, monthData } from "./trend-graphs";
-import { getMonthlySpendByMonthAction, updateMonthlySpendAction } from "../_monthlySpendActions";
+import { createMonthlySpendAction, getMonthlySpendByMonthAction, updateMonthlySpendAction } from "../_monthlySpendActions";
 
 //_______________________________________________________________________________________________________________________________________
 // New Functions below
@@ -57,6 +57,17 @@ export async function calulateMonthlySpendUpdateForNewTransactions(transactionVa
         }
 
         await updateMonthlySpendAction(monthlySpend.id, monthlySpendUpdate, "/")
+    } else {
+        let monthCategoryTotals: monthCategoryTotal[] = [];
+        let newMonthCategoryTotal: monthCategoryTotal;
+        newMonthCategoryTotal = {
+            percentage: 100,
+            chartTitle: transactionCategory + `:\n£${transactionValue} | 100%`,
+            categoryName: transactionCategory,
+            value: transactionValue
+        }
+        monthCategoryTotals.push(newMonthCategoryTotal)
+        await createMonthlySpendAction({ month: transactionDateMonthStart, monthTotal: transactionValue, monthCategoryTotals, path: "/", userId})
     }
 }
 
