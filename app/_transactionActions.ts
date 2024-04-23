@@ -1,8 +1,27 @@
 "use server";
 
-import { createTransaction, deleteTransaction, updateTransaction, getTransactionsBetweenDates } from "./lib/transaction-db";
+import { createTransaction, deleteTransaction, updateTransaction, getTransactionsBetweenDates, getTransaction } from "./lib/transaction-db";
 import { revalidatePath } from "next/cache";
 import { stringToDate } from "./lib/utils";
+
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+export async function getTransactionAction({
+    id
+}: {
+    id: string;
+}) {
+    const { transaction } = await getTransaction(id);
+
+    if (transaction) {
+        transaction._id = transaction?._id.toString()
+    }
+
+    return {
+        transaction: transaction
+    };
+}
 
 // _________________________________________________________________________________________________________________________________________________________________________
 // _________________________________________________________________________________________________________________________________________________________________________
@@ -17,7 +36,7 @@ export async function getTransactionsBetweenDatesAction({
     startDate: Date;
     endDate: Date;
 }) {
-    const { transactions, results } = await getTransactionsBetweenDates({ userId }, startDate, endDate)
+    const { transactions, results } = await getTransactionsBetweenDates({ userId }, startDate, endDate);
 
     return {
         transactions: transactions,

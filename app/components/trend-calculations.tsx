@@ -30,7 +30,7 @@ export async function calulateMonthlySpendUpdateForNewTransactions(transactionVa
 
         if (monthlySpend.monthCategoryTotals.some((monthCategoryTotal) => monthCategoryTotal.categoryName === transactionCategory)) {
             // If the category exists in the trends table update it
-            const monthCategoryMatch = monthlySpend.monthCategoryTotals.findIndex((monthCategoryTotal) => monthCategoryTotal.categoryName === transactionCategory)
+            const monthCategoryMatch = monthlySpend.monthCategoryTotals.findIndex((monthCategoryTotal) => monthCategoryTotal.categoryName === transactionCategory);
 
             monthlySpend.monthCategoryTotals[monthCategoryMatch].value = monthlySpend.monthCategoryTotals[monthCategoryMatch].value + transactionValue;
             monthlySpend.monthCategoryTotals[monthCategoryMatch].percentage = (monthlySpend.monthCategoryTotals[monthCategoryMatch].value / monthlySpend.monthTotal) * 100;
@@ -67,8 +67,56 @@ export async function calulateMonthlySpendUpdateForNewTransactions(transactionVa
             value: transactionValue
         }
         monthCategoryTotals.push(newMonthCategoryTotal)
-        await createMonthlySpendAction({ month: transactionDateMonthStart, monthTotal: transactionValue, monthCategoryTotals, path: "/", userId})
+        await createMonthlySpendAction({ month: transactionDateMonthStart, monthTotal: transactionValue, monthCategoryTotals, path: "/", userId })
     }
+}
+
+export async function calulateMonthlySpendUpdateForEditedTransactions(oldTransactionValue: number, oldTransactionCategory: string, oldTransactionDate: Date, updatedTransactionValue: number, updatedTransactionCategory: string, updatedTransactionDate: string, userId: string) {
+    // Find and remove the edited transaction value from the trendsSpend table
+    const oldTransactionDateMonthStart = startOfMonth(oldTransactionDate)
+    const { monthlySpend } = await getMonthlySpendByMonthAction({ month: oldTransactionDateMonthStart, userId });
+
+    if (monthlySpend) {
+        var monthlySpendUpdate: {
+            monthTotal: number,
+            monthCategoryTotals: monthCategoryTotal[]
+        }
+
+        console.log("monthly total pre-edit: " + monthlySpend.monthTotal)
+        monthlySpend.monthTotal = monthlySpend.monthTotal - oldTransactionValue;
+        console.log("monthly total post-edit: " + monthlySpend.monthTotal)
+
+        // If the category exists in the trends table update it
+        // If not print an error message
+        const monthCategoryMatch = monthlySpend.monthCategoryTotals.findIndex((monthCategoryTotal) => monthCategoryTotal.categoryName === oldTransactionCategory);
+        if (monthCategoryMatch) {
+            monthlySpend.monthCategoryTotals[monthCategoryMatch].value = monthlySpend.monthCategoryTotals[monthCategoryMatch].value - oldTransactionValue;
+            monthlySpend.monthCategoryTotals[monthCategoryMatch].percentage = (monthlySpend.monthCategoryTotals[monthCategoryMatch].value / monthlySpend.monthTotal) * 100;
+            monthlySpend.monthCategoryTotals[monthCategoryMatch].chartTitle = monthlySpend.monthCategoryTotals[monthCategoryMatch].categoryName + `:\n£${monthlySpend.monthCategoryTotals[monthCategoryMatch].value} | ${(monthlySpend.monthCategoryTotals[monthCategoryMatch].percentage).toFixed(2)}%`;
+        } else {
+            console.log("The category wasn't found")
+        }
+
+        // Recalculate the percentages for each of the items
+        monthlySpend.monthCategoryTotals.forEach((monthCategoryTotal) => {
+            monthCategoryTotal.percentage = (monthCategoryTotal.value / monthlySpend.monthTotal) * 100;
+            monthCategoryTotal.chartTitle = monthCategoryTotal.categoryName + `:\n£${monthCategoryTotal.value} | ${(monthCategoryTotal.percentage).toFixed(2)}%`;
+        })
+
+        monthlySpendUpdate = {
+            monthTotal: monthlySpend.monthTotal,
+            monthCategoryTotals: monthlySpend.monthCategoryTotals
+        }
+
+        await updateMonthlySpendAction(monthlySpend.id, monthlySpendUpdate, "/")
+    } else {
+        // Print an error if no spend could be found
+        console.log("No spend was found for that month")
+    }
+
+    // Add the updated values as though they were a new transaction
+    await calulateMonthlySpendUpdateForNewTransactions(updatedTransactionValue, updatedTransactionCategory, updatedTransactionDate, userId);
+
 }
 
 // ______________________________________________________________________________________________________________________________________________________________________

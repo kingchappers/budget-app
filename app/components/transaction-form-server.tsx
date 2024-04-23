@@ -3,10 +3,6 @@ import { DatePicker } from "./datePicker";
 import { CategoryComboBox } from "./comboBox";
 import { CategoryClass } from "../models/Category";
 import { FormAddButton } from "./form-submit-buttons";
-import { startOfMonth } from "date-fns";
-import { stringToDate } from "../lib/utils";
-import { getMonthlySpendByMonthAction, updateMonthlySpendAction } from "../_monthlySpendActions";
-import { monthCategoryTotal } from "../models/MonthlySpend";
 import { calulateMonthlySpendUpdateForNewTransactions } from "./trend-calculations";
 
 interface TransactionFormProps {

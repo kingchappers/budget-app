@@ -7,10 +7,12 @@ import { ChangeEvent, useState } from "react";
 import { DatePicker } from "./datePicker";
 import { CategoryComboBox } from "./comboBox";
 import { CategoryClass } from "../models/Category";
-import { updateTransactionAction } from "../_transactionActions";
+import { getTransactionAction, updateTransactionAction } from "../_transactionActions";
 import startOfMonth from "date-fns/startOfMonth";
-import { getMonthlySpendByMonthAction, updateMonthlySpendAction } from "../_monthlySpendActions";
+import { calulateMonthlySpendUpdateForEditedTransactionsAction, getMonthlySpendByMonthAction, updateMonthlySpendAction } from "../_monthlySpendActions";
 import { monthCategoryTotal } from "../models/MonthlySpend";
+import { calulateMonthlySpendUpdateForEditedTransactions } from "./trend-calculations";
+import { getTransaction } from "../lib/transaction-db";
 
 interface TransactionItemProps {
     transaction: TransactionClass;
@@ -79,6 +81,12 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({ transaction, c
             return;
         }
 
+        const { transaction: oldTransaction } = await getTransactionAction({ id })
+        if (oldTransaction) {
+            // let oldTransactionDateString = dateToString(oldTransaction.transactionDate)
+            let updatedTransactionDateString = dateToString(update.transactionDate)
+            await calulateMonthlySpendUpdateForEditedTransactionsAction(oldTransaction.value, oldTransaction.category, oldTransaction.transactionDate, update.value, update.category, updatedTransactionDateString, userId)
+        }
         updateTransactionAction(id, update, "/")
         setIsEditingTransaction(false)
 

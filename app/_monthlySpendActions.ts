@@ -4,6 +4,7 @@ import { createMonthlySpend, deleteMonthlySpend, updateMonthlySpend, getMonthlyS
 import { revalidatePath } from "next/cache";
 import { monthCategoryTotal } from "./models/MonthlySpend";
 import { stringToObjectId } from "./lib/utils";
+import { calulateMonthlySpendUpdateForEditedTransactions } from "./components/trend-calculations";
 
 // _________________________________________________________________________________________________________________________________________________________________________
 // _________________________________________________________________________________________________________________________________________________________________________
@@ -81,6 +82,18 @@ export async function updateMonthlySpendAction(
 // _________________________________________________________________________________________________________________________________________________________________________
 // _________________________________________________________________________________________________________________________________________________________________________
 // _________________________________________________________________________________________________________________________________________________________________________
+
+export async function calulateMonthlySpendUpdateForEditedTransactionsAction(
+    oldTransactionValue: number,
+    oldTransactionCategory: string,
+    oldTransactionDate: Date,
+    updatedTransactionValue: number,
+    updatedTransactionCategory: string,
+    updatedTransactionDate: string,
+    userId: string
+) {
+    await calulateMonthlySpendUpdateForEditedTransactions(oldTransactionValue, oldTransactionCategory, oldTransactionDate, updatedTransactionValue, updatedTransactionCategory, updatedTransactionDate, userId)
+}
 
 export async function deleteMonthlySpendAction({
     id,
