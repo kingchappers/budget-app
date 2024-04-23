@@ -1,7 +1,5 @@
 'use client'
 
-//TypeScript error is currently expected until there is a proper update to react-dom
-//@ts-expect-error
 import { useFormStatus } from 'react-dom'
 
 export function FormAddButton() {
