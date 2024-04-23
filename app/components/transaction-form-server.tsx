@@ -50,50 +50,9 @@ export function TransactionForm({ categories, userId }: TransactionFormProps) {
 
         // Invoke server action to add new transaction
         await createTransactionAction({ transactionDate, vendor, value, category, items, notes, userId, path: "/" });
+
+        // Calculate the trend spends for the new transaction
         await calulateMonthlySpendUpdateForNewTransactions(value, category, transactionDate, userId);
-
-        // Update the monthly spend tracker
-        // const transactionDateMonthStart = startOfMonth(stringToDate(transactionDate))
-        // const { monthlySpend } = await getMonthlySpendByMonthAction({ month: transactionDateMonthStart, userId });
-
-        // if (monthlySpend) {
-        //     var monthlySpendUpdate: {
-        //         monthTotal: number,
-        //         monthCategoryTotals: monthCategoryTotal[]
-        //     }
-
-        //     var newMonthCategoryTotal: monthCategoryTotal;
-        //     monthlySpend.monthTotal = monthlySpend.monthTotal + value;
-
-        //     monthlySpend.monthCategoryTotals.forEach(async (monthCategoryTotal) => {
-        //         monthCategoryTotal.percentage = (monthCategoryTotal.value / monthlySpend.monthTotal) * 100;
-        //         monthCategoryTotal.chartTitle = monthCategoryTotal.categoryName + `:\n£${monthCategoryTotal.value} | ${(monthCategoryTotal.percentage).toFixed(2)}%`;
-
-        //         if (monthCategoryTotal.categoryName == category) {
-        //             // If the category exists in the trends table update it
-        //             monthCategoryTotal.value = monthCategoryTotal.value + value;
-        //             monthCategoryTotal.percentage = (monthCategoryTotal.value / monthlySpend.monthTotal) * 100;
-        //             monthCategoryTotal.chartTitle = monthCategoryTotal.categoryName + `:\n£${monthCategoryTotal.value} | ${(monthCategoryTotal.percentage).toFixed(2)}%`;
-        //         } else {
-        //             // Logic for creating a new entry for monthlyCategoryTotals - updating the database
-        //             newMonthCategoryTotal = {
-        //                 percentage: (value / monthlySpend.monthTotal) * 100,
-        //                 chartTitle: category + `:\n£${value} | ${((value / monthlySpend.monthTotal) * 100).toFixed(2)}%`,
-        //                 categoryName: category,
-        //                 value: value
-        //             }
-        //             monthlySpend.monthCategoryTotals.push(newMonthCategoryTotal)
-        //         }
-        //     })
-
-        //     monthlySpendUpdate = {
-        //         monthTotal: monthlySpend.monthTotal,
-        //         monthCategoryTotals: monthlySpend.monthCategoryTotals
-        //     }
-
-        //     await updateMonthlySpendAction(monthlySpend.id, monthlySpendUpdate, "/")
-
-        // }
     }
 
     return (

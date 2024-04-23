@@ -81,73 +81,16 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({ transaction, c
             return;
         }
 
+        // Update the trend spends table
         const { transaction: oldTransaction } = await getTransactionAction({ id })
         if (oldTransaction) {
-            // let oldTransactionDateString = dateToString(oldTransaction.transactionDate)
             let updatedTransactionDateString = dateToString(update.transactionDate)
             await calulateMonthlySpendUpdateForEditedTransactionsAction(oldTransaction.value, oldTransaction.category, oldTransaction.transactionDate, update.value, update.category, updatedTransactionDateString, userId)
         }
+
+        // Update the transactions table
         updateTransactionAction(id, update, "/")
         setIsEditingTransaction(false)
-
-        // _________________________________________________________________________________________________________________________________________________________
-        // New stuf below
-        // _________________________________________________________________________________________________________________________________________________________
-
-        // const transactionDateMonthStart = startOfMonth(transactionDate)
-        // const { monthlySpend } = await getMonthlySpendByMonthAction({ month: transactionDateMonthStart, userId });
-
-        // if (monthlySpend) {
-        //     var monthlySpendUpdate: {
-        //         monthTotal: number,
-        //         monthCategoryTotals: monthCategoryTotal[]
-        //     }
-
-        //     var newMonthCategoryTotal: monthCategoryTotal;
-        //     monthlySpend.monthTotal = monthlySpend.monthTotal - transaction.value
-        //     monthlySpend.monthTotal = monthlySpend.monthTotal + value;
-
-        //     monthlySpend.monthCategoryTotals.forEach(async (monthCategoryTotal) => {
-        //         monthCategoryTotal.percentage = (monthCategoryTotal.value / monthlySpend.monthTotal) * 100;
-        //         monthCategoryTotal.chartTitle = monthCategoryTotal.categoryName + `:\n£${monthCategoryTotal.value} | ${(monthCategoryTotal.percentage).toFixed(2)}%`;
-
-        //         if (monthCategoryTotal.categoryName === transaction.category) {
-        //             // If the category exists in the trences table, subtract the old value from the total
-        //             monthCategoryTotal.value = monthCategoryTotal.value + transaction.value;
-        //             monthCategoryTotal.percentage = (monthCategoryTotal.value / monthlySpend.monthTotal) * 100;
-        //             monthCategoryTotal.chartTitle = monthCategoryTotal.categoryName + `:\n£${monthCategoryTotal.value} | ${(monthCategoryTotal.percentage).toFixed(2)}%`;
-        //             console.log("I should run once to remove the value" + monthCategoryTotal.value)
-        //         }
-
-        //         if (monthCategoryTotal.categoryName === categoriesSelection) {
-        //             // If the category exists in the trends table, add the new value to it
-        //             monthCategoryTotal.value = monthCategoryTotal.value + value;
-        //             monthCategoryTotal.percentage = (monthCategoryTotal.value / monthlySpend.monthTotal) * 100;
-        //             monthCategoryTotal.chartTitle = monthCategoryTotal.categoryName + `:\n£${monthCategoryTotal.value} | ${(monthCategoryTotal.percentage).toFixed(2)}%`;
-        //         } else {
-        //             // Logic for creating a new entry for monthlyCategoryTotals - updating the database
-        //             newMonthCategoryTotal = {
-        //                 percentage: (value / monthlySpend.monthTotal) * 100,
-        //                 chartTitle: categoriesSelection + `:\n£${value} | ${((value / monthlySpend.monthTotal) * 100).toFixed(2)}%`,
-        //                 categoryName: categoriesSelection,
-        //                 value: value
-        //             }
-        //             monthlySpend.monthCategoryTotals.push(newMonthCategoryTotal)
-        //         }
-        //     })
-
-        //     monthlySpendUpdate = {
-        //         monthTotal: monthlySpend.monthTotal,
-        //         monthCategoryTotals: monthlySpend.monthCategoryTotals
-        //     }
-
-        //     await updateMonthlySpendAction(monthlySpend.id, monthlySpendUpdate, "/")
-        // }
-
-        // _________________________________________________________________________________________________________________________________________________________
-        // New stuf above
-        // _________________________________________________________________________________________________________________________________________________________
-
     }
 
     return (
