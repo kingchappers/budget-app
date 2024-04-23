@@ -8,6 +8,7 @@ import { TransactionClass } from "../models/Transaction";
 import { IncomeClass } from "../models/Income";
 import { CategoryClass } from "../models/Category";
 import { useTransition } from "react";
+import { calulateMonthlySpendUpdateForDeletedTransactionsAction } from "../_monthlySpendActions";
 
 type transactionDeleteButtonProps = {
     transaction: TransactionClass;
@@ -27,6 +28,11 @@ export function DeleteTransaction({ transaction }: transactionDeleteButtonProps)
 
     return (
         <button onClick={() => startTransition(async () => {
+            await calulateMonthlySpendUpdateForDeletedTransactionsAction(transaction.value,
+                transaction.category,
+                transaction.transactionDate,
+                transaction.userId)
+
             await deleteTransactionAction({
                 id: transaction.id,
                 path: "/"

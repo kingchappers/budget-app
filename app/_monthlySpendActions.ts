@@ -3,8 +3,7 @@
 import { createMonthlySpend, deleteMonthlySpend, updateMonthlySpend, getMonthlySpend, getMonthlySpendsBetweenDates, getMonthlySpendByMonth } from "./lib/monthly-spend-db";
 import { revalidatePath } from "next/cache";
 import { monthCategoryTotal } from "./models/MonthlySpend";
-import { stringToObjectId } from "./lib/utils";
-import { calulateMonthlySpendUpdateForEditedTransactions } from "./components/trend-calculations";
+import { calulateMonthlySpendUpdateForDeletedTransactions, calulateMonthlySpendUpdateForEditedTransactions } from "./components/trend-calculations";
 
 // _________________________________________________________________________________________________________________________________________________________________________
 // _________________________________________________________________________________________________________________________________________________________________________
@@ -93,6 +92,19 @@ export async function calulateMonthlySpendUpdateForEditedTransactionsAction(
     userId: string
 ) {
     await calulateMonthlySpendUpdateForEditedTransactions(oldTransactionValue, oldTransactionCategory, oldTransactionDate, updatedTransactionValue, updatedTransactionCategory, updatedTransactionDate, userId)
+}
+
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+
+export async function calulateMonthlySpendUpdateForDeletedTransactionsAction(
+    deletedTransactionValue: number,
+    deletedTransactionCategory: string,
+    deletedTransactionDate: Date,
+    userId: string
+) {
+    await calulateMonthlySpendUpdateForDeletedTransactions(deletedTransactionValue, deletedTransactionCategory, deletedTransactionDate, userId)
 }
 
 // _________________________________________________________________________________________________________________________________________________________________________
