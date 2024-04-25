@@ -7,21 +7,22 @@ import { ChangeEvent, useState } from "react";
 import { CategoryClass } from "../models/Category";
 import { DatePicker } from "./datePicker";
 import { CategoryComboBox } from "./comboBox";
-import { updateIncomeAction } from "../_incomeActions";
+import { getIncomeAction, updateIncomeAction } from "../_incomeActions";
+import { calulateMonthlyIncomeUpdateForEditedIncomesAction } from "../_monthlyIncomeActions";
 
 
 interface IncomeItemProps {
     income: IncomeClass;
     categories: CategoryClass[];
+    userId: string;
 }
 
 // _________________________________________________________________________________________________________________________________________________________________________
 // _________________________________________________________________________________________________________________________________________________________________________
 // _________________________________________________________________________________________________________________________________________________________________________
 
-export const IncomeItem: React.FC<IncomeItemProps> = ({ income, categories }) => {
+export const IncomeItem: React.FC<IncomeItemProps> = ({ income, categories, userId }) => {
     const incomeDateString = dateToString(income.incomeDate)
-
     const [isEditingIncome, setIsEditingIncome] = useState(false);
     const [incomeDate, setIncomeDate] = useState(income.incomeDate);
     const [company, setCompany] = useState(income.company);
@@ -69,6 +70,14 @@ export const IncomeItem: React.FC<IncomeItemProps> = ({ income, categories }) =>
         if (typeof notes !== 'string') {
             return;
         }
+
+        // Update the trend incomes table
+        const { income: oldIncome } = await getIncomeAction({ id })
+        if (oldIncome) {
+            let updatedIncomeDateString = dateToString(update.incomeDate)
+            await calulateMonthlyIncomeUpdateForEditedIncomesAction(oldIncome.amount, oldIncome.company, oldIncome.incomeDate, update.amount, update.category, updatedIncomeDateString, userId)
+        }
+
 
         updateIncomeAction(id, update, "/")
         setIsEditingIncome(false)

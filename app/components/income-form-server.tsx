@@ -3,6 +3,7 @@ import { CategoryComboBox } from "./comboBox";
 import { DatePicker } from "./datePicker";
 import { CategoryClass } from "../models/Category";
 import { FormAddButton } from "./form-submit-buttons";
+import { calulateMonthlyIncomeUpdateForNewIncomes } from "./trend-income-calculations";
 
 interface incomeFormProps {
     categories: CategoryClass[];
@@ -44,6 +45,8 @@ export function IncomeForm({ categories, userId }: incomeFormProps) {
 
         // Invoke server action to add new income
         await createIncomeAction({ incomeDate, company, amount, incomeCategory, notes, userId, path: "/" });
+
+        await calulateMonthlyIncomeUpdateForNewIncomes(amount, incomeCategory, incomeDate, userId);
     }
 
     return (

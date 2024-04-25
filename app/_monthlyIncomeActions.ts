@@ -1,8 +1,9 @@
 "use server";
 
-import { createMonthlyIncome, deleteMonthlyIncome, updateMonthlyIncome, getMonthlyIncomes, getMonthlyIncomesBetweenDates } from "./lib/monthly-income-db";
+import { createMonthlyIncome, deleteMonthlyIncome, updateMonthlyIncome, getMonthlyIncomesBetweenDates, getMonthlyIncomeByMonth } from "./lib/monthly-income-db";
 import { revalidatePath } from "next/cache";
-import { stringToDate } from "./lib/utils";
+import { monthCategoryTotal } from "./models/MonthlyIncome";
+import { calulateMonthlyIncomeUpdateForDeletedIncomes, calulateMonthlyIncomeUpdateForEditedIncomes } from "./components/trend-income-calculations";
 
 // _________________________________________________________________________________________________________________________________________________________________________
 // _________________________________________________________________________________________________________________________________________________________________________
@@ -23,6 +24,24 @@ export async function getMonthlyIncomesBetweenDatesAction({
         monthlyIncomes: monthlyIncomes,
         results
     };
+}
+
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+
+export async function getMonthlyIncomeByMonthAction({
+    month,
+    userId,
+}: {
+    month: Date;
+    userId: string;
+}) {
+    const { monthlyIncome } = await getMonthlyIncomeByMonth({ userId }, month)
+
+    return {
+        monthlyIncome: monthlyIncome
+    }
 }
 
 // _________________________________________________________________________________________________________________________________________________________________________
@@ -57,6 +76,35 @@ export async function updateMonthlyIncomeAction(
 ) {
     await updateMonthlyIncome(id, update);
     revalidatePath(path);
+}
+
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+
+export async function calulateMonthlyIncomeUpdateForEditedIncomesAction(
+    oldIncomeValue: number,
+    oldIncomeCategory: string,
+    oldIncomeDate: Date,
+    updatedIncomeValue: number,
+    updatedIncomeCategory: string,
+    updatedIncomeDate: string,
+    userId: string
+) {
+    await calulateMonthlyIncomeUpdateForEditedIncomes(oldIncomeValue, oldIncomeCategory, oldIncomeDate, updatedIncomeValue, updatedIncomeCategory, updatedIncomeDate, userId)
+}
+
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+
+export async function calulateMonthlyIncomeUpdateForDeletedIncomesAction(
+    deletedIncomeValue: number,
+    deletedIncomeCategory: string,
+    deletedIncomeDate: Date,
+    userId: string
+) {
+    await calulateMonthlyIncomeUpdateForDeletedIncomesAction(deletedIncomeValue, deletedIncomeCategory, deletedIncomeDate, userId)
 }
 
 // _________________________________________________________________________________________________________________________________________________________________________

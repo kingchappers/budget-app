@@ -65,6 +65,32 @@ export async function getMonthlyIncomesBetweenDates(filter: MonthlyIncomeFilter,
 // _________________________________________________________________________________________________________________________________________________________________________
 // _________________________________________________________________________________________________________________________________________________________________________
 
+export async function getMonthlyIncomeByMonth(filter: MonthlyIncomeFilter, month: Date) {
+    try {
+        await connectDB();
+
+        if (!month) {
+            return { error: "Monthly Income not found" };
+        }
+
+        const monthlyIncome = await MonthlyIncome.findOne({ userId: filter.userId, month: month }).lean().exec();
+
+        if (monthlyIncome) {
+            monthlyIncome.id = monthlyIncome._id.toString()
+            return {
+                monthlyIncome,
+            };
+        } else {
+            return { error: "Monthly Income not found" };
+        }
+    } catch (error) {
+        return { error };
+    }
+}
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+
 export async function getMonthlyIncome(id: string) {
     try {
         await connectDB();

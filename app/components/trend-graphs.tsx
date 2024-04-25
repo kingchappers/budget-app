@@ -1,7 +1,7 @@
 "use client"
 
 import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme, VictoryGroup, VictoryLegend, VictoryPie, Border } from 'victory';
-import { twelveMonthsInOrder } from './trend-calculations';
+import { twelveMonthsInOrder } from '../lib/utils';
 import { monthCategoryTotal } from '../models/MonthlySpend';
 
 interface barTrendProps {

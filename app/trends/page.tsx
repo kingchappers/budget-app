@@ -1,5 +1,5 @@
 import { getServerSession } from 'next-auth/next';
-import { getListOfYearsIncomeTotalsByMonth, getListOfYearsTransactionTotalsByMonth, getYearOfCategoryIncome, getYearOfCategorySpend } from '../components/trend-calculations';
+import { getListOfYearsIncomeTotalsByMonth, getListOfYearsTransactionTotalsByMonth, getYearOfCategoryIncome, getYearOfCategorySpend } from '../components/trend-spend-calculations';
 import { MonthSpendingCategorySplit, YearlyIncomeVsSpendingGroupChart } from '../components/trend-graphs';
 import { authOptions } from '../lib/auth';
 import { redirect } from 'next/navigation';
