@@ -3,7 +3,7 @@ import { DatePicker } from "./datePicker";
 import { CategoryComboBox } from "./comboBox";
 import { CategoryClass } from "../models/Category";
 import { FormAddButton } from "./form-submit-buttons";
-import { calulateMonthlySpendUpdateForNewTransactions } from "./trend-calculations";
+import { calulateMonthlySpendUpdateForNewTransactions } from "./trend-spend-calculations";
 
 interface TransactionFormProps {
     categories: CategoryClass[];

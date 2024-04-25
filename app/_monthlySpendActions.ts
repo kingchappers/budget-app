@@ -1,9 +1,9 @@
 "use server";
 
-import { createMonthlySpend, deleteMonthlySpend, updateMonthlySpend, getMonthlySpend, getMonthlySpendsBetweenDates, getMonthlySpendByMonth } from "./lib/monthly-spend-db";
+import { createMonthlySpend, deleteMonthlySpend, updateMonthlySpend, getMonthlySpendsBetweenDates, getMonthlySpendByMonth } from "./lib/monthly-spend-db";
 import { revalidatePath } from "next/cache";
 import { monthCategoryTotal } from "./models/MonthlySpend";
-import { calulateMonthlySpendUpdateForDeletedTransactions, calulateMonthlySpendUpdateForEditedTransactions } from "./components/trend-calculations";
+import { calulateMonthlySpendUpdateForDeletedTransactions, calulateMonthlySpendUpdateForEditedTransactions } from "./components/trend-spend-calculations";
 
 // _________________________________________________________________________________________________________________________________________________________________________
 // _________________________________________________________________________________________________________________________________________________________________________

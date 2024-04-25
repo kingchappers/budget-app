@@ -8,11 +8,7 @@ import { DatePicker } from "./datePicker";
 import { CategoryComboBox } from "./comboBox";
 import { CategoryClass } from "../models/Category";
 import { getTransactionAction, updateTransactionAction } from "../_transactionActions";
-import startOfMonth from "date-fns/startOfMonth";
-import { calulateMonthlySpendUpdateForEditedTransactionsAction, getMonthlySpendByMonthAction, updateMonthlySpendAction } from "../_monthlySpendActions";
-import { monthCategoryTotal } from "../models/MonthlySpend";
-import { calulateMonthlySpendUpdateForEditedTransactions } from "./trend-calculations";
-import { getTransaction } from "../lib/transaction-db";
+import { calulateMonthlySpendUpdateForEditedTransactionsAction } from "../_monthlySpendActions";
 
 interface TransactionItemProps {
     transaction: TransactionClass;

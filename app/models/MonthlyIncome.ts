@@ -8,6 +8,13 @@ import {
 } from "@typegoose/typegoose"
 import mongoose from "mongoose"
 
+export interface monthCategoryTotal {
+    chartTitle: string;
+    categoryName?: string;
+    value: number;
+    percentage: number;
+}
+
 @post<MonthlyIncomeClass>("save", function (doc) {
     if (doc) {
         doc.id = doc._id.toString();

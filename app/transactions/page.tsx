@@ -10,7 +10,7 @@ import Link from "next/link";
 import clsx from "clsx";
 import { getLastTwelveMonths } from "../lib/utils";
 import { createMonthlySpendAction, getMonthlySpendsBetweenDatesAction } from "../_monthlySpendActions";
-import { getListOfYearsTransactionTotalsByMonth, getYearOfCategorySpend } from "../components/trend-calculations";
+import { getListOfYearsTransactionTotalsByMonth, getYearOfCategorySpend } from "../components/trend-spend-calculations";
 
 export default async function Transactions({
     searchParams
