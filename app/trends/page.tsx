@@ -23,32 +23,6 @@ export default async function Trends() {
     const { yearOfCategoryIncome, results: incomeResults } = await getYearOfCategoryIncome(userId, months)
 
     //_______________________________________________________________________________________________________________________________________
-    // REMOVE THESE LOG LINE
-    //_______________________________________________________________________________________________________________________________________
-    // console.log("Months collectect: " + months)
-    // console.log("Monthly Spend Data:")
-    // for (const element of monthlySpendData){
-    //     console.log(element)
-    // }
-
-    // console.log("Monthly Income Data: ")
-    // for (const element of monthlyIncomeData){
-    //     console.log(element)
-    // }
-
-    // console.log("Year of Category Spend: ")
-    // for (const element of yearOfCategorySpend){
-    //     console.log(element)
-    // }
-
-    // console.log("Year of Category Income: ")
-    // for (const element of yearOfCategoryIncome){
-    //     console.log(element)
-    // }
-    //_______________________________________________________________________________________________________________________________________
-    //_______________________________________________________________________________________________________________________________________
-
-    //_______________________________________________________________________________________________________________________________________
     // New Stuff below
     //_______________________________________________________________________________________________________________________________________
 
@@ -85,7 +59,7 @@ export default async function Trends() {
 
     //_______________________________________________________________________________________________________________________________________
     //_______________________________________________________________________________________________________________________________________
-    // _______________________________________________________________________________________________________________________________________
+    //_______________________________________________________________________________________________________________________________________
 
     return (
         <div className="container mx-auto max-w-screen-2xl p-4">
@@ -98,13 +72,6 @@ export default async function Trends() {
             <h1 className="text-xl font-bold mb-4">Category Spending Per Month</h1>
 
             <div className="grid grid-cols-1 lg:grid-cols-3">
-                {/* {results === 0 ? (
-                    <p>No data found</p>
-                ) : (
-                    yearOfCategorySpend.map((monthOfCategorySpend) => (
-                        <MonthSpendingCategorySplit categoryData={monthOfCategorySpend.categoryData} month={monthOfCategorySpend.month} monthTotal={monthOfCategorySpend.monthTotal} />
-                    ))
-                )} */}
                 {monthlySpendsResults === 0 ? (
                     <p>No data found</p>
                 ) : (
@@ -116,13 +83,6 @@ export default async function Trends() {
 
             <h1 className="text-xl font-bold mb-4">Category Income Per Month</h1>
             <div className="grid grid-cols-1 lg:grid-cols-3">
-                {/* {results === 0 ? (
-                    <p>No data found</p>
-                ) : (
-                    yearOfCategoryIncome.map((monthOfCategoryIncome) => (
-                        <MonthSpendingCategorySplit categoryData={monthOfCategoryIncome.categoryData} month={monthOfCategoryIncome.month} monthTotal={monthOfCategoryIncome.monthTotal} />
-                    ))
-                )} */}
             </div>
         </div>
     );

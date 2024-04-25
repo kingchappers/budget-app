@@ -76,51 +76,11 @@ export async function calulateMonthlySpendUpdateForNewTransactions(transactionVa
 // ______________________________________________________________________________________________________________________________________________________________________
 
 export async function calulateMonthlySpendUpdateForEditedTransactions(oldTransactionValue: number, oldTransactionCategory: string, oldTransactionDate: Date, updatedTransactionValue: number, updatedTransactionCategory: string, updatedTransactionDate: string, userId: string) {
-    // Find and remove the edited transaction value from the trendsSpend table
-    // const oldTransactionDateMonthStart = startOfMonth(oldTransactionDate)
-    // const { monthlySpend } = await getMonthlySpendByMonthAction({ month: oldTransactionDateMonthStart, userId });
-
-    // if (monthlySpend) {
-    //     var monthlySpendUpdate: {
-    //         monthTotal: number,
-    //         monthCategoryTotals: monthCategoryTotal[]
-    //     }
-
-    //     monthlySpend.monthTotal = monthlySpend.monthTotal - oldTransactionValue;
-
-    //     // If the category exists in the trends table update it
-    //     // If not print an error message
-    //     const monthCategoryMatch = monthlySpend.monthCategoryTotals.findIndex((monthCategoryTotal) => monthCategoryTotal.categoryName === oldTransactionCategory);
-    //     if (monthCategoryMatch) {
-    //         monthlySpend.monthCategoryTotals[monthCategoryMatch].value = monthlySpend.monthCategoryTotals[monthCategoryMatch].value - oldTransactionValue;
-    //         monthlySpend.monthCategoryTotals[monthCategoryMatch].percentage = (monthlySpend.monthCategoryTotals[monthCategoryMatch].value / monthlySpend.monthTotal) * 100;
-    //         monthlySpend.monthCategoryTotals[monthCategoryMatch].chartTitle = monthlySpend.monthCategoryTotals[monthCategoryMatch].categoryName + `:\n£${monthlySpend.monthCategoryTotals[monthCategoryMatch].value} | ${(monthlySpend.monthCategoryTotals[monthCategoryMatch].percentage).toFixed(2)}%`;
-    //     } else {
-    //         console.log("The category wasn't found")
-    //     }
-
-    //     // Recalculate the percentages for each of the items
-    //     monthlySpend.monthCategoryTotals.forEach((monthCategoryTotal) => {
-    //         monthCategoryTotal.percentage = (monthCategoryTotal.value / monthlySpend.monthTotal) * 100;
-    //         monthCategoryTotal.chartTitle = monthCategoryTotal.categoryName + `:\n£${monthCategoryTotal.value} | ${(monthCategoryTotal.percentage).toFixed(2)}%`;
-    //     })
-
-    //     monthlySpendUpdate = {
-    //         monthTotal: monthlySpend.monthTotal,
-    //         monthCategoryTotals: monthlySpend.monthCategoryTotals
-    //     }
-
-    //     await updateMonthlySpendAction(monthlySpend.id, monthlySpendUpdate, "/")
-    // } else {
-    //     // Print an error if no spend could be found
-    //     console.log("No spend was found for that month")
-    // }
-
+    //Calculate and remove the old calculation from trendSpend table
     await calulateMonthlySpendUpdateForDeletedTransactions(oldTransactionValue, oldTransactionCategory, oldTransactionDate, userId)
 
     // Add the updated values as though they were a new transaction
     await calulateMonthlySpendUpdateForNewTransactions(updatedTransactionValue, updatedTransactionCategory, updatedTransactionDate, userId);
-
 }
 
 // ______________________________________________________________________________________________________________________________________________________________________
