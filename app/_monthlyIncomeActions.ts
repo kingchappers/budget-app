@@ -104,7 +104,7 @@ export async function calulateMonthlyIncomeUpdateForDeletedIncomesAction(
     deletedIncomeDate: Date,
     userId: string
 ) {
-    await calulateMonthlyIncomeUpdateForDeletedIncomesAction(deletedIncomeValue, deletedIncomeCategory, deletedIncomeDate, userId)
+    await calulateMonthlyIncomeUpdateForDeletedIncomes(deletedIncomeValue, deletedIncomeCategory, deletedIncomeDate, userId)
 }
 
 // _________________________________________________________________________________________________________________________________________________________________________

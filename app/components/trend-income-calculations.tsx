@@ -87,6 +87,12 @@ export async function calulateMonthlyIncomeUpdateForDeletedIncomes(deletedIncome
     const oldIncomeDateMonthStart = startOfMonth(deletedIncomeDate)
     const { monthlyIncome } = await getMonthlyIncomeByMonthAction({ month: oldIncomeDateMonthStart, userId });
 
+    console.log("update sent to income calc function: ")
+    console.log(deletedIncomeValue)
+    console.log(deletedIncomeCategory)
+    console.log(deletedIncomeDate)
+    console.log(userId)
+
     if (monthlyIncome) {
         var monthlyIncomeUpdate: {
             monthTotal: number,
@@ -94,14 +100,26 @@ export async function calulateMonthlyIncomeUpdateForDeletedIncomes(deletedIncome
         }
 
         monthlyIncome.monthTotal = monthlyIncome.monthTotal - deletedIncomeValue;
+        console.log("______________________________________________________________________________________________________________________________________________________________________")
+        console.log(monthlyIncome.monthCategoryTotals)
+        console.log("______________________________________________________________________________________________________________________________________________________________________")
+
 
         // If the category exists in the trends table update it
         // If not print an error message
         const monthCategoryMatch = monthlyIncome.monthCategoryTotals.findIndex((monthCategoryTotal) => monthCategoryTotal.categoryName === deletedIncomeCategory);
+        console.log(monthlyIncome.monthCategoryTotals.find((monthCategoryTotal) => monthCategoryTotal.categoryName === 'bar'))
+        console.log("Category match value: " + monthCategoryMatch)
         if (monthCategoryMatch) {
             monthlyIncome.monthCategoryTotals[monthCategoryMatch].value = monthlyIncome.monthCategoryTotals[monthCategoryMatch].value - deletedIncomeValue;
             monthlyIncome.monthCategoryTotals[monthCategoryMatch].percentage = (monthlyIncome.monthCategoryTotals[monthCategoryMatch].value / monthlyIncome.monthTotal) * 100;
             monthlyIncome.monthCategoryTotals[monthCategoryMatch].chartTitle = monthlyIncome.monthCategoryTotals[monthCategoryMatch].categoryName + `:\n£${monthlyIncome.monthCategoryTotals[monthCategoryMatch].value} | ${(monthlyIncome.monthCategoryTotals[monthCategoryMatch].percentage).toFixed(2)}%`;
+
+            console.log("income object befor sending it: ")
+            console.log("total: " + monthlyIncome.monthTotal)
+            console.log("value: " + monthlyIncome.monthCategoryTotals[monthCategoryMatch].value)
+            console.log("percentage: " + monthlyIncome.monthCategoryTotals[monthCategoryMatch].percentage)
+            console.log("title: " + monthlyIncome.monthCategoryTotals[monthCategoryMatch].chartTitle)
         } else {
             console.log("The category wasn't found")
         }
@@ -116,6 +134,9 @@ export async function calulateMonthlyIncomeUpdateForDeletedIncomes(deletedIncome
             monthTotal: monthlyIncome.monthTotal,
             monthCategoryTotals: monthlyIncome.monthCategoryTotals
         }
+
+        console.log("Update sent to function: ")
+        console.log(monthlyIncomeUpdate)
 
         await updateMonthlyIncomeAction(monthlyIncome.id, monthlyIncomeUpdate, "/")
     } else {

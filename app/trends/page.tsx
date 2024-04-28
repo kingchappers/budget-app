@@ -1,12 +1,12 @@
 import { getServerSession } from 'next-auth/next';
-import { getListOfYearsIncomeTotalsByMonth, getListOfYearsTransactionTotalsByMonth, getYearOfCategoryIncome, getYearOfCategorySpend } from '../components/trend-spend-calculations';
+import { getListOfYearsTransactionTotalsByMonth, getYearOfCategorySpend } from '../components/trend-spend-calculations';
+import { getListOfYearsIncomeTotalsByMonth, getYearOfCategoryIncome } from '../components/trend-income-calculations';
 import { MonthSpendingCategorySplit, YearlyIncomeVsSpendingGroupChart } from '../components/trend-graphs';
 import { authOptions } from '../lib/auth';
 import { redirect } from 'next/navigation';
 import { getLastTwelveMonths } from '../lib/utils';
 import { createMonthlySpendAction, getMonthlySpendsBetweenDatesAction } from '../_monthlySpendActions';
 import { getMonthlyIncomesBetweenDatesAction } from '../_monthlyIncomeActions';
-import { MonthlySpendFilter, getMonthlySpends } from '../lib/monthly-spend-db';
 
 export default async function Trends() {
     const session = await getServerSession(authOptions);
@@ -19,16 +19,10 @@ export default async function Trends() {
     const userId = session.user.id;
     const { monthlySpendData } = await getListOfYearsTransactionTotalsByMonth(userId)
     const { monthlyIncomeData } = await getListOfYearsIncomeTotalsByMonth(userId)
-    const { yearOfCategorySpend, results } = await getYearOfCategorySpend(userId, months)
-    const { yearOfCategoryIncome, results: incomeResults } = await getYearOfCategoryIncome(userId, months)
 
     //_______________________________________________________________________________________________________________________________________
     // New Stuff below
     //_______________________________________________________________________________________________________________________________________
-
-    let monthlySpendFilter: MonthlySpendFilter = {
-        userId: userId,
-    }
 
     const { monthlySpends, results: monthlySpendsResults } = await getMonthlySpendsBetweenDatesAction({ userId, startDate: months[0], endDate: months[months.length - 1] })
     const { monthlyIncomes, results: monthlyIncomesResults } = await getMonthlyIncomesBetweenDatesAction({ userId, startDate: months[0], endDate: months[months.length - 1] })

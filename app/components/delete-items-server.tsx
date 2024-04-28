@@ -9,6 +9,7 @@ import { IncomeClass } from "../models/Income";
 import { CategoryClass } from "../models/Category";
 import { useTransition } from "react";
 import { calulateMonthlySpendUpdateForDeletedTransactionsAction } from "../_monthlySpendActions";
+import { calulateMonthlyIncomeUpdateForDeletedIncomesAction } from "../_monthlyIncomeActions";
 
 type transactionDeleteButtonProps = {
     transaction: TransactionClass;
@@ -28,15 +29,8 @@ export function DeleteTransaction({ transaction }: transactionDeleteButtonProps)
 
     return (
         <button onClick={() => startTransition(async () => {
-            await calulateMonthlySpendUpdateForDeletedTransactionsAction(transaction.value,
-                transaction.category,
-                transaction.transactionDate,
-                transaction.userId)
-
-            await deleteTransactionAction({
-                id: transaction.id,
-                path: "/"
-            })
+            await calulateMonthlySpendUpdateForDeletedTransactionsAction(transaction.value, transaction.category, transaction.transactionDate, transaction.userId)
+            await deleteTransactionAction({ id: transaction.id, path: "/" })
         })
         }>
             Delete Transaction
@@ -53,10 +47,8 @@ export function DeleteIncome({ income }: incomeDeleteButtonProps) {
 
     return (
         <button onClick={() => startTransition(async () => {
-            await deleteIncomeAction({
-                id: income.id,
-                path: "/"
-            })
+            await calulateMonthlyIncomeUpdateForDeletedIncomesAction(income.amount, income.incomeCategory, income.incomeDate, income.userId)
+            await deleteIncomeAction({ id: income.id, path: "/" })
         })
         }>
             Delete
