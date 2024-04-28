@@ -81,7 +81,7 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({ transaction, c
         const { transaction: oldTransaction } = await getTransactionAction({ id })
         if (oldTransaction) {
             let updatedTransactionDateString = dateToString(update.transactionDate)
-            await calulateMonthlySpendUpdateForEditedTransactionsAction(oldTransaction.value, oldTransaction.category, oldTransaction.transactionDate, update.value, update.category, updatedTransactionDateString, userId)
+            calulateMonthlySpendUpdateForEditedTransactionsAction(oldTransaction.value, oldTransaction.category, oldTransaction.transactionDate, update.value, update.category, updatedTransactionDateString, userId)
         }
 
         // Update the transactions table

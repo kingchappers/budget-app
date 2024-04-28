@@ -72,10 +72,20 @@ export async function calulateMonthlySpendUpdateForNewTransactions(transactionVa
 
 export async function calulateMonthlySpendUpdateForEditedTransactions(oldTransactionValue: number, oldTransactionCategory: string, oldTransactionDate: Date, updatedTransactionValue: number, updatedTransactionCategory: string, updatedTransactionDate: string, userId: string) {
     //Calculate and remove the old calculation from trendSpend table
-    await calulateMonthlySpendUpdateForDeletedTransactions(oldTransactionValue, oldTransactionCategory, oldTransactionDate, userId)
+    try{
+        await calulateMonthlySpendUpdateForDeletedTransactions(oldTransactionValue, oldTransactionCategory, oldTransactionDate, userId)
+        console.log("success")
+    } catch(e){
+        console.error(e)
+    }
 
     // Add the updated values as though they were a new transaction
-    await calulateMonthlySpendUpdateForNewTransactions(updatedTransactionValue, updatedTransactionCategory, updatedTransactionDate, userId);
+    try{
+        await calulateMonthlySpendUpdateForNewTransactions(updatedTransactionValue, updatedTransactionCategory, updatedTransactionDate, userId);
+        console.log("success")
+    } catch(e){
+        console.error(e)
+    }
 }
 
 // ______________________________________________________________________________________________________________________________________________________________________
@@ -98,7 +108,7 @@ export async function calulateMonthlySpendUpdateForDeletedTransactions(deletedTr
         // If the category exists in the trends table update it
         // If not print an error message
         const monthCategoryMatch = monthlySpend.monthCategoryTotals.findIndex((monthCategoryTotal) => monthCategoryTotal.categoryName === deletedTransactionCategory);
-        if (monthCategoryMatch) {
+        if (monthCategoryMatch >= 0) {
             monthlySpend.monthCategoryTotals[monthCategoryMatch].value = monthlySpend.monthCategoryTotals[monthCategoryMatch].value - deletedTransactionValue;
             monthlySpend.monthCategoryTotals[monthCategoryMatch].percentage = (monthlySpend.monthCategoryTotals[monthCategoryMatch].value / monthlySpend.monthTotal) * 100;
             monthlySpend.monthCategoryTotals[monthCategoryMatch].chartTitle = monthlySpend.monthCategoryTotals[monthCategoryMatch].categoryName + `:\n£${monthlySpend.monthCategoryTotals[monthCategoryMatch].value} | ${(monthlySpend.monthCategoryTotals[monthCategoryMatch].percentage).toFixed(2)}%`;

@@ -75,9 +75,8 @@ export const IncomeItem: React.FC<IncomeItemProps> = ({ income, categories, user
         const { income: oldIncome } = await getIncomeAction({ id })
         if (oldIncome) {
             let updatedIncomeDateString = dateToString(update.incomeDate)
-            await calulateMonthlyIncomeUpdateForEditedIncomesAction(oldIncome.amount, oldIncome.company, oldIncome.incomeDate, update.amount, update.category, updatedIncomeDateString, userId)
+            calulateMonthlyIncomeUpdateForEditedIncomesAction(oldIncome.amount, oldIncome.incomeCategory, oldIncome.incomeDate, update.amount, update.category, updatedIncomeDateString, userId)
         }
-
 
         updateIncomeAction(id, update, "/")
         setIsEditingIncome(false)
