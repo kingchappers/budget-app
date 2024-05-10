@@ -9,11 +9,11 @@ import { createMonthlySpendAction, getMonthlySpendsBetweenDatesAction } from '..
 import { getMonthlyIncomesBetweenDatesAction } from '../_monthlyIncomeActions';
 
 export default async function Trends() {
-    // const session = await getServerSession(authOptions);
+    const session = await getServerSession(authOptions);
 
-    // if (!session) {
-    //     redirect("/api/auth/signin");
-    // }
+    if (!session) {
+        redirect("/api/auth/signin");
+    }
 
     // const months = getLastTwelveMonths()
     // const userId = session.user.id;
