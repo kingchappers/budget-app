@@ -15,17 +15,17 @@ export default async function Trends() {
         redirect("/api/auth/signin");
     }
 
-    // const months = getLastTwelveMonths()
-    // const userId = session.user.id;
-    // const { monthlySpendData } = await getListOfYearsTransactionTotalsByMonth(userId)
-    // const { monthlyIncomeData } = await getListOfYearsIncomeTotalsByMonth(userId)
+    const months = getLastTwelveMonths()
+    const userId = session.user.id;
+    const { monthlySpendData } = await getListOfYearsTransactionTotalsByMonth(userId)
+    const { monthlyIncomeData } = await getListOfYearsIncomeTotalsByMonth(userId)
 
     // //_______________________________________________________________________________________________________________________________________
     // // New Stuff below
     // //_______________________________________________________________________________________________________________________________________
 
-    // const { monthlySpends, results: monthlySpendsResults } = await getMonthlySpendsBetweenDatesAction({ userId, startDate: months[0], endDate: months[months.length - 1] })
-    // const { monthlyIncomes, results: monthlyIncomesResults } = await getMonthlyIncomesBetweenDatesAction({ userId, startDate: months[0], endDate: months[months.length - 1] })
+    const { monthlySpends, results: monthlySpendsResults } = await getMonthlySpendsBetweenDatesAction({ userId, startDate: months[0], endDate: months[months.length - 1] })
+    const { monthlyIncomes, results: monthlyIncomesResults } = await getMonthlyIncomesBetweenDatesAction({ userId, startDate: months[0], endDate: months[months.length - 1] })
 
     // if (monthlySpendsResults) {
     //     console.log("Spends found!")
@@ -35,7 +35,7 @@ export default async function Trends() {
     //     const { monthlySpendData } = await getListOfYearsTransactionTotalsByMonth(userId)
     //     const spendsExist = monthlySpendData.some(item => item.value !== 0)
     //     if (spendsExist) {
-    //         const { yearOfCategorySpend, results } = await getYearOfCategorySpend(userId, months)
+            // const { yearOfCategorySpend, results } = await getYearOfCategorySpend(userId, months)
     //         yearOfCategorySpend.map(async (monthOfCategorySpend) => (
     //             await createMonthlySpendAction({ month: monthOfCategorySpend.month, monthTotal: monthOfCategorySpend.monthTotal, monthCategoryTotals: monthOfCategorySpend.monthCategoryTotal, userId, path: "/" })
     //         ))
