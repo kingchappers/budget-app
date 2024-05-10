@@ -1,14 +1,19 @@
-import { TrendsSpend } from "../models/TrendsSpend";
+import { MonthlyIncome } from "../models/MonthlyIncome";
 import connectDB from "./mongoose-connect-db";
 import { stringToObjectId } from "./utils";
+import { startOfMonth, endOfMonth } from "date-fns";
 
-export interface TrendsSpendFilter {
+export interface MonthlyIncomeFilter {
     page?: number;
     limit?: number;
     userId: string;
 }
 
-export async function getTrendsSpends(filter: TrendsSpendFilter) {
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+
+export async function getMonthlyIncomes(filter: MonthlyIncomeFilter) {
     try {
         await connectDB();
 
@@ -16,12 +21,12 @@ export async function getTrendsSpends(filter: TrendsSpendFilter) {
         const limit = filter.limit ?? 12;
         const skip = (page - 1) * limit;
 
-        const trendsSpend = await TrendsSpend.find({ userId: filter.userId }).skip(skip).sort({ month: 1 }).limit(limit).lean().exec();
+        const mothlyIncomes = await MonthlyIncome.find({ userId: filter.userId }).skip(skip).sort({ month: 1 }).limit(limit).lean().exec();
 
-        const results = trendsSpend.length;
+        const results = mothlyIncomes.length;
 
         return {
-            trendsSpend: trendsSpend,
+            mothlyIncomes: mothlyIncomes,
             page,
             limit,
             results
@@ -35,23 +40,48 @@ export async function getTrendsSpends(filter: TrendsSpendFilter) {
 // _________________________________________________________________________________________________________________________________________________________________________
 // _________________________________________________________________________________________________________________________________________________________________________
 
-export async function getTrendsSpend(id: string) {
+export async function getMonthlyIncomesBetweenDates(filter: MonthlyIncomeFilter, startDate?: Date, endDate?: Date) {
+    try {
+        connectDB();
+
+        const searchStartDate = startDate ?? startOfMonth(new Date())
+        const searchEndDate = endDate ?? endOfMonth(new Date())
+
+        const mothlyIncomes = await MonthlyIncome.find({ userId: filter.userId, month: { $gte: searchStartDate, $lte: searchEndDate } }).sort({ month: -1 }).lean().exec();
+
+        const results = mothlyIncomes.length;
+
+        return {
+            mothlyIncomes: mothlyIncomes,
+            results
+        };
+
+    } catch (error) {
+        return { error };
+    }
+}
+
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+// _________________________________________________________________________________________________________________________________________________________________________
+
+export async function getMonthlyIncome(id: string) {
     try {
         await connectDB();
 
         const parsedId = stringToObjectId(id);
 
         if (!parsedId) {
-            return { error: "Trend Spend not found" };
+            return { error: "Monthly Income not found" };
         }
 
-        const trendsSpend = await TrendsSpend.findById(parsedId).lean().exec();
-        if (trendsSpend) {
+        const mothlyIncome = await MonthlyIncome.findById(parsedId).lean().exec();
+        if (mothlyIncome) {
             return {
-                trendsSpend,
+                mothlyIncome,
             };
         } else {
-            return { error: "Trend Spend not found" };
+            return { error: "Monthly Income not found" };
         }
     } catch (error) {
         return { error };
@@ -62,7 +92,7 @@ export async function getTrendsSpend(id: string) {
 // _________________________________________________________________________________________________________________________________________________________________________
 // _________________________________________________________________________________________________________________________________________________________________________
 
-export async function createTrendsSpend(
+export async function createMonthlyIncome(
     month: Date,
     monthTotal: number,
     userId: string,
@@ -70,10 +100,10 @@ export async function createTrendsSpend(
     try {
         await connectDB();
 
-        const trendsSpend = await TrendsSpend.create({ month, monthTotal, userId });
+        const mothlyIncome = await MonthlyIncome.create({ month, monthTotal, userId });
 
         return {
-            trendsSpend
+            mothlyIncome
         };
     } catch (error) {
         return { error };
@@ -84,7 +114,7 @@ export async function createTrendsSpend(
 // _________________________________________________________________________________________________________________________________________________________________________
 // _________________________________________________________________________________________________________________________________________________________________________
 
-export async function updateTrendsSpend(
+export async function updateMonthlyIncome(
     id: string,
     { month, monthTotal }: { month?: Date; monthTotal?: number; }
 ) {
@@ -94,10 +124,10 @@ export async function updateTrendsSpend(
         const parsedId = stringToObjectId(id);
 
         if (!parsedId) {
-            return { error: "Trend Spend not found" };
+            return { error: "Monthly Income not found" };
         }
 
-        const trendsSpend = await TrendsSpend.findByIdAndUpdate(
+        const mothlyIncome = await MonthlyIncome.findByIdAndUpdate(
             parsedId,
             { month, monthTotal },
             { new: true }
@@ -105,12 +135,12 @@ export async function updateTrendsSpend(
             .lean()
             .exec();
 
-        if (trendsSpend) {
+        if (mothlyIncome) {
             return {
-                trendsSpend,
+                mothlyIncome,
             };
         } else {
-            return { error: "Trend Spend not found" };
+            return { error: "Monthly Income not found" };
         }
     } catch (error) {
         return { error };
@@ -121,22 +151,22 @@ export async function updateTrendsSpend(
 // _________________________________________________________________________________________________________________________________________________________________________
 // _________________________________________________________________________________________________________________________________________________________________________
 
-export async function deleteTrendsSpend(id: string) {
+export async function deleteMonthlyIncome(id: string) {
     try {
         await connectDB();
 
         const parsedId = stringToObjectId(id);
 
         if (!parsedId) {
-            return { error: "Trend Spend not found" };
+            return { error: "Monthly Income not found" };
         }
 
-        const trendsSpend = await TrendsSpend.findByIdAndDelete(parsedId).exec();
+        const mothlyIncome = await MonthlyIncome.findByIdAndDelete(parsedId).exec();
 
-        if (trendsSpend) {
+        if (mothlyIncome) {
             return {};
         } else {
-            return { error: "Trend Spend not found" };
+            return { error: "Monthly Income not found" };
         }
     } catch (error) {
         return { error };
