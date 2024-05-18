@@ -7,6 +7,7 @@ import { redirect } from 'next/navigation';
 import { getLastTwelveMonths } from '../lib/utils';
 import { createMonthlySpendAction, getMonthlySpendsBetweenDatesAction } from '../_monthlySpendActions';
 import { getMonthlyIncomesBetweenDatesAction } from '../_monthlyIncomeActions';
+import { Suspense } from 'react';
 
 export default async function Trends() {
     const session = await getServerSession(authOptions);
@@ -35,7 +36,7 @@ export default async function Trends() {
     //     const { monthlySpendData } = await getListOfYearsTransactionTotalsByMonth(userId)
     //     const spendsExist = monthlySpendData.some(item => item.value !== 0)
     //     if (spendsExist) {
-            // const { yearOfCategorySpend, results } = await getYearOfCategorySpend(userId, months)
+    // const { yearOfCategorySpend, results } = await getYearOfCategorySpend(userId, months)
     //         yearOfCategorySpend.map(async (monthOfCategorySpend) => (
     //             await createMonthlySpendAction({ month: monthOfCategorySpend.month, monthTotal: monthOfCategorySpend.monthTotal, monthCategoryTotals: monthOfCategorySpend.monthCategoryTotal, userId, path: "/" })
     //         ))
@@ -70,7 +71,9 @@ export default async function Trends() {
                     <p>No data found</p>
                 ) : (
                     monthlySpends?.map((monthOfCategorySpend) => (
-                        <MonthSpendingCategorySplit monthCategoryTotal={monthOfCategorySpend.monthCategoryTotals} month={monthOfCategorySpend.month} monthTotal={monthOfCategorySpend.monthTotal} />
+                        <Suspense fallback={<div>Loading...</div>}>
+                            <MonthSpendingCategorySplit monthCategoryTotal={monthOfCategorySpend.monthCategoryTotals} month={monthOfCategorySpend.month} monthTotal={monthOfCategorySpend.monthTotal} />
+                        </Suspense>
                     ))
                 )}
             </div>

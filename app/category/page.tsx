@@ -4,6 +4,7 @@ import { getCategories, CategoryFilter } from "../lib/categories-db";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/lib/auth";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 
 export default async function Home() {
     const session = await getServerSession(authOptions);
@@ -39,7 +40,9 @@ export default async function Home() {
                     <td colSpan={3} className="text-center">No Categories Found</td>
                 ) : (
                     categories?.map((category) => (
-                        <CategoryItem key={category.id} category={category} userId={userId}/>
+                        <Suspense fallback={<div>Loading...</div>}>
+                            <CategoryItem key={category.id} category={category} userId={userId} />
+                        </Suspense>
                     ))
                 )}
             </table>
