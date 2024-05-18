@@ -25,8 +25,8 @@ export default async function Trends() {
     // // New Stuff below
     // //_______________________________________________________________________________________________________________________________________
 
-    const { monthlySpends, results: monthlySpendsResults } = await getMonthlySpendsBetweenDatesAction({ userId, startDate: months[0], endDate: months[months.length - 1] })
-    const { monthlyIncomes, results: monthlyIncomesResults } = await getMonthlyIncomesBetweenDatesAction({ userId, startDate: months[0], endDate: months[months.length - 1] })
+    // const { monthlySpends, results: monthlySpendsResults } = await getMonthlySpendsBetweenDatesAction({ userId, startDate: months[0], endDate: months[months.length - 1] })
+    // const { monthlyIncomes, results: monthlyIncomesResults } = await getMonthlyIncomesBetweenDatesAction({ userId, startDate: months[0], endDate: months[months.length - 1] })
 
     // if (monthlySpendsResults) {
     //     console.log("Spends found!")
@@ -66,7 +66,7 @@ export default async function Trends() {
 
             <h1 className="text-xl font-bold mb-4">Category Spending Per Month</h1>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3">
+            {/* <div className="grid grid-cols-1 lg:grid-cols-3">
                 {monthlySpendsResults === 0 ? (
                     <p>No data found</p>
                 ) : (
@@ -76,7 +76,7 @@ export default async function Trends() {
                         </Suspense>
                     ))
                 )}
-            </div>
+            </div> */}
 
             <h1 className="text-xl font-bold mb-4">Category Income Per Month</h1>
             <div className="grid grid-cols-1 lg:grid-cols-3">
