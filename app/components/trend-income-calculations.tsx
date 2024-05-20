@@ -11,6 +11,9 @@ import { createMonthlyIncomeAction, getMonthlyIncomeByMonthAction, updateMonthly
 // ______________________________________________________________________________________________________________________________________________________________________
 
 export async function calulateMonthlyIncomeUpdateForNewIncomes(incomeValue: number, incomeCategory: string, incomeDate: string, userId: string) {
+    console.log(typeof(incomeDate))
+    console.log(incomeDate)
+
     const incomeDateMonthStart = startOfMonth(stringToDate(incomeDate))
     const { monthlyIncome } = await getMonthlyIncomeByMonthAction({ month: incomeDateMonthStart, userId });
     console.log("Monthly Income Total")

@@ -44,6 +44,9 @@ export async function getMonthlyIncomesBetweenDates(filter: MonthlyIncomeFilter,
     try {
         connectDB();
 
+        console.log(startDate)
+        console.log(endDate)
+
         const searchStartDate = startDate ?? startOfMonth(new Date())
         const searchEndDate = endDate ?? endOfMonth(new Date())
 
