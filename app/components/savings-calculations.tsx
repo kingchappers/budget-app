@@ -81,6 +81,7 @@ export async function calculateInitialSavings(userId: string) {
         })
     }
 
+    // console.log("Is the error in the calculateInitialSavings function")
     const initialSavings = calculateMonthlySavings(monthlyTotals)
     return initialSavings;
 }
@@ -100,8 +101,15 @@ export async function calculateSavingsUpdate(userId: string) {
 
     let monthlyTotals: transactionIncomeTotal[] = [];
     const { saving } = await getLatestSaving(userId)
+
     const latestSavingDate = saving?.monthStart ?? new Date;
     let monthsSinceLastSaving = getMonthsBetweenDates(latestSavingDate, new Date);
+
+    // console.log("___________________________________________________________________________________________________________________________________________________")
+    // console.log("latestSavingDate:")
+    // console.log(latestSavingDate)
+    // console.log("___________________________________________________________________________________________________________________________________________________")
+
     let { transactions } = await getTransactionsBetweenDates(transactionFilter, latestSavingDate, new Date);
     let { incomes } = await getIncomesBetweenDates(incomeFilter, latestSavingDate, new Date);
 
@@ -124,6 +132,12 @@ export async function calculateSavingsUpdate(userId: string) {
             }
         })
     }
+
+    // console.log("___________________________________________________________________________________________________________________________________________________")
+    // console.log(monthlyTotals)
+    // console.log("___________________________________________________________________________________________________________________________________________________")
+
+    // console.log("Or is the error in the calculateSavingsUpdate function????????????????")
     const savingsUpdate = calculateMonthlySavings(monthlyTotals)
     return savingsUpdate;
 }
@@ -221,6 +235,14 @@ function calculateMonthlySavings(monthlyTotals: transactionIncomeTotal[]) {
     const monthlySavings: savingsObject[] = [];
 
     const sortedTotals = monthlyTotals.sort((a, b) => (a.month < b.month ? -1 : 1));
+
+
+    // console.log("___________________________________________________________________________________________________________________________________________________: ")
+    // console.log("sortedTotals: ")
+    // console.log(sortedTotals)
+    // console.log("___________________________________________________________________________________________________________________________________________________: ")
+
+
     const newestDate = sortedTotals[sortedTotals.length - 1].month
     const oldestDate = sortedTotals[0].month
 
@@ -281,10 +303,15 @@ async function getOldestAndNewestIncomes(filter: IncomeFilter) {
 function getMonthsBetweenDates(startDate: Date, endDate: Date) {
     const months = [];
 
+    // console.log("start:" + startDate)
+    // console.log("end:" + endDate)
+
     for (let i = startDate.getMonth(); i <= endDate.getMonth(); i++) {
+        // console.log(new Date(startDate.getFullYear(), i, 1))
         months.push(new Date(startDate.getFullYear(), i, 1))
     }
 
+    // console.log(months)
     return months;
 }
 

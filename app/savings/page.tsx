@@ -13,58 +13,59 @@ export default async function Savings({
 }: {
     searchParams: { [key: string]: string | string[] | undefined }
 }) {
-    const session = await getServerSession(authOptions);
+    // const session = await getServerSession(authOptions);
 
-    if (!session) {
-        redirect("/api/auth/signin");
-    }
+    // if (!session) {
+    //     redirect("/api/auth/signin");
+    // }
 
-    const userId = session.user.id;
+    // const userId = session.user.id;
 
-    let savingFilter: SavingFilter = {
-        page: typeof searchParams.page === 'string' ? Number(searchParams.page) : 1,
-        limit: typeof searchParams.limit === 'string' ? Number(searchParams.limit) : 50,
-        userId: userId,
-    }
+    // let savingFilter: SavingFilter = {
+    //     page: typeof searchParams.page === 'string' ? Number(searchParams.page) : 1,
+    //     limit: typeof searchParams.limit === 'string' ? Number(searchParams.limit) : 50,
+    //     userId: userId,
+    // }
 
-    let { savings, results: savingsResults, maxPages: savingsMaxPages } = await getSavings(savingFilter);
+    // let { savings, results: savingsResults, maxPages: savingsMaxPages } = await getSavings(savingFilter);
 
-    if (savingsMaxPages == undefined) {
-        savingsMaxPages = 1;
-    }
+    // if (savingsMaxPages == undefined) {
+    //     savingsMaxPages = 1;
+    // }
 
-    if (savingFilter.page == undefined) {
-        savingFilter.page = 1;
-    }
+    // if (savingFilter.page == undefined) {
+    //     savingFilter.page = 1;
+    // }
 
-    if (savingFilter.limit == undefined) {
-        savingFilter.limit = 50;
-    }
+    // if (savingFilter.limit == undefined) {
+    //     savingFilter.limit = 50;
+    // }
 
-    if (savingsResults != null && savingsResults > 1) {
-        // Do checks and calculations for multiple savings entry and calculate current savings
-        const savingsUpdate = await calculateSavingsUpdate(userId)
-        savingsUpdate.forEach(async (saving) => {
-            const { saving: savingToUpdate } = await getSavingByDate(userId, saving.date)
-            if (savingToUpdate) {
-                const savingId = savingToUpdate._id.toString();
-                updateSaving(savingId, saving)
-            } else if (!savingToUpdate) {
-                createSaving(saving.date, saving.value, userId)
-            }
-        })
-    } else {
-        // Do initial calculations to produce savings list
-        const initialSavings = await calculateInitialSavings(userId)
-        createSavings(initialSavings, userId)
-    }
+    // if (savingsResults != null && savingsResults > 1) {
+    //     // Do checks and calculations for multiple savings entry and calculate current savings
+    //     const savingsUpdate = await calculateSavingsUpdate(userId)
+    //     savingsUpdate.forEach(async (saving) => {
+    //         const { saving: savingToUpdate } = await getSavingByDate(userId, saving.date)
+    //         if (savingToUpdate) {
+    //             const savingId = savingToUpdate._id.toString();
+    //             updateSaving(savingId, saving)
+    //         } else if (!savingToUpdate) {
+    //             createSaving(saving.date, saving.value, userId)
+    //         }
+    //     })
+    // } else {
+    //     // Do initial calculations to produce savings list
+    //     const initialSavings = await calculateInitialSavings(userId)
+    //     createSavings(initialSavings, userId)
+    // }
 
-    const totalSaved = await calculateTotalSaved(userId)
+    // const totalSaved = await calculateTotalSaved(userId)
 
     return (
         <div className="container mx-auto max-w-screen-2xl p-4">
+            <h1 className="text-3xl font-bold mb-4">This page is not operational. The logic requires a complete rework as there is a calculation bug in figuring out the time between two months</h1>
             <h1 className="text-3xl font-bold mb-4">Savings</h1>
-            <SavingForm userId={userId} />
+            {/* <SavingForm userId={userId} /> */}
 
             <h1 className="text-2xl font-bold mb-4">Saving List</h1>
             <table className="divide-y-2 table-fixed">
@@ -75,7 +76,7 @@ export default async function Savings({
                     </tr>
                 </thead>
 
-                {savingsResults === 0 ? (
+                {/* {savingsResults === 0 ? (
                     <tbody>
                         <td colSpan={2} className="text-center">No Transactions Found</td>
                     </tbody>
@@ -88,7 +89,7 @@ export default async function Savings({
                 <tr>
                     <td className="pt-4"><Link href={`/transactions?page=${savingFilter.page > 1 ? savingFilter.page - 1 : 1}`} className={clsx('rounded border bg-sky-500 px-3 p-1', savingFilter.page <= 1 && 'pointer-events-none opacity-50')}>Previous</Link></td>
                     <td className="pt-4"><Link href={`/transactions?page=${savingFilter.page < savingsMaxPages ? savingFilter.page + 1 : savingsMaxPages}`} className={clsx('rounded border bg-sky-500 px-3.5 py-1 float-right', savingFilter.page >= savingsMaxPages && 'pointer-events-none opacity-50')}>Next</Link></td>
-                </tr>
+                </tr> */}
             </table>
         </div>
     );
