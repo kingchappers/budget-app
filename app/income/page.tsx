@@ -53,24 +53,24 @@ export default async function Home({
         incomeFilter.limit = 50;
     }
 
-    const months = getLastTwelveMonths()
-    const { monthlyIncomes, results: monthlyIncomesResults } = await getMonthlyIncomesBetweenDatesAction({ userId, startDate: months[0], endDate: months[months.length - 1] })
-    if (monthlyIncomesResults) {
-        console.log("Incomes found!")
-    } else {
-        // If there are no entries in the incomes trend table, create them!
-        console.log("No incomes found :(")
-        const { monthlyIncomeData } = await getListOfYearsIncomeTotalsByMonth(userId)
-        const incomesExist = monthlyIncomeData.some(item => item.value !== 0)
-        if (incomesExist) {
-            const { yearOfCategoryIncome, results } = await getYearOfCategoryIncome(userId, months)
-            yearOfCategoryIncome.map(async (monthOfCategoryIncome) => (
-                await createMonthlyIncomeAction({ month: monthOfCategoryIncome.month, monthTotal: monthOfCategoryIncome.monthTotal, monthCategoryTotals: monthOfCategoryIncome.monthCategoryTotal, userId, path: "/" })
-            ))
-        } else {
-            console.log("No transactions currently exist")
-        }
-    }
+    // const months = getLastTwelveMonths()
+    // const { monthlyIncomes, results: monthlyIncomesResults } = await getMonthlyIncomesBetweenDatesAction({ userId, startDate: months[0], endDate: months[months.length - 1] })
+    // if (monthlyIncomesResults) {
+    //     console.log("Incomes found!")
+    // } else {
+    //     // If there are no entries in the incomes trend table, create them!
+    //     console.log("No incomes found :(")
+    //     const { monthlyIncomeData } = await getListOfYearsIncomeTotalsByMonth(userId)
+    //     const incomesExist = monthlyIncomeData.some(item => item.value !== 0)
+    //     if (incomesExist) {
+    //         const { yearOfCategoryIncome, results } = await getYearOfCategoryIncome(userId, months)
+    //         yearOfCategoryIncome.map(async (monthOfCategoryIncome) => (
+    //             await createMonthlyIncomeAction({ month: monthOfCategoryIncome.month, monthTotal: monthOfCategoryIncome.monthTotal, monthCategoryTotals: monthOfCategoryIncome.monthCategoryTotal, userId, path: "/" })
+    //         ))
+    //     } else {
+    //         console.log("No transactions currently exist")
+    //     }
+    // }
 
     return (
         <div className="container mx-auto max-w-screen-2xl p-4">
