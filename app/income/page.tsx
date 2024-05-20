@@ -93,7 +93,7 @@ export default async function Home({
 
                 {results === 0 ? (
                     <tbody>
-                        <td colSpan={7} className="text-center">No Incomes Found</td>
+                        <td colSpan={6} className="text-center">No Incomes Found</td>
                     </tbody>
                 ) : (
                     incomes?.map((income) => (

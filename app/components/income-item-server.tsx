@@ -33,7 +33,7 @@ export const IncomeItem: React.FC<IncomeItemProps> = ({ income, categories, user
     function handleInputFieldChange(event: ChangeEvent<HTMLInputElement>, company: string, amount: number, category: string, notes: string) {
         const target = event.target as HTMLInputElement;
 
-        if (target.name === 'transactionDate') {
+        if (target.name === 'incomeDate') {
             setIncomeDate(stringToDate(target.value));
         } else if (target.name === 'company') {
             setCompany(target.value);

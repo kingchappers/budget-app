@@ -38,8 +38,7 @@ export function DatePicker({ initialDate, selectedDate, setSelectedDate }: DateP
 
     return (
         <div>
-            <p>hit</p>
-            {/* <Datetime dateFormat="DD/MM/YYYY" inputProps={inputProps} initialValue={initialDate} timeFormat={false} onChange={(value) => setDateSelection(value)} className="bg-white border rounded px-0 lg:px-1 py-1 w-28" /> */}
+            <Datetime dateFormat="DD/MM/YYYY" inputProps={inputProps} initialValue={initialDate} timeFormat={false} onChange={(value) => setDateSelection(value)} className="bg-white border rounded px-0 lg:px-1 py-1 w-28" />
         </div>
     )
 }
