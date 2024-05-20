@@ -75,7 +75,7 @@ export default async function Home({
     return (
         <div className="container mx-auto max-w-screen-2xl p-4">
 
-            <IncomeForm categories={listOfCategories} userId={userId} />
+            {/* <IncomeForm categories={listOfCategories} userId={userId} /> */}
 
             <h1 className="text-2xl font-bold mb-4">Income List</h1>
             <table className="divide-y-2 table-fixed">
