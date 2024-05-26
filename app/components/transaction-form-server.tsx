@@ -1,9 +1,9 @@
 import { createTransactionAction } from "../_transactionActions";
-import { DatePicker } from "./datePicker";
 import { CategoryComboBox } from "./comboBox";
 import { CategoryClass } from "../models/Category";
 import { FormAddButton } from "./form-submit-buttons";
 import { calulateMonthlySpendUpdateForNewTransactions } from "./trend-spend-calculations";
+import { dateToStringInputFormat } from "../lib/utils";
 
 interface TransactionFormProps {
     categories: CategoryClass[];
@@ -58,7 +58,8 @@ export function TransactionForm({ categories, userId }: TransactionFormProps) {
     return (
 
         <form autoComplete="off" action={action} key={Math.random()} className="flex flex-wrap items-center space-x-1 lg:space-x-3 mb-4">
-            <DatePicker />
+            {/* <DatePicker /> */}
+            <input aria-label="Date" type="date" name="pickedDate" pattern="dd/mm/yyyy" defaultValue={dateToStringInputFormat(new Date)} className="border rounded px-1 py-1 w-24 lg:w-32" />
             <input type="text" name="vendor" placeholder="Vendor" className="border rounded px-1 py-1 w-24 lg:w-40" />
             <input type="number" step="any" name="value" placeholder="Value" className="border rounded px-1 py-1 w-16 lg:w-20" />
             <CategoryComboBox categories={categories} />
