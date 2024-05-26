@@ -3,7 +3,7 @@
 import React, { Dispatch, SetStateAction } from "react"
 import Datetime from "react-datetime"
 import "react-datetime/css/react-datetime.css"
-import { stringToDate } from "../lib/utils"
+import { dateToStringInputFormat, stringToDate, stringToDateInputFormat } from "../lib/utils"
 
 interface DatePickerProps {
     initialDate?: Date,
@@ -15,33 +15,35 @@ interface DatePickerProps {
 // _________________________________________________________________________________________________________________________________________________________________________
 // _________________________________________________________________________________________________________________________________________________________________________
 
-export function DatePicker({ initialDate, selectedDate, setSelectedDate }: DatePickerProps) {
-    initialDate = initialDate ?? new Date()
-    let inputProps = {
-        name: 'pickedDate',
-        size: 7,
-    };
+// export function DatePicker({ initialDate, selectedDate, setSelectedDate }: DatePickerProps) {
+//     initialDate = initialDate ?? new Date()
+//     const inputInitialDate = dateToStringInputFormat(initialDate ?? new Date)
+//     let inputProps = {
+//         name: 'pickedDate',
+//         size: 7,
+//     };
 
-    function setDateSelection(value: string | moment.Moment) {
-        if (setSelectedDate) {
-            if (value) {
-                if (typeof (value) == 'string') {
-                    const valueAsDate = stringToDate(value)
-                    setSelectedDate(valueAsDate)
-                } else if (typeof (value) == 'object') {
-                    const valueAsDate = value.toDate()
-                    setSelectedDate(valueAsDate)
-                }
-            }
-        }
-    }
+//     function setDateSelection(value: string | Date) {
+//         if (setSelectedDate) {
+//             if (value) {
+//                 if (typeof (value) == 'string') {
+//                     const valueAsDate = stringToDateInputFormat(value);
+//                     setSelectedDate(valueAsDate)
+//                 } else if (typeof (value) == 'object') {
+//                     const valueAsDate = value;
+//                     setSelectedDate(valueAsDate)
+//                 }
+//             }
+//         }
+//     }
 
-    return (
-        <div>
-            <Datetime dateFormat="DD/MM/YYYY" inputProps={inputProps} initialValue={initialDate} timeFormat={false} onChange={(value) => setDateSelection(value)} className="bg-white border rounded px-0 lg:px-1 py-1 w-28" />
-        </div>
-    )
-}
+//     return (
+//         <div>
+//             {/* <Datetime dateFormat="DD/MM/YYYY" inputProps={inputProps} initialValue={initialDate} timeFormat={false} onChange={(value) => setDateSelection(value)} className="bg-white border rounded px-0 lg:px-1 py-1 w-28" /> */}
+//             <input aria-label="Date" type="date" name="pickedDate" pattern="dd/mm/yyyy" defaultValue={inputInitialDate} className="border rounded px-1 py-1 w-24 lg:w-44"/> {/* value="2024-05-23" */}
+//         </div>
+//     )
+// }
 
 // _________________________________________________________________________________________________________________________________________________________________________
 // _________________________________________________________________________________________________________________________________________________________________________
