@@ -1,11 +1,10 @@
 "use client"
 
 import { IncomeClass } from "../models/Income";
-import { dateToString, stringToDate } from "../lib/utils";
+import { dateToString, dateToStringInputFormat, stringToDateInputFormat } from "../lib/utils";
 import { IncomeItemMenu } from "./menu-buttons";
 import { ChangeEvent, useState } from "react";
 import { CategoryClass } from "../models/Category";
-import { DatePicker } from "./datePicker";
 import { CategoryComboBox } from "./comboBox";
 import { getIncomeAction, updateIncomeAction } from "../_incomeActions";
 import { calulateMonthlyIncomeUpdateForEditedIncomesAction } from "../_monthlyIncomeActions";
@@ -30,11 +29,11 @@ export const IncomeItem: React.FC<IncomeItemProps> = ({ income, categories, user
     const [categoriesSelection, setCategoriesSelection] = useState(income.incomeCategory);
     const [notes, setNotes] = useState(income.notes);
 
-    function handleInputFieldChange(event: ChangeEvent<HTMLInputElement>, company: string, amount: number, category: string, notes: string) {
+    function handleInputFieldChange(event: ChangeEvent<HTMLInputElement>, incomeDate: Date, company: string, amount: number, category: string, notes: string) {
         const target = event.target as HTMLInputElement;
 
-        if (target.name === 'incomeDate') {
-            setIncomeDate(stringToDate(target.value));
+        if (target.name === 'pickedDate') {
+            setIncomeDate(stringToDateInputFormat(target.value));
         } else if (target.name === 'company') {
             setCompany(target.value);
         } else if (target.name == 'amount') {
@@ -74,7 +73,7 @@ export const IncomeItem: React.FC<IncomeItemProps> = ({ income, categories, user
         // Update the trend incomes table
         const { income: oldIncome } = await getIncomeAction({ id })
         if (oldIncome) {
-            let updatedIncomeDateString = dateToString(update.incomeDate)
+            let updatedIncomeDateString = dateToStringInputFormat(update.incomeDate)
             calulateMonthlyIncomeUpdateForEditedIncomesAction(oldIncome.amount, oldIncome.incomeCategory, oldIncome.incomeDate, update.amount, update.category, updatedIncomeDateString, userId)
         }
 
@@ -86,11 +85,11 @@ export const IncomeItem: React.FC<IncomeItemProps> = ({ income, categories, user
         <tbody>
             {isEditingIncome ? (
                 <tr>
-                    <td className="px-3 lg:px-5"><DatePicker initialDate={income.incomeDate} selectedDate={incomeDate} setSelectedDate={setIncomeDate} /></td>
-                    <td className="px-3 lg:px-5"><input autoComplete="off" type="text" name="company" placeholder="Company" defaultValue={income.company} onChange={(event) => handleInputFieldChange(event, income.company, income.amount, income.incomeCategory, income.notes)} className="border rounded px-1 py-1 w-24 lg:w-48" /></td>
-                    <td className="px-3 lg:px-5"><input autoComplete="off" type="number" step="any" name="amount" placeholder="Amount" defaultValue={income.amount} onChange={(event) => handleInputFieldChange(event, income.company, income.amount, income.incomeCategory, income.notes)} className="border rounded px-1 py-1 w-16 lg:w-24" /></td>
+                    <td className="px-3 lg:px-5"><input aria-label="Date" type="date" name="pickedDate" pattern="dd/mm/yyyy" defaultValue={dateToStringInputFormat(incomeDate)} onChange={(event) => handleInputFieldChange(event, income.incomeDate, income.company, income.amount, income.incomeCategory, income.notes)} className="border rounded px-1 py-1 w-24 lg:w-32" /></td>
+                    <td className="px-3 lg:px-5"><input autoComplete="off" type="text" name="company" placeholder="Company" defaultValue={income.company} onChange={(event) => handleInputFieldChange(event, income.incomeDate, income.company, income.amount, income.incomeCategory, income.notes)} className="border rounded px-1 py-1 w-24 lg:w-48" /></td>
+                    <td className="px-3 lg:px-5"><input autoComplete="off" type="number" step="any" name="amount" placeholder="Amount" defaultValue={income.amount} onChange={(event) => handleInputFieldChange(event, income.incomeDate, income.company, income.amount, income.incomeCategory, income.notes)} className="border rounded px-1 py-1 w-16 lg:w-24" /></td>
                     <td className="px-3 lg:px-5"><CategoryComboBox categories={categories} categoriesSelection={categoriesSelection} setCategoriesSelection={setCategoriesSelection} /></td>
-                    <td className="px-3 lg:px-5"><input autoComplete="off" type="text" name="notes" placeholder="Notes" defaultValue={income.notes} onChange={(event) => handleInputFieldChange(event, income.company, income.amount, income.incomeCategory, income.notes)} className="border rounded px-1 py-1 w-24 lg:w-80" /></td>
+                    <td className="px-3 lg:px-5"><input autoComplete="off" type="text" name="notes" placeholder="Notes" defaultValue={income.notes} onChange={(event) => handleInputFieldChange(event, income.incomeDate, income.company, income.amount, income.incomeCategory, income.notes)} className="border rounded px-1 py-1 w-24 lg:w-80" /></td>
                     <td className="px-3 lg:px-5"><button onClick={() => handleClick(income.id)} className="px-4 py-1 text-white rounded bg-green-500">Save</button></td>
 
 
