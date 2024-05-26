@@ -1,6 +1,6 @@
 import startOfMonth from "date-fns/startOfMonth";
 import { getIncomesBetweenDatesAction } from "../_incomeActions";
-import { getLastTwelveMonths, stringToDate } from "../lib/utils";
+import { getLastTwelveMonths, stringToDateInputFormat } from "../lib/utils";
 import { monthCategoryTotal } from "../models/MonthlyIncome";
 import { calculateIncomeTotal } from "./target-calculation-functions";
 import { categorySplitPieProps, monthData } from "./trend-graphs";
@@ -11,10 +11,7 @@ import { createMonthlyIncomeAction, getMonthlyIncomeByMonthAction, updateMonthly
 // ______________________________________________________________________________________________________________________________________________________________________
 
 export async function calulateMonthlyIncomeUpdateForNewIncomes(incomeValue: number, incomeCategory: string, incomeDate: string, userId: string) {
-    console.log(typeof(incomeDate))
-    console.log(incomeDate)
-
-    const incomeDateMonthStart = startOfMonth(stringToDate(incomeDate))
+    const incomeDateMonthStart = startOfMonth(stringToDateInputFormat(incomeDate))
     const { monthlyIncome } = await getMonthlyIncomeByMonthAction({ month: incomeDateMonthStart, userId });
     console.log("Monthly Income Total")
 

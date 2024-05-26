@@ -2,7 +2,7 @@
 
 import { createTransaction, deleteTransaction, updateTransaction, getTransactionsBetweenDates, getTransaction } from "./lib/transaction-db";
 import { revalidatePath } from "next/cache";
-import { stringToDate } from "./lib/utils";
+import { stringToDateInputFormat } from "./lib/utils";
 
 // _________________________________________________________________________________________________________________________________________________________________________
 // _________________________________________________________________________________________________________________________________________________________________________
@@ -68,7 +68,7 @@ export async function createTransactionAction({
     path: string;
     userId: string;
 }) {
-    const parsedTransactionDate = stringToDate(transactionDate)
+    const parsedTransactionDate = stringToDateInputFormat(transactionDate)
     await createTransaction(parsedTransactionDate, vendor, value, category, items, notes, userId);
     revalidatePath(path);
 }

@@ -2,7 +2,7 @@
 
 import { createIncome, deleteIncome, getIncome, getIncomesBetweenDates, updateIncome } from "./lib/income-db";
 import { revalidatePath } from "next/cache";
-import { stringToDate } from "./lib/utils";
+import { stringToDateInputFormat } from "./lib/utils";
 
 // _________________________________________________________________________________________________________________________________________________________________________
 // _________________________________________________________________________________________________________________________________________________________________________
@@ -66,7 +66,7 @@ export async function createIncomeAction({
     path: string;
     userId: string;
 }) {
-    const parsedIncomeDate = stringToDate(incomeDate)
+    const parsedIncomeDate = stringToDateInputFormat(incomeDate)
     await createIncome(parsedIncomeDate, company, amount, incomeCategory, notes, userId);
     revalidatePath(path);
 }

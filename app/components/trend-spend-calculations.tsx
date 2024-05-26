@@ -1,6 +1,6 @@
 import startOfMonth from "date-fns/startOfMonth";
 import { getTransactionsBetweenDatesAction } from "../_transactionActions";
-import { getLastTwelveMonths, stringToDate } from "../lib/utils";
+import { getLastTwelveMonths, stringToDateInputFormat } from "../lib/utils";
 import { monthCategoryTotal } from "../models/MonthlySpend";
 import { calculateTransactionTotal } from "./target-calculation-functions";
 import { categorySplitPieProps, monthData } from "./trend-graphs";
@@ -11,7 +11,7 @@ import { createMonthlySpendAction, getMonthlySpendByMonthAction, updateMonthlySp
 // ______________________________________________________________________________________________________________________________________________________________________
 
 export async function calulateMonthlySpendUpdateForNewTransactions(transactionValue: number, transactionCategory: string, transactionDate: string, userId: string) {
-    const transactionDateMonthStart = startOfMonth(stringToDate(transactionDate))
+    const transactionDateMonthStart = startOfMonth(stringToDateInputFormat(transactionDate))
     const { monthlySpend } = await getMonthlySpendByMonthAction({ month: transactionDateMonthStart, userId });
 
     if (monthlySpend) {
