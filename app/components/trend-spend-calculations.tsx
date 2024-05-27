@@ -29,12 +29,12 @@ export async function calulateMonthlySpendUpdateForNewTransactions(transactionVa
 
             monthlySpend.monthCategoryTotals[monthCategoryMatch].value = monthlySpend.monthCategoryTotals[monthCategoryMatch].value + transactionValue;
             monthlySpend.monthCategoryTotals[monthCategoryMatch].percentage = (monthlySpend.monthCategoryTotals[monthCategoryMatch].value / monthlySpend.monthTotal) * 100;
-            monthlySpend.monthCategoryTotals[monthCategoryMatch].chartTitle = monthlySpend.monthCategoryTotals[monthCategoryMatch].categoryName + `:\n£${monthlySpend.monthCategoryTotals[monthCategoryMatch].value} | ${(monthlySpend.monthCategoryTotals[monthCategoryMatch].percentage).toFixed(2)}%`;
+            monthlySpend.monthCategoryTotals[monthCategoryMatch].chartTitle = monthlySpend.monthCategoryTotals[monthCategoryMatch].categoryName + `:\n£${monthlySpend.monthCategoryTotals[monthCategoryMatch].value.toFixed(2)} | ${(monthlySpend.monthCategoryTotals[monthCategoryMatch].percentage).toFixed(2)}%`;
         } else {
             // Logic for creating a new entry for monthlyCategoryTotals if the category doesn't already exist
             newMonthCategoryTotal = {
                 percentage: (transactionValue / monthlySpend.monthTotal) * 100,
-                chartTitle: transactionCategory + `:\n£${transactionValue} | ${((transactionValue / monthlySpend.monthTotal) * 100).toFixed(2)}%`,
+                chartTitle: transactionCategory + `:\n£${transactionValue.toFixed(2)} | ${((transactionValue / monthlySpend.monthTotal) * 100).toFixed(2)}%`,
                 categoryName: transactionCategory,
                 value: transactionValue
             }
@@ -43,7 +43,7 @@ export async function calulateMonthlySpendUpdateForNewTransactions(transactionVa
 
         monthlySpend.monthCategoryTotals.forEach((monthCategoryTotal) => {
             monthCategoryTotal.percentage = (monthCategoryTotal.value / monthlySpend.monthTotal) * 100;
-            monthCategoryTotal.chartTitle = monthCategoryTotal.categoryName + `:\n£${monthCategoryTotal.value} | ${(monthCategoryTotal.percentage).toFixed(2)}%`;
+            monthCategoryTotal.chartTitle = monthCategoryTotal.categoryName + `:\n£${monthCategoryTotal.value.toFixed(2)} | ${(monthCategoryTotal.percentage).toFixed(2)}%`;
         })
 
         monthlySpendUpdate = {
@@ -57,7 +57,7 @@ export async function calulateMonthlySpendUpdateForNewTransactions(transactionVa
         let newMonthCategoryTotal: monthCategoryTotal;
         newMonthCategoryTotal = {
             percentage: 100,
-            chartTitle: transactionCategory + `:\n£${transactionValue} | 100%`,
+            chartTitle: transactionCategory + `:\n£${transactionValue.toFixed(2)} | 100%`,
             categoryName: transactionCategory,
             value: transactionValue
         }
@@ -111,7 +111,7 @@ export async function calulateMonthlySpendUpdateForDeletedTransactions(deletedTr
         if (monthCategoryMatch >= 0) {
             monthlySpend.monthCategoryTotals[monthCategoryMatch].value = monthlySpend.monthCategoryTotals[monthCategoryMatch].value - deletedTransactionValue;
             monthlySpend.monthCategoryTotals[monthCategoryMatch].percentage = (monthlySpend.monthCategoryTotals[monthCategoryMatch].value / monthlySpend.monthTotal) * 100;
-            monthlySpend.monthCategoryTotals[monthCategoryMatch].chartTitle = monthlySpend.monthCategoryTotals[monthCategoryMatch].categoryName + `:\n£${monthlySpend.monthCategoryTotals[monthCategoryMatch].value} | ${(monthlySpend.monthCategoryTotals[monthCategoryMatch].percentage).toFixed(2)}%`;
+            monthlySpend.monthCategoryTotals[monthCategoryMatch].chartTitle = monthlySpend.monthCategoryTotals[monthCategoryMatch].categoryName + `:\n£${monthlySpend.monthCategoryTotals[monthCategoryMatch].value.toFixed(2)} | ${(monthlySpend.monthCategoryTotals[monthCategoryMatch].percentage).toFixed(2)}%`;
         } else {
             console.log("The category wasn't found")
         }
@@ -119,7 +119,7 @@ export async function calulateMonthlySpendUpdateForDeletedTransactions(deletedTr
         // Recalculate the percentages for each of the items
         monthlySpend.monthCategoryTotals.forEach((monthCategoryTotal) => {
             monthCategoryTotal.percentage = (monthCategoryTotal.value / monthlySpend.monthTotal) * 100;
-            monthCategoryTotal.chartTitle = monthCategoryTotal.categoryName + `:\n£${monthCategoryTotal.value} | ${(monthCategoryTotal.percentage).toFixed(2)}%`;
+            monthCategoryTotal.chartTitle = monthCategoryTotal.categoryName + `:\n£${monthCategoryTotal.value.toFixed(2)} | ${(monthCategoryTotal.percentage).toFixed(2)}%`;
         })
 
         monthlySpendUpdate = {
@@ -177,7 +177,7 @@ async function getCategoryTransactionTotalBetweenDates(userId: string, startDate
     }
 
     const categorySpendData: monthCategoryTotal[] = Object.entries(categorySpendRecord).map(([category, value]) => ({
-        chartTitle: category + `:\n£${value} | ${((value / monthTotal) * 100).toFixed(2)}%`,
+        chartTitle: category + `:\n£${value.toFixed(2)} | ${((value / monthTotal) * 100).toFixed(2)}%`,
         categoryName: category,
         value: value,
         percentage: ((value / monthTotal) * 100),
