@@ -20,7 +20,7 @@ interface TransactionItemProps {
 // _________________________________________________________________________________________________________________________________________________________________________
 
 export const TransactionItem: React.FC<TransactionItemProps> = ({ transaction, categories, userId }) => {
-    const transactionDateString = dateToString(transaction.transactionDate);
+    const transactionDateString = dateToStringInputFormat(transaction.transactionDate);
     const [isEditingTransaction, setIsEditingTransaction] = useState(false);
     const [transactionDate, setTransactionDate] = useState(transaction.transactionDate);
     const [vendor, setVendor] = useState(transaction.vendor);
@@ -79,7 +79,7 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({ transaction, c
         // Update the trend spends table
         const { transaction: oldTransaction } = await getTransactionAction({ id })
         if (oldTransaction) {
-            let updatedTransactionDateString = dateToString(update.transactionDate)
+            let updatedTransactionDateString = dateToStringInputFormat(update.transactionDate)
             calulateMonthlySpendUpdateForEditedTransactionsAction(oldTransaction.value, oldTransaction.category, oldTransaction.transactionDate, update.value, update.category, updatedTransactionDateString, userId)
         }
 

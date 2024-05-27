@@ -21,7 +21,7 @@ interface IncomeItemProps {
 // _________________________________________________________________________________________________________________________________________________________________________
 
 export const IncomeItem: React.FC<IncomeItemProps> = ({ income, categories, userId }) => {
-    const incomeDateString = dateToString(income.incomeDate)
+    const incomeDateString = dateToStringInputFormat(income.incomeDate)
     const [isEditingIncome, setIsEditingIncome] = useState(false);
     const [incomeDate, setIncomeDate] = useState(income.incomeDate);
     const [company, setCompany] = useState(income.company);
