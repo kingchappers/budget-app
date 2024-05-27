@@ -101,11 +101,13 @@ export default async function Home({
                     ))
                 )}
 
-                <tr>
-                    <td className="pt-4"><Link href={`/income?page=${incomeFilter.page > 1 ? incomeFilter.page - 1 : 1}`} className={clsx('rounded border bg-sky-500 px-3 p-1', incomeFilter.page <= 1 && 'pointer-events-none opacity-50')}>Previous</Link></td>
-                    <td colSpan={5}></td>
-                    <td className="pt-4"><Link href={`/income?page=${incomeFilter.page < maxPages ? incomeFilter.page + 1 : maxPages}`} className={clsx('rounded border bg-sky-500 px-3.5 py-1 float-right', incomeFilter.page >= maxPages && 'pointer-events-none opacity-50')}>Next</Link></td>
-                </tr>
+                <tbody>
+                    <tr>
+                        <td className="pt-4"><Link href={`/income?page=${incomeFilter.page > 1 ? incomeFilter.page - 1 : 1}`} className={clsx('rounded border bg-sky-500 px-3 p-1', incomeFilter.page <= 1 && 'pointer-events-none opacity-50')}>Previous</Link></td>
+                        <td colSpan={5}></td>
+                        <td className="pt-4"><Link href={`/income?page=${incomeFilter.page < maxPages ? incomeFilter.page + 1 : maxPages}`} className={clsx('rounded border bg-sky-500 px-3.5 py-1 float-right', incomeFilter.page >= maxPages && 'pointer-events-none opacity-50')}>Next</Link></td>
+                    </tr>
+                </tbody>
             </table>
         </div>
 

@@ -101,14 +101,14 @@ export default async function Transactions({
                     ))
                 )}
 
-                <tr>
-                    <td className="pt-4"><Link href={`/transactions?page=${tansactionFilter.page > 1 ? tansactionFilter.page - 1 : 1}`} className={clsx('rounded border bg-sky-500 px-3 p-1', tansactionFilter.page <= 1 && 'pointer-events-none opacity-50')}>Previous</Link></td>
-                    <td colSpan={5}></td>
-                    <td className="pt-4"><Link href={`/transactions?page=${tansactionFilter.page < maxPages ? tansactionFilter.page + 1 : maxPages}`} className={clsx('rounded border bg-sky-500 px-3.5 py-1 float-right', tansactionFilter.page >= maxPages && 'pointer-events-none opacity-50')}>Next</Link></td>
-                </tr>
+                <tbody>
+                    <tr>
+                        <td className="pt-4"><Link href={`/transactions?page=${tansactionFilter.page > 1 ? tansactionFilter.page - 1 : 1}`} className={clsx('rounded border bg-sky-500 px-3 p-1', tansactionFilter.page <= 1 && 'pointer-events-none opacity-50')}>Previous</Link></td>
+                        <td colSpan={5}></td>
+                        <td className="pt-4"><Link href={`/transactions?page=${tansactionFilter.page < maxPages ? tansactionFilter.page + 1 : maxPages}`} className={clsx('rounded border bg-sky-500 px-3.5 py-1 float-right', tansactionFilter.page >= maxPages && 'pointer-events-none opacity-50')}>Next</Link></td>
+                    </tr>
+                </tbody>
             </table>
-
-
 
         </div>
 
