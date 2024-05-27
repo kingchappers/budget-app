@@ -17,6 +17,9 @@ export const CategoryItem: React.FC<CategoryItemProps> = ({ category, userId }) 
     const [label, setLabel] = useState(category.label);
     const originalLabel = category.label;
 
+    console.log("Categories passed to UI")
+    console.log(category)
+
     function handleInputFieldChange(event: ChangeEvent<HTMLInputElement>, label: string) {
         const target = event.target as HTMLInputElement;
 
