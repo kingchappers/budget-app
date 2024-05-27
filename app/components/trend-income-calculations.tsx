@@ -30,12 +30,12 @@ export async function calulateMonthlyIncomeUpdateForNewIncomes(incomeValue: numb
 
             monthlyIncome.monthCategoryTotals[monthCategoryMatch].value = monthlyIncome.monthCategoryTotals[monthCategoryMatch].value + incomeValue;
             monthlyIncome.monthCategoryTotals[monthCategoryMatch].percentage = (monthlyIncome.monthCategoryTotals[monthCategoryMatch].value / monthlyIncome.monthTotal) * 100;
-            monthlyIncome.monthCategoryTotals[monthCategoryMatch].chartTitle = monthlyIncome.monthCategoryTotals[monthCategoryMatch].categoryName + `:\n£${monthlyIncome.monthCategoryTotals[monthCategoryMatch].value} | ${(monthlyIncome.monthCategoryTotals[monthCategoryMatch].percentage).toFixed(2)}%`;
+            monthlyIncome.monthCategoryTotals[monthCategoryMatch].chartTitle = monthlyIncome.monthCategoryTotals[monthCategoryMatch].categoryName + `:\n£${monthlyIncome.monthCategoryTotals[monthCategoryMatch].value.toFixed(2)} | ${(monthlyIncome.monthCategoryTotals[monthCategoryMatch].percentage).toFixed(2)}%`;
         } else {
             // Logic for creating a new entry for monthlyCategoryTotals if the category doesn't already exist
             newMonthCategoryTotal = {
                 percentage: (incomeValue / monthlyIncome.monthTotal) * 100,
-                chartTitle: incomeCategory + `:\n£${incomeValue} | ${((incomeValue / monthlyIncome.monthTotal) * 100).toFixed(2)}%`,
+                chartTitle: incomeCategory + `:\n£${incomeValue.toFixed(2)} | ${((incomeValue / monthlyIncome.monthTotal) * 100).toFixed(2)}%`,
                 categoryName: incomeCategory,
                 value: incomeValue
             }
@@ -44,7 +44,7 @@ export async function calulateMonthlyIncomeUpdateForNewIncomes(incomeValue: numb
 
         monthlyIncome.monthCategoryTotals.forEach((monthCategoryTotal) => {
             monthCategoryTotal.percentage = (monthCategoryTotal.value / monthlyIncome.monthTotal) * 100;
-            monthCategoryTotal.chartTitle = monthCategoryTotal.categoryName + `:\n£${monthCategoryTotal.value} | ${(monthCategoryTotal.percentage).toFixed(2)}%`;
+            monthCategoryTotal.chartTitle = monthCategoryTotal.categoryName + `:\n£${monthCategoryTotal.value.toFixed(2)} | ${(monthCategoryTotal.percentage).toFixed(2)}%`;
         })
 
         monthlyIncomeUpdate = {
@@ -58,7 +58,7 @@ export async function calulateMonthlyIncomeUpdateForNewIncomes(incomeValue: numb
         let newMonthCategoryTotal: monthCategoryTotal;
         newMonthCategoryTotal = {
             percentage: 100,
-            chartTitle: incomeCategory + `:\n£${incomeValue} | 100%`,
+            chartTitle: incomeCategory + `:\n£${incomeValue.toFixed(2)} | 100%`,
             categoryName: incomeCategory,
             value: incomeValue
         }
@@ -102,7 +102,7 @@ export async function calulateMonthlyIncomeUpdateForDeletedIncomes(deletedIncome
         if (monthCategoryMatch >= 0) {
             monthlyIncome.monthCategoryTotals[monthCategoryMatch].value = monthlyIncome.monthCategoryTotals[monthCategoryMatch].value - deletedIncomeValue;
             monthlyIncome.monthCategoryTotals[monthCategoryMatch].percentage = (monthlyIncome.monthCategoryTotals[monthCategoryMatch].value / monthlyIncome.monthTotal) * 100;
-            monthlyIncome.monthCategoryTotals[monthCategoryMatch].chartTitle = monthlyIncome.monthCategoryTotals[monthCategoryMatch].categoryName + `:\n£${monthlyIncome.monthCategoryTotals[monthCategoryMatch].value} | ${(monthlyIncome.monthCategoryTotals[monthCategoryMatch].percentage).toFixed(2)}%`;
+            monthlyIncome.monthCategoryTotals[monthCategoryMatch].chartTitle = monthlyIncome.monthCategoryTotals[monthCategoryMatch].categoryName + `:\n£${monthlyIncome.monthCategoryTotals[monthCategoryMatch].value.toFixed(2)} | ${(monthlyIncome.monthCategoryTotals[monthCategoryMatch].percentage).toFixed(2)}%`;
         } else {
             console.log("The category wasn't found")
         }
@@ -110,7 +110,7 @@ export async function calulateMonthlyIncomeUpdateForDeletedIncomes(deletedIncome
         // Recalculate the percentages for each of the items
         monthlyIncome.monthCategoryTotals.forEach((monthCategoryTotal) => {
             monthCategoryTotal.percentage = (monthCategoryTotal.value / monthlyIncome.monthTotal) * 100;
-            monthCategoryTotal.chartTitle = monthCategoryTotal.categoryName + `:\n£${monthCategoryTotal.value} | ${(monthCategoryTotal.percentage).toFixed(2)}%`;
+            monthCategoryTotal.chartTitle = monthCategoryTotal.categoryName + `:\n£${monthCategoryTotal.value.toFixed(2)} | ${(monthCategoryTotal.percentage).toFixed(2)}%`;
         })
 
         monthlyIncomeUpdate = {
@@ -168,7 +168,7 @@ async function getCategoryIncomeTotalBetweenDates(userId: string, startDate: Dat
     }
 
     const categoryIncomeData: monthCategoryTotal[] = Object.entries(categoryIncomeRecord).map(([incomeCategory, value]) => ({
-        chartTitle: incomeCategory + `:\n£${value} | ${((value / monthTotal) * 100).toFixed(2)}%`,
+        chartTitle: incomeCategory + `:\n£${value.toFixed(2)} | ${((value / monthTotal) * 100).toFixed(2)}%`,
         categoryName: incomeCategory,
         value: value,
         percentage: ((value / monthTotal) * 100),
