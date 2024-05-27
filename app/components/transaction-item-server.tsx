@@ -20,7 +20,7 @@ interface TransactionItemProps {
 // _________________________________________________________________________________________________________________________________________________________________________
 
 export const TransactionItem: React.FC<TransactionItemProps> = ({ transaction, categories, userId }) => {
-    const transactionDateString = dateToStringInputFormat(transaction.transactionDate);
+    const transactionDateString = dateToString(transaction.transactionDate);
     const [isEditingTransaction, setIsEditingTransaction] = useState(false);
     const [transactionDate, setTransactionDate] = useState(transaction.transactionDate);
     const [vendor, setVendor] = useState(transaction.vendor);
