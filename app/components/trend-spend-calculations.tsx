@@ -1,9 +1,9 @@
 import startOfMonth from "date-fns/startOfMonth";
 import { getTransactionsBetweenDatesAction } from "../_transactionActions";
-import { getLastTwelveMonths, stringToDateInputFormat } from "../lib/utils";
+import {  stringToDateInputFormat } from "../lib/utils";
 import { monthCategoryTotal } from "../models/MonthlySpend";
 import { calculateTransactionTotal } from "./target-calculation-functions";
-import { categorySplitPieProps, monthData } from "./trend-graphs";
+import { categorySplitPieProps } from "./trend-graphs";
 import { createMonthlySpendAction, getMonthlySpendByMonthAction, updateMonthlySpendAction } from "../_monthlySpendActions";
 
 // ______________________________________________________________________________________________________________________________________________________________________
@@ -138,23 +138,23 @@ export async function calulateMonthlySpendUpdateForDeletedTransactions(deletedTr
 // ______________________________________________________________________________________________________________________________________________________________________
 // ______________________________________________________________________________________________________________________________________________________________________
 
-export async function getListOfYearsTransactionTotalsByMonth(userId: string) {
-    var monthlySpendData: monthData[] = [];
-    const lastTwelveMonths = getLastTwelveMonths();
+// export async function getListOfYearsTransactionTotalsByMonth(userId: string) {
+//     var monthlySpendData: monthData[] = [];
+//     const lastTwelveMonths = getLastTwelveMonths();
 
-    const monthPromises = lastTwelveMonths.map(async (month) => {
-        const startDate = month;
-        const endDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
-        const { transactions } = await getTransactionsBetweenDatesAction({ userId, startDate, endDate });
-        const monthTotal = calculateTransactionTotal(transactions);
-        const monthAsString = month.toLocaleString('default', { month: 'short' }) + " " + month.getFullYear().toLocaleString().substring(3);
-        monthlySpendData.push({ month: monthAsString, value: monthTotal });
-    })
+//     const monthPromises = lastTwelveMonths.map(async (month) => {
+//         const startDate = month;
+//         const endDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
+//         const { transactions } = await getTransactionsBetweenDatesAction({ userId, startDate, endDate });
+//         const monthTotal = calculateTransactionTotal(transactions);
+//         const monthAsString = month.toLocaleString('default', { month: 'short' }) + " " + month.getFullYear().toLocaleString().substring(3);
+//         monthlySpendData.push({ month: monthAsString, value: monthTotal });
+//     })
 
-    await Promise.all(monthPromises);
+//     await Promise.all(monthPromises);
 
-    return { monthlySpendData };
-}
+//     return { monthlySpendData };
+// }
 
 // ______________________________________________________________________________________________________________________________________________________________________
 // ______________________________________________________________________________________________________________________________________________________________________

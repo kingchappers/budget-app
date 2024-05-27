@@ -1,9 +1,9 @@
 import startOfMonth from "date-fns/startOfMonth";
 import { getIncomesBetweenDatesAction } from "../_incomeActions";
-import { getLastTwelveMonths, stringToDateInputFormat } from "../lib/utils";
+import { stringToDateInputFormat } from "../lib/utils";
 import { monthCategoryTotal } from "../models/MonthlyIncome";
 import { calculateIncomeTotal } from "./target-calculation-functions";
-import { categorySplitPieProps, monthData } from "./trend-graphs";
+import { categorySplitPieProps } from "./trend-graphs";
 import { createMonthlyIncomeAction, getMonthlyIncomeByMonthAction, updateMonthlyIncomeAction } from "../_monthlyIncomeActions";
 
 // ______________________________________________________________________________________________________________________________________________________________________
@@ -129,23 +129,23 @@ export async function calulateMonthlyIncomeUpdateForDeletedIncomes(deletedIncome
 // ______________________________________________________________________________________________________________________________________________________________________
 // ______________________________________________________________________________________________________________________________________________________________________
 
-export async function getListOfYearsIncomeTotalsByMonth(userId: string) {
-    var monthlyIncomeData: monthData[] = [];
-    const lastTwelveMonths = getLastTwelveMonths();
+// export async function getListOfYearsIncomeTotalsByMonth(userId: string) {
+//     var monthlyIncomeData: monthData[] = [];
+//     const lastTwelveMonths = getLastTwelveMonths();
 
-    const monthPromises = lastTwelveMonths.map(async (month) => {
-        const startDate = month;
-        const endDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
-        const { incomes } = await getIncomesBetweenDatesAction({ userId, startDate, endDate });
-        const monthTotal = calculateIncomeTotal(incomes);
-        const monthAsString = month.toLocaleString('default', { month: 'short' }) + " " + month.getFullYear().toLocaleString().substring(3);
-        monthlyIncomeData.push({ month: monthAsString, value: monthTotal });
-    })
+//     const monthPromises = lastTwelveMonths.map(async (month) => {
+//         const startDate = month;
+//         const endDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
+//         const { incomes } = await getIncomesBetweenDatesAction({ userId, startDate, endDate });
+//         const monthTotal = calculateIncomeTotal(incomes);
+//         const monthAsString = month.toLocaleString('default', { month: 'short' }) + " " + month.getFullYear().toLocaleString().substring(3);
+//         monthlyIncomeData.push({ month: monthAsString, value: monthTotal });
+//     })
 
-    await Promise.all(monthPromises);
+//     await Promise.all(monthPromises);
 
-    return { monthlyIncomeData };
-}
+//     return { monthlyIncomeData };
+// }
 
 // ______________________________________________________________________________________________________________________________________________________________________
 // ______________________________________________________________________________________________________________________________________________________________________

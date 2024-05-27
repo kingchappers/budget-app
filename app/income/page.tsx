@@ -8,9 +8,9 @@ import { authOptions } from "@/app/lib/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import clsx from "clsx";
-import { getLastTwelveMonths } from "../lib/utils";
-import { createMonthlyIncomeAction, getMonthlyIncomesBetweenDatesAction } from "../_monthlyIncomeActions";
-import { getListOfYearsIncomeTotalsByMonth, getYearOfCategoryIncome } from "../components/trend-income-calculations";
+// import { getLastTwelveMonths } from "../lib/utils";
+// import { createMonthlyIncomeAction, getMonthlyIncomesBetweenDatesAction } from "../_monthlyIncomeActions";
+// import { getListOfYearsIncomeTotalsByMonth, getYearOfCategoryIncome } from "../components/trend-income-calculations";
 
 export default async function Home({
     searchParams

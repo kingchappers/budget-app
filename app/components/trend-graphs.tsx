@@ -9,13 +9,17 @@ interface barTrendProps {
 }
 
 export interface monthData {
-    month: string,
-    value: number,
+    // month: string,
+    // value: number,
+    monthCategoryTotal: monthCategoryTotal[],
+    month: Date,
+    monthTotal: number,
 }
 
 interface groupChartProps {
     monthSpendData: monthData[],
     monthIncomeData: monthData[]
+
 }
 
 // export interface categoryData {

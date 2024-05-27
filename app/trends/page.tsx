@@ -1,11 +1,11 @@
 import { getServerSession } from 'next-auth/next';
-import { getListOfYearsTransactionTotalsByMonth, getYearOfCategorySpend } from '../components/trend-spend-calculations';
-import { getListOfYearsIncomeTotalsByMonth, getYearOfCategoryIncome } from '../components/trend-income-calculations';
+// import { getListOfYearsTransactionTotalsByMonth, getYearOfCategorySpend } from '../components/trend-spend-calculations';
+// import { getListOfYearsIncomeTotalsByMonth, getYearOfCategoryIncome } from '../components/trend-income-calculations';
 import { MonthSpendingCategorySplit, YearlyIncomeVsSpendingGroupChart } from '../components/trend-graphs';
 import { authOptions } from '../lib/auth';
 import { redirect } from 'next/navigation';
 import { getLastTwelveMonths } from '../lib/utils';
-import { createMonthlySpendAction, getMonthlySpendsBetweenDatesAction } from '../_monthlySpendActions';
+import { getMonthlySpendsBetweenDatesAction } from '../_monthlySpendActions';
 import { getMonthlyIncomesBetweenDatesAction } from '../_monthlyIncomeActions';
 import { Suspense } from 'react';
 
@@ -62,7 +62,7 @@ export default async function Trends() {
             <h1 className="text-2xl font-bold mb-4">Spending and Income Trends</h1>
 
             <h1 className="text-xl font-bold mb-4">Income vs Expenses</h1>
-            {/* <YearlyIncomeVsSpendingGroupChart monthSpendData={monthlySpendData} monthIncomeData={monthlyIncomeData} /> */}
+            {/* <YearlyIncomeVsSpendingGroupChart monthSpendData={monthlySpends} monthIncomeData={monthlyIncomes} /> */}
 
             <h1 className="text-xl font-bold mb-4">Category Spending Per Month</h1>
 
