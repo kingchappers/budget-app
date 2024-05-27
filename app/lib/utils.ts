@@ -68,9 +68,12 @@ export function stringToDateInputFormat(dateString: string) {
 // _________________________________________________________________________________________________________________________________________________________________________
 
 export function dateToString(date: Date) {
+    console.log(date)
+    console.log(typeof(date))
+
     try {
         const dateString = format(date, "dd/MM/yyyy")
-
+        console.log("worked")
         return dateString
     } catch (err) {
         console.log(err)
