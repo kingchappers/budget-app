@@ -10,8 +10,6 @@ import { calculateDifference, calculateIncomeTotal } from './target-calculation-
 import { getIncomesBetweenDatesAction } from '../_incomeActions';
 import differenceInDays from 'date-fns/differenceInDays';
 import { TargetFilter } from '../lib/target-db';
-import Datetime from "react-datetime"
-import "react-datetime/css/react-datetime.css"
 import { stringToDate } from '../lib/utils';
 
 let didInit = false;
@@ -237,9 +235,9 @@ export function VarianceTimeButton({ userId }: VarianceTimeButtonProps) {
                 </ToggleButtonGroup>
 
                 <form action={betweenTwoDatesFormAction} key={Math.random()} className="flex items-center space-x-3 mb-4 mt-3 md:mt-3">
-                    <Datetime dateFormat="DD/MM/YYYY" inputProps={startDateInputProps} initialValue={dateSelectorStart} timeFormat={false} className="bg-white border rounded px-1 py-1 ml-5" />
+                    {/* <Datetime dateFormat="DD/MM/YYYY" inputProps={startDateInputProps} initialValue={dateSelectorStart} timeFormat={false} className="bg-white border rounded px-1 py-1 ml-5" /> */}
                     <p className="mx-2"> to </p>
-                    <Datetime dateFormat="DD/MM/YYYY" inputProps={endDateInputProps} initialValue={dateSelectorEnd} timeFormat={false} className="bg-white border rounded px-1 py-1" />
+                    {/* <Datetime dateFormat="DD/MM/YYYY" inputProps={endDateInputProps} initialValue={dateSelectorEnd} timeFormat={false} className="bg-white border rounded px-1 py-1" /> */}
                 </form>
 
             </div>
