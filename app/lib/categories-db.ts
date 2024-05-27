@@ -37,8 +37,8 @@ export async function getCategories(filter: CategoryFilter) {
             results
         };
     } catch (error) {
-        console.log(error)
-        console.log("couldn't get categories")
+        // console.log(error)
+        // console.log("couldn't get categories")
         return { error };
     }
 }
