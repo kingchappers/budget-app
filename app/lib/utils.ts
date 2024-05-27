@@ -39,9 +39,10 @@ export function stringToDate(dateString: string) {
         const date: Date = parse(dateString, "dd/MM/yyyy", new Date(), { locale: enGB })
         return (date)
     } catch (err) {
-        const date: Date = parse(dateString, "dd/MM/yyyy", new Date(), { locale: enGB })
         console.log(err)
-        return (date)
+        console.log("The stringToDate function went wrong")
+        // const date: Date = parse(dateString, "dd/MM/yyyy", new Date(), { locale: enGB })
+        return (new Date("2025-01-15"))
     }
 }
 
@@ -55,9 +56,10 @@ export function stringToDateInputFormat(dateString: string) {
 
         return (date)
     } catch (err) {
-        const date: Date = parse(dateString, "yyyy-MM-dd", new Date(), { locale: enGB })
         console.log(err)
-        return (date)
+        console.log("The stringToDateInputFormat function went wrong")
+        // const date: Date = parse(dateString, "yyyy-MM-dd", new Date(), { locale: enGB })
+        return (new Date("2026-02-16"))
     }
 }
 
@@ -71,8 +73,9 @@ export function dateToString(date: Date) {
 
         return dateString
     } catch (err) {
-        const dateString = format(date, "dd/MM/yyyy")
         console.log(err)
+        console.log("The dateToString function went wrong")
+        const dateString = "17/03/2027"
         return dateString
     }
 }
@@ -87,8 +90,9 @@ export function dateToStringInputFormat(date: Date) {
 
         return dateString
     } catch (err) {
-        const dateString = format(date, "yyyy-MM-dd")
         console.log(err)
+        console.log("The dateToStringInputFormat function went wrong")
+        const dateString = format(date, "2028-04-18")
         return dateString
     }
 }
