@@ -51,7 +51,7 @@ export function IncomeForm({ categories, userId }: incomeFormProps) {
 
     return (
         <form autoComplete="off" action={action} key={Math.random()} className="flex flex-wrap items-center space-x-1 lg:space-x-3 mb-4">
-            <input aria-label="Date" type="date" name="pickedDate" pattern="dd/mm/yyyy" className="border rounded px-1 py-1 w-24 lg:w-32"/> {/*defaultValue={dateToStringInputFormat(new Date)} */}
+            <input aria-label="Date" type="date" name="pickedDate" pattern="dd/mm/yyyy" defaultValue={dateToStringInputFormat(new Date)} className="border rounded px-1 py-1 w-24 lg:w-32"/> {/*defaultValue={dateToStringInputFormat(new Date)} */}
             <input type="text" name="company" placeholder="Company" className="border rounded px-1 py-1 w-24 lg:w-44" />
             <input type="number" step="any" name="amount" placeholder="Amount" className="border rounded px-1 py-1 w-20 lg:w-24" />
             <CategoryComboBox categories={categories} />

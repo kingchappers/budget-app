@@ -65,7 +65,7 @@ export function dateToString(date: Date) {
 // _________________________________________________________________________________________________________________________________________________________________________
 
 export function dateToStringInputFormat(date: Date) {
-    const dateString = format(date, "yyy-MM-dd")
+    const dateString = format(date, "yyyy-MM-dd")
 
     return dateString
 }
