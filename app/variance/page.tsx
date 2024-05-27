@@ -14,7 +14,8 @@ export default async function Home() {
     return (
         <div className="container mx-auto max-w-screen-2xl p-4">
 
-            <VarianceTimeButton userId={userId} />
+            <h1 className="text-3xl font-bold mb-4">This page is not operational. The logic requires a complete rework as there is a calculation bug in figuring out the time between two months</h1>
+            {/* <VarianceTimeButton userId={userId} /> */}
 
         </div>
     );
