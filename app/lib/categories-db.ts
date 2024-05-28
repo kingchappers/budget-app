@@ -14,7 +14,7 @@ export async function getCategories(filter: CategoryFilter) {
         await connectDB();
 
         const page = filter.page ?? 1;
-        const limit = filter.limit ?? 10;
+        const limit = filter.limit ?? 100;
         const type = filter.type ?? "";
         const skip = (page - 1) * limit;
 
