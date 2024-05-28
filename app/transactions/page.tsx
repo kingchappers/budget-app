@@ -39,7 +39,15 @@ export default async function Transactions({
 
     let { transactions, results, maxPages } = await getTransactions(tansactionFilter);
     let categories: CategoriesComboProps = await getCategories(categoryFilter) as CategoriesComboProps;
+    console.log("______________________________________________________________________________________________________________________")
+    console.log("categories:")
+    console.log(categories)
+    console.log("______________________________________________________________________________________________________________________")
     const listOfCategories = categories.categories;
+    console.log("______________________________________________________________________________________________________________________")
+    console.log("listOfCategories:")
+    console.log(listOfCategories)
+    console.log("______________________________________________________________________________________________________________________")
 
     if (maxPages == undefined) {
         maxPages = 1;
