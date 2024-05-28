@@ -26,7 +26,7 @@ export default async function Transactions({
     const userId = session.user.id;
 
     const categoryFilter: CategoryFilter = {
-        limit: 30,
+        limit: 50,
         type: "transaction",
         userId: userId,
     }
