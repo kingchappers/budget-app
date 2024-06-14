@@ -21,8 +21,8 @@ export default async function Home() {
     }
 
     const { categories, results } = await getCategories(filter);
-    console.log("List of categories retrieved from table:")
-    console.log(categories)
+    // console.log("List of categories retrieved from table:")
+    // console.log(categories)
 
     return (
         <div>
