@@ -29,6 +29,8 @@ export async function getCategories(filter: CategoryFilter) {
         }
 
         console.log("_________________________________________________________________________________________________---")
+        console.log("The type passed to getCategories was: " + type)
+        console.log("The userId sent to the query was: " + filter.userId)
         console.log("This is what has been returned by getCategories for the categories variable")
         console.log(categories)
         console.log("_________________________________________________________________________________________________---")
