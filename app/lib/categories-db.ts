@@ -28,6 +28,11 @@ export async function getCategories(filter: CategoryFilter) {
             categories = await Category.find({ userId: filter.userId }).skip(skip).sort({ label: 1 }).limit(limit).lean().exec();
         }
 
+        console.log("_________________________________________________________________________________________________---")
+        console.log("This is what has been returned by getCategories for the categories variable")
+        console.log(categories)
+        console.log("_________________________________________________________________________________________________---")
+
         const results = categories.length;
 
         return {
