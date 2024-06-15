@@ -29,6 +29,7 @@ if (!cached) {
 async function connectDB() {
     if (cached.conn) {
         console.log("🚀 Using cached connection");
+        console.log(cached.conn)
         return cached.conn;
     }
 

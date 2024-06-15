@@ -11,7 +11,8 @@ export interface CategoryFilter {
 
 export async function getCategories(filter: CategoryFilter) {
     try {
-        await connectDB();
+        const connection = await connectDB();
+        console.log("Database connected:", connection.connection.name);
 
         const page = filter.page ?? 1;
         const limit = filter.limit ?? 100;
