@@ -1,4 +1,4 @@
-import { Category } from "../models/Category";
+import { Category, CategoryClass } from "../models/Category";
 import connectDB from "./mongoose-connect-db";
 import { stringToObjectId } from "./utils";
 
