@@ -13,6 +13,7 @@ export async function getCategories(filter: CategoryFilter) {
     try {
         const connection = await connectDB();
         console.log("Database connected:", connection.connection.name);
+        console.log(connection.connection.collections)
 
         const page = filter.page ?? 1;
         const limit = filter.limit ?? 100;
@@ -20,7 +21,7 @@ export async function getCategories(filter: CategoryFilter) {
         const skip = (page - 1) * limit;
 
         let categories;
-
+        console.log("This is the categories variable just after createion: " + categories)
         if (type === "income") {
             categories = await Category.find({ incomeCategory: true, userId: filter.userId }).skip(skip).sort({ label: 1 }).limit(limit).lean().exec();
         } else if (type === "transaction") {
