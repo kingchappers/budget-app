@@ -2,6 +2,8 @@
 
 import { createCategory, deleteCategory, updateCategory, getCategories, CategoryFilter } from "./lib/categories-db";
 import { revalidatePath } from "next/cache";
+import { CategoriesComboProps } from "./components/comboBox";
+
 
 // _________________________________________________________________________________________________________________________________________________________________________
 // _________________________________________________________________________________________________________________________________________________________________________
@@ -57,10 +59,11 @@ export async function deleteCategoryAction({
 // _________________________________________________________________________________________________________________________________________________________________________
 // _________________________________________________________________________________________________________________________________________________________________________
 
-export async function getCategoriesAction(userId: string) {
-    let filter: CategoryFilter = {
-        userId: userId
-    }
+export async function getCategoriesAction(filter: CategoryFilter) {
+    // let filters: CategoryFilter = {
+    //     type: "transaction",
+    //     userId: userId
+    // }
     const categories = await getCategories(filter);
     return (
         categories

@@ -8,6 +8,7 @@ import { authOptions } from "@/app/lib/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import clsx from "clsx";
+import { getCategoriesAction } from "../_categoryActions";
 // import { getLastTwelveMonths } from "../lib/utils";
 // import { createMonthlySpendAction, getMonthlySpendsBetweenDatesAction } from "../_monthlySpendActions";
 // import { getListOfYearsTransactionTotalsByMonth, getYearOfCategorySpend } from "../components/trend-spend-calculations";
@@ -38,7 +39,9 @@ export default async function Transactions({
     }
 
     let { transactions, results, maxPages } = await getTransactions(tansactionFilter);
-    let categories: CategoriesComboProps = await getCategories(categoryFilter) as CategoriesComboProps;
+
+    let categories: CategoriesComboProps = await getCategoriesAction(categoryFilter) as CategoriesComboProps;
+    // let categories: CategoriesComboProps = await getCategories(categoryFilter) as CategoriesComboProps;
     console.log("______________________________________________________________________________________________________________________")
     console.log("categories:")
     console.log(categories)
