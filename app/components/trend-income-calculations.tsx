@@ -186,7 +186,7 @@ export async function getYearOfCategoryIncome(userId: string, months: Date[]) {
     const monthPromises = months.map(async (month) => {
         const endDate = new Date(month.getFullYear(), month.getMonth() + 1, 0);
         const { categoryIncomeData, monthTotal } = await getCategoryIncomeTotalBetweenDates(userId, month, endDate);
-        yearOfCategoryIncome.push({ monthCategoryTotal: categoryIncomeData, month, monthTotal });
+        yearOfCategoryIncome.push({ monthSpendTotals: categoryIncomeData, month, monthTotal });
     })
     await Promise.all(monthPromises);
     const results = yearOfCategoryIncome.length;
