@@ -2,7 +2,7 @@
 
 import { createMonthlySpend, deleteMonthlySpend, updateMonthlySpend, getMonthlySpendsBetweenDates, getMonthlySpendByMonth } from "./lib/monthly-spend-db";
 import { revalidatePath } from "next/cache";
-import { monthCategoryTotal } from "./models/MonthlySpend";
+import { monthSpendTotal } from "./models/MonthlySpend";
 import { calulateMonthlySpendUpdateForDeletedTransactions, calulateMonthlySpendUpdateForEditedTransactions } from "./components/trend-spend-calculations";
 
 // _________________________________________________________________________________________________________________________________________________________________________
@@ -51,17 +51,17 @@ export async function getMonthlySpendByMonthAction({
 export async function createMonthlySpendAction({
     month,
     monthTotal,
-    monthCategoryTotals,
+    monthSpendTotals,
     path,
     userId,
 }: {
     month: Date;
     monthTotal: number;
-    monthCategoryTotals: monthCategoryTotal[];
+    monthSpendTotals: monthSpendTotal[];
     path: string;
     userId: string;
 }) {
-    await createMonthlySpend(month, monthTotal, monthCategoryTotals, userId);
+    await createMonthlySpend(month, monthTotal, monthSpendTotals, userId);
     revalidatePath(path);
 }
 
@@ -71,7 +71,7 @@ export async function createMonthlySpendAction({
 
 export async function updateMonthlySpendAction(
     id: string,
-    update: { month?: Date; monthTotal?: number; monthCategoryTotals: monthCategoryTotal[]; },
+    update: { month?: Date; monthTotal?: number; monthSpendTotals: monthSpendTotal[]; },
     path: string
 ) {
     await updateMonthlySpend(id, update);

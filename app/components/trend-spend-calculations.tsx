@@ -1,7 +1,7 @@
 import startOfMonth from "date-fns/startOfMonth";
 import { getTransactionsBetweenDatesAction } from "../_transactionActions";
 import {  stringToDateInputFormat } from "../lib/utils";
-import { monthCategoryTotal } from "../models/MonthlySpend";
+import { monthSpendTotal } from "../models/MonthlySpend";
 import { calculateTransactionTotal } from "./target-calculation-functions";
 import { categorySplitPieProps } from "./trend-graphs";
 import { createMonthlySpendAction, getMonthlySpendByMonthAction, updateMonthlySpendAction } from "../_monthlySpendActions";
@@ -17,52 +17,52 @@ export async function calulateMonthlySpendUpdateForNewTransactions(transactionVa
     if (monthlySpend) {
         var monthlySpendUpdate: {
             monthTotal: number,
-            monthCategoryTotals: monthCategoryTotal[]
+            monthSpendTotals: monthSpendTotal[]
         }
 
-        var newMonthCategoryTotal: monthCategoryTotal;
+        var newMonthCategoryTotal: monthSpendTotal;
         monthlySpend.monthTotal = monthlySpend.monthTotal + transactionValue;
 
-        if (monthlySpend.monthCategoryTotals.some((monthCategoryTotal) => monthCategoryTotal.categoryName === transactionCategory)) {
+        if (monthlySpend.monthSpendTotals.some((monthSpendTotal) => monthSpendTotal.spendType === transactionCategory)) {
             // If the category exists in the trends table update it
-            const monthCategoryMatch = monthlySpend.monthCategoryTotals.findIndex((monthCategoryTotal) => monthCategoryTotal.categoryName === transactionCategory);
+            const monthCategoryMatch = monthlySpend.monthSpendTotals.findIndex((monthSpendTotal) => monthSpendTotal.spendType === transactionCategory);
 
-            monthlySpend.monthCategoryTotals[monthCategoryMatch].value = monthlySpend.monthCategoryTotals[monthCategoryMatch].value + transactionValue;
-            monthlySpend.monthCategoryTotals[monthCategoryMatch].percentage = (monthlySpend.monthCategoryTotals[monthCategoryMatch].value / monthlySpend.monthTotal) * 100;
-            monthlySpend.monthCategoryTotals[monthCategoryMatch].chartTitle = monthlySpend.monthCategoryTotals[monthCategoryMatch].categoryName + `:\n£${monthlySpend.monthCategoryTotals[monthCategoryMatch].value.toFixed(2)} | ${(monthlySpend.monthCategoryTotals[monthCategoryMatch].percentage).toFixed(2)}%`;
+            monthlySpend.monthSpendTotals[monthCategoryMatch].value = monthlySpend.monthSpendTotals[monthCategoryMatch].value + transactionValue;
+            monthlySpend.monthSpendTotals[monthCategoryMatch].percentage = (monthlySpend.monthSpendTotals[monthCategoryMatch].value / monthlySpend.monthTotal) * 100;
+            monthlySpend.monthSpendTotals[monthCategoryMatch].chartTitle = monthlySpend.monthSpendTotals[monthCategoryMatch].spendType + `:\n£${monthlySpend.monthSpendTotals[monthCategoryMatch].value.toFixed(2)} | ${(monthlySpend.monthSpendTotals[monthCategoryMatch].percentage).toFixed(2)}%`;
         } else {
             // Logic for creating a new entry for monthlyCategoryTotals if the category doesn't already exist
             newMonthCategoryTotal = {
                 percentage: (transactionValue / monthlySpend.monthTotal) * 100,
                 chartTitle: transactionCategory + `:\n£${transactionValue.toFixed(2)} | ${((transactionValue / monthlySpend.monthTotal) * 100).toFixed(2)}%`,
-                categoryName: transactionCategory,
+                spendType: transactionCategory,
                 value: transactionValue
             }
-            monthlySpend.monthCategoryTotals.push(newMonthCategoryTotal)
+            monthlySpend.monthSpendTotals.push(newMonthCategoryTotal)
         }
 
-        monthlySpend.monthCategoryTotals.forEach((monthCategoryTotal) => {
-            monthCategoryTotal.percentage = (monthCategoryTotal.value / monthlySpend.monthTotal) * 100;
-            monthCategoryTotal.chartTitle = monthCategoryTotal.categoryName + `:\n£${monthCategoryTotal.value.toFixed(2)} | ${(monthCategoryTotal.percentage).toFixed(2)}%`;
+        monthlySpend.monthSpendTotals.forEach((monthSpendTotal) => {
+            monthSpendTotal.percentage = (monthSpendTotal.value / monthlySpend.monthTotal) * 100;
+            monthSpendTotal.chartTitle = monthSpendTotal.spendType + `:\n£${monthSpendTotal.value.toFixed(2)} | ${(monthSpendTotal.percentage).toFixed(2)}%`;
         })
 
         monthlySpendUpdate = {
             monthTotal: monthlySpend.monthTotal,
-            monthCategoryTotals: monthlySpend.monthCategoryTotals
+            monthSpendTotals: monthlySpend.monthSpendTotals
         }
 
         await updateMonthlySpendAction(monthlySpend.id, monthlySpendUpdate, "/")
     } else {
-        let monthCategoryTotals: monthCategoryTotal[] = [];
-        let newMonthCategoryTotal: monthCategoryTotal;
+        let monthSpendTotals: monthSpendTotal[] = [];
+        let monthSpendTotal: monthSpendTotal;
         newMonthCategoryTotal = {
             percentage: 100,
             chartTitle: transactionCategory + `:\n£${transactionValue.toFixed(2)} | 100%`,
-            categoryName: transactionCategory,
+            spendType: transactionCategory,
             value: transactionValue
         }
-        monthCategoryTotals.push(newMonthCategoryTotal)
-        await createMonthlySpendAction({ month: transactionDateMonthStart, monthTotal: transactionValue, monthCategoryTotals, path: "/", userId })
+        monthSpendTotals.push(newMonthCategoryTotal)
+        await createMonthlySpendAction({ month: transactionDateMonthStart, monthTotal: transactionValue, monthSpendTotals, path: "/", userId })
     }
 }
 
@@ -100,31 +100,31 @@ export async function calulateMonthlySpendUpdateForDeletedTransactions(deletedTr
     if (monthlySpend) {
         var monthlySpendUpdate: {
             monthTotal: number,
-            monthCategoryTotals: monthCategoryTotal[]
+            monthSpendTotals: monthSpendTotal[]
         }
 
         monthlySpend.monthTotal = monthlySpend.monthTotal - deletedTransactionValue;
 
         // If the category exists in the trends table update it
         // If not print an error message
-        const monthCategoryMatch = monthlySpend.monthCategoryTotals.findIndex((monthCategoryTotal) => monthCategoryTotal.categoryName === deletedTransactionCategory);
+        const monthCategoryMatch = monthlySpend.monthSpendTotals.findIndex((monthSpendTotal) => monthSpendTotal.spendType === deletedTransactionCategory);
         if (monthCategoryMatch >= 0) {
-            monthlySpend.monthCategoryTotals[monthCategoryMatch].value = monthlySpend.monthCategoryTotals[monthCategoryMatch].value - deletedTransactionValue;
-            monthlySpend.monthCategoryTotals[monthCategoryMatch].percentage = (monthlySpend.monthCategoryTotals[monthCategoryMatch].value / monthlySpend.monthTotal) * 100;
-            monthlySpend.monthCategoryTotals[monthCategoryMatch].chartTitle = monthlySpend.monthCategoryTotals[monthCategoryMatch].categoryName + `:\n£${monthlySpend.monthCategoryTotals[monthCategoryMatch].value.toFixed(2)} | ${(monthlySpend.monthCategoryTotals[monthCategoryMatch].percentage).toFixed(2)}%`;
+            monthlySpend.monthSpendTotals[monthCategoryMatch].value = monthlySpend.monthSpendTotals[monthCategoryMatch].value - deletedTransactionValue;
+            monthlySpend.monthSpendTotals[monthCategoryMatch].percentage = (monthlySpend.monthSpendTotals[monthCategoryMatch].value / monthlySpend.monthTotal) * 100;
+            monthlySpend.monthSpendTotals[monthCategoryMatch].chartTitle = monthlySpend.monthSpendTotals[monthCategoryMatch].spendType + `:\n£${monthlySpend.monthSpendTotals[monthCategoryMatch].value.toFixed(2)} | ${(monthlySpend.monthSpendTotals[monthCategoryMatch].percentage).toFixed(2)}%`;
         } else {
             console.log("The category wasn't found")
         }
 
         // Recalculate the percentages for each of the items
-        monthlySpend.monthCategoryTotals.forEach((monthCategoryTotal) => {
-            monthCategoryTotal.percentage = (monthCategoryTotal.value / monthlySpend.monthTotal) * 100;
-            monthCategoryTotal.chartTitle = monthCategoryTotal.categoryName + `:\n£${monthCategoryTotal.value.toFixed(2)} | ${(monthCategoryTotal.percentage).toFixed(2)}%`;
+        monthlySpend.monthSpendTotals.forEach((monthSpendTotal) => {
+            monthSpendTotal.percentage = (monthSpendTotal.value / monthlySpend.monthTotal) * 100;
+            monthSpendTotal.chartTitle = monthSpendTotal.spendType + `:\n£${monthSpendTotal.value.toFixed(2)} | ${(monthSpendTotal.percentage).toFixed(2)}%`;
         })
 
         monthlySpendUpdate = {
             monthTotal: monthlySpend.monthTotal,
-            monthCategoryTotals: monthlySpend.monthCategoryTotals
+            monthSpendTotals: monthlySpend.monthSpendTotals
         }
 
         await updateMonthlySpendAction(monthlySpend.id, monthlySpendUpdate, "/")
@@ -160,50 +160,50 @@ export async function calulateMonthlySpendUpdateForDeletedTransactions(deletedTr
 // ______________________________________________________________________________________________________________________________________________________________________
 // ______________________________________________________________________________________________________________________________________________________________________
 
-async function getCategoryTransactionTotalBetweenDates(userId: string, startDate: Date, endDate: Date) {
-    const categorySpendRecord: Record<string, number> = {};
-    const { transactions } = await getTransactionsBetweenDatesAction({ userId, startDate, endDate });
-    const monthTotal = calculateTransactionTotal(transactions);
+// async function getTypeTransactionTotalBetweenDates(userId: string, startDate: Date, endDate: Date) {
+//     const categorySpendRecord: Record<string, number> = {};
+//     const { transactions } = await getTransactionsBetweenDatesAction({ userId, startDate, endDate });
+//     const monthTotal = calculateTransactionTotal(transactions);
 
-    if (transactions) {
-        for (const transaction of transactions) {
-            var category = transaction.category;
-            const value = transaction.value;
-            if (!categorySpendRecord[category]) {
-                categorySpendRecord[category] = 0;
-            }
-            categorySpendRecord[category] += value;
-        }
-    }
+//     if (transactions) {
+//         for (const transaction of transactions) {
+//             var category = transaction.category;
+//             const value = transaction.value;
+//             if (!categorySpendRecord[category]) {
+//                 categorySpendRecord[category] = 0;
+//             }
+//             categorySpendRecord[category] += value;
+//         }
+//     }
 
-    const categorySpendData: monthCategoryTotal[] = Object.entries(categorySpendRecord).map(([category, value]) => ({
-        chartTitle: category + `:\n£${value.toFixed(2)} | ${((value / monthTotal) * 100).toFixed(2)}%`,
-        categoryName: category,
-        value: value,
-        percentage: ((value / monthTotal) * 100),
-    }))
+//     const categorySpendData: monthSpendTotal[] = Object.entries(categorySpendRecord).map(([category, value]) => ({
+//         chartTitle: category + `:\n£${value.toFixed(2)} | ${((value / monthTotal) * 100).toFixed(2)}%`,
+//         spendType: category,
+//         value: value,
+//         percentage: ((value / monthTotal) * 100),
+//     }))
 
-    return { categorySpendData, monthTotal };
-}
+//     return { categorySpendData, monthTotal };
+// }
 
-// ______________________________________________________________________________________________________________________________________________________________________
-// ______________________________________________________________________________________________________________________________________________________________________
-// ______________________________________________________________________________________________________________________________________________________________________
+// // ______________________________________________________________________________________________________________________________________________________________________
+// // ______________________________________________________________________________________________________________________________________________________________________
+// // ______________________________________________________________________________________________________________________________________________________________________
 
-export async function getYearOfCategorySpend(userId: string, months: Date[]) {
-    var yearOfCategorySpend: categorySplitPieProps[] = [];
-    const monthPromises = months.map(async (month) => {
-        const endDate = new Date(month.getFullYear(), month.getMonth() + 1, 0);
-        const { categorySpendData, monthTotal } = await getCategoryTransactionTotalBetweenDates(userId, month, endDate);
-        yearOfCategorySpend.push({ monthCategoryTotal: categorySpendData, month, monthTotal });
-    })
-    await Promise.all(monthPromises);
-    const results = yearOfCategorySpend.length;
+// export async function getYearOfTypeSpend(userId: string, months: Date[]) {
+//     var yearOfCategorySpend: categorySplitPieProps[] = [];
+//     const monthPromises = months.map(async (month) => {
+//         const endDate = new Date(month.getFullYear(), month.getMonth() + 1, 0);
+//         const { categorySpendData, monthTotal } = await getTypeTransactionTotalBetweenDates(userId, month, endDate);
+//         yearOfCategorySpend.push({ monthCategoryTotal: categorySpendData, month, monthTotal });
+//     })
+//     await Promise.all(monthPromises);
+//     const results = yearOfCategorySpend.length;
 
-    yearOfCategorySpend.sort((a, b) => {
-        return b.month.getTime() - a.month.getTime();
-    })
+//     yearOfCategorySpend.sort((a, b) => {
+//         return b.month.getTime() - a.month.getTime();
+//     })
 
-    return { yearOfCategorySpend, results };
-}
+//     return { yearOfCategorySpend, results };
+// }
 

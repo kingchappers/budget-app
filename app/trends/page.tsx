@@ -70,9 +70,9 @@ export default async function Trends() {
                 {monthlySpendsResults === 0 ? (
                     <p>No data found</p>
                 ) : (
-                    monthlySpends?.map((monthOfCategorySpend) => (
+                    monthlySpends?.map((monthOfTypeSpend) => (
                         <Suspense fallback={<div>Loading...</div>}>
-                            <MonthSpendingCategorySplit monthCategoryTotal={monthOfCategorySpend.monthCategoryTotals} month={monthOfCategorySpend.month} monthTotal={monthOfCategorySpend.monthTotal} />
+                            <MonthSpendingCategorySplit monthSpendTotals={monthOfTypeSpend.monthSpendTotals} month={monthOfTypeSpend.month} monthTotal={monthOfTypeSpend.monthTotal} />
                         </Suspense>
                     ))
                 )}
@@ -85,7 +85,7 @@ export default async function Trends() {
                 ) : (
                     monthlyIncomes?.map((monthOfCategoryIncome) => (
                         <Suspense fallback={<div>Loading...</div>}>
-                            <MonthSpendingCategorySplit monthCategoryTotal={monthOfCategoryIncome.monthCategoryTotals} month={monthOfCategoryIncome.month} monthTotal={monthOfCategoryIncome.monthTotal} />
+                            <MonthSpendingCategorySplit monthSpendTotals={monthOfCategoryIncome.monthCategoryTotals} month={monthOfCategoryIncome.month} monthTotal={monthOfCategoryIncome.monthTotal} />
                         </Suspense>
                     ))
                 )}

@@ -2,7 +2,7 @@
 
 import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme, VictoryGroup, VictoryLegend, VictoryPie, Border } from 'victory';
 import { twelveMonthsInOrder } from '../lib/utils';
-import { monthCategoryTotal } from '../models/MonthlySpend';
+import { monthSpendTotal } from '../models/MonthlySpend';
 
 interface barTrendProps {
     monthlyData: monthData[],
@@ -11,7 +11,7 @@ interface barTrendProps {
 export interface monthData {
     // month: string,
     // value: number,
-    monthCategoryTotal: monthCategoryTotal[],
+    monthCategoryTotals: monthSpendTotal[],
     month: Date,
     monthTotal: number,
 }
@@ -30,7 +30,7 @@ interface groupChartProps {
 // }
 
 export interface categorySplitPieProps {
-    monthCategoryTotal: monthCategoryTotal[],
+    monthSpendTotals: monthSpendTotal[],
     month: Date,
     monthTotal: number,
 }
@@ -140,7 +140,7 @@ export function YearlyIncomeVsSpendingGroupChart({ monthSpendData, monthIncomeDa
 // _________________________________________________________________________________________________________________________________________________________________________
 // _________________________________________________________________________________________________________________________________________________________________________
 
-export function MonthSpendingCategorySplit({ monthCategoryTotal, month, monthTotal }: categorySplitPieProps) {
+export function MonthSpendingCategorySplit({ monthSpendTotals, month, monthTotal }: categorySplitPieProps) {
     const monthAsString = month.toLocaleString('default', { month: 'short' }) + " " + month.getFullYear().toLocaleString().substring(3)
 
     return (
@@ -151,7 +151,7 @@ export function MonthSpendingCategorySplit({ monthCategoryTotal, month, monthTot
                 <div>
                     <h1 className="text-l font-bold text-center">{monthAsString}</h1>
                     <VictoryPie
-                        data={monthCategoryTotal}
+                        data={monthSpendTotals}
                         x="chartTitle"
                         y="value"
                         theme={VictoryTheme.material}

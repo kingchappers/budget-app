@@ -8,9 +8,9 @@ import {
 } from "@typegoose/typegoose"
 import mongoose from "mongoose"
 
-export interface monthCategoryTotal {
+export interface monthSpendTotal {
     chartTitle: string;
-    categoryName?: string;
+    spendType?: string;
     value: number;
     percentage: number;
 }
@@ -33,7 +33,7 @@ export interface monthCategoryTotal {
 @ModelOptions({
     schemaOptions: {
         timestamps: true,
-        collection: "trendsSpends",
+        collection: "monthlySpends",
     },
     options: {
         allowMixed: Severity.ALLOW,
@@ -49,7 +49,7 @@ class MonthlySpendClass {
     monthTotal: number;
 
     @prop({ required: true })
-    monthCategoryTotals: monthCategoryTotal[];
+    monthSpendTotals: monthSpendTotal[];
 
     @prop({ required: true })
     userId: string;
