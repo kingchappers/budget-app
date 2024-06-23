@@ -28,7 +28,7 @@ export default async function Transactions({
 
     const categoryFilter: CategoryFilter = {
         limit: 50,
-        type: "transaction",
+        //type: "transaction",
         userId: userId,
     }
 
