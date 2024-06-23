@@ -27,7 +27,7 @@ export default async function Home({
 
     const filter: CategoryFilter = {
         limit: 30,
-        type: "income",
+        type: 1,
         userId: session.user.id
     }
 

@@ -5,7 +5,7 @@ import { stringToObjectId } from "./utils";
 export interface CategoryFilter {
     page?: number;
     limit?: number;
-    type?: string;
+    type?: number;
     userId: string;
 }
 
@@ -17,14 +17,14 @@ export async function getCategories(filter: CategoryFilter) {
 
         const page = filter.page ?? 1;
         const limit = filter.limit ?? 100;
-        const type = filter.type ?? "";
+        const type = filter.type ?? 0;
         const skip = (page - 1) * limit;
 
         let categories;
         console.log("This is the categories variable just after createion: " + categories)
-        if (type === "income") {
+        if (type === 1) {
             categories = await Category.find({ incomeCategory: true, userId: filter.userId }).skip(skip).sort({ label: 1 }).limit(limit).lean().exec();
-        } else if (type === "transaction") {
+        } else if (type === 2) {
             categories = await Category.find({ transactionCategory: true, userId: filter.userId }).skip(skip).sort({ label: 1 }).limit(limit).lean().exec();
         } else {
             categories = await Category.find({ userId: filter.userId }).skip(skip).sort({ label: 1 }).limit(limit).lean().exec();
