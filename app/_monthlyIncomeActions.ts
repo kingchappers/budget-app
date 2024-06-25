@@ -2,7 +2,7 @@
 
 import { createMonthlyIncome, deleteMonthlyIncome, updateMonthlyIncome, getMonthlyIncomesBetweenDates, getMonthlyIncomeByMonth } from "./lib/monthly-income-db";
 import { revalidatePath } from "next/cache";
-import { monthCategoryTotal } from "./models/MonthlyIncome";
+import { monthIncomeTotal } from "./models/MonthlyIncome";
 import { calulateMonthlyIncomeUpdateForDeletedIncomes, calulateMonthlyIncomeUpdateForEditedIncomes } from "./components/trend-income-calculations";
 
 // _________________________________________________________________________________________________________________________________________________________________________
@@ -51,17 +51,17 @@ export async function getMonthlyIncomeByMonthAction({
 export async function createMonthlyIncomeAction({
     month,
     monthTotal,
-    monthCategoryTotals,
+    monthIncomeTotals,
     path,
     userId,
 }: {
     month: Date;
     monthTotal: number;
-    monthCategoryTotals: object;
+    monthIncomeTotals: monthIncomeTotal[];
     path: string;
     userId: string;
 }) {
-    await createMonthlyIncome(month, monthTotal, monthCategoryTotals, userId);
+    await createMonthlyIncome(month, monthTotal, monthIncomeTotals, userId);
     revalidatePath(path);
 }
 
@@ -71,7 +71,7 @@ export async function createMonthlyIncomeAction({
 
 export async function updateMonthlyIncomeAction(
     id: string,
-    update: { month?: Date; monthTotal?: number; monthCategoryTotals?: object; },
+    update: { month?: Date; monthTotal?: number; monthIncomeTotals?: monthIncomeTotal[]; },
     path: string
 ) {
     await updateMonthlyIncome(id, update);
