@@ -15,6 +15,7 @@ interface incomeFormProps {
 // _________________________________________________________________________________________________________________________________________________________________________
 
 export function IncomeForm({ categories, userId }: incomeFormProps) {
+    console.log("issue at date default Date")
     const defaultDate = dateToStringInputFormat(new Date)
 
     async function action(data: FormData) {

@@ -21,6 +21,7 @@ interface IncomeItemProps {
 // _________________________________________________________________________________________________________________________________________________________________________
 
 export const IncomeItem: React.FC<IncomeItemProps> = ({ income, categories, userId }) => {
+    console.log("issue at incomeDateString")
     const incomeDateString = dateToString(income.incomeDate)
     const [isEditingIncome, setIsEditingIncome] = useState(false);
     const [incomeDate, setIncomeDate] = useState(income.incomeDate);
@@ -73,6 +74,7 @@ export const IncomeItem: React.FC<IncomeItemProps> = ({ income, categories, user
         // Update the trend incomes table
         const { income: oldIncome } = await getIncomeAction({ id })
         if (oldIncome) {
+            console.log("issue in oldIncome one")
             let updatedIncomeDateString = dateToStringInputFormat(update.incomeDate)
             calulateMonthlyIncomeUpdateForEditedIncomesAction(oldIncome.amount, oldIncome.incomeCategory, oldIncome.incomeDate, update.amount, update.category, updatedIncomeDateString, userId)
         }
