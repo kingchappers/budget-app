@@ -79,13 +79,14 @@ export default async function Trends() {
             </div>
 
             <h1 className="text-xl font-bold mb-4">Category Income Per Month</h1>
+            <h1 className="text-l font-bold mb-4">Feature to arrive soon</h1>
             <div className="grid grid-cols-1 lg:grid-cols-3">
             {monthlyIncomesResults === 0 ? (
                     <p>No data found</p>
                 ) : (
                     monthlyIncomes?.map((monthOfCategoryIncome) => (
                         <Suspense fallback={<div>Loading...</div>}>
-                            <MonthSpendingCategorySplit monthSpendTotals={monthOfCategoryIncome.monthCategoryTotals} month={monthOfCategoryIncome.month} monthTotal={monthOfCategoryIncome.monthTotal} />
+                            <MonthSpendingCategorySplit monthSpendTotals={monthOfCategoryIncome.monthIncomeTotals} month={monthOfCategoryIncome.month} monthTotal={monthOfCategoryIncome.monthTotal} />
                         </Suspense>
                     ))
                 )}

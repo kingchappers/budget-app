@@ -1,7 +1,7 @@
 import startOfMonth from "date-fns/startOfMonth";
 import { getIncomesBetweenDatesAction } from "../_incomeActions";
 import { stringToDateInputFormat } from "../lib/utils";
-import { monthCategoryTotal } from "../models/MonthlyIncome";
+import { monthIncomeTotal } from "../models/MonthlyIncome";
 import { calculateIncomeTotal } from "./target-calculation-functions";
 import { categorySplitPieProps } from "./trend-graphs";
 import { createMonthlyIncomeAction, getMonthlyIncomeByMonthAction, updateMonthlyIncomeAction } from "../_monthlyIncomeActions";
@@ -18,51 +18,51 @@ export async function calulateMonthlyIncomeUpdateForNewIncomes(incomeValue: numb
     if (monthlyIncome) {
         var monthlyIncomeUpdate: {
             monthTotal: number,
-            monthCategoryTotals: monthCategoryTotal[]
+            monthIncomeTotals: monthIncomeTotal[]
         }
 
-        var newMonthCategoryTotal: monthCategoryTotal;
+        var newMonthIncomeTotal: monthIncomeTotal;
         monthlyIncome.monthTotal = monthlyIncome.monthTotal + incomeValue;
 
-        if (monthlyIncome.monthCategoryTotals.some((monthCategoryTotal) => monthCategoryTotal.categoryName === incomeCategory)) {
+        if (monthlyIncome.monthIncomeTotals.some((monthIncomeTotal) => monthIncomeTotal.incomeType === incomeCategory)) {
             // If the category exists in the trends table update it
-            const monthCategoryMatch = monthlyIncome.monthCategoryTotals.findIndex((monthCategoryTotal) => monthCategoryTotal.categoryName === incomeCategory);
+            const monthCategoryMatch = monthlyIncome.monthIncomeTotals.findIndex((monthIncomeTotal) => monthIncomeTotal.incomeType === incomeCategory);
 
-            monthlyIncome.monthCategoryTotals[monthCategoryMatch].value = monthlyIncome.monthCategoryTotals[monthCategoryMatch].value + incomeValue;
-            monthlyIncome.monthCategoryTotals[monthCategoryMatch].percentage = (monthlyIncome.monthCategoryTotals[monthCategoryMatch].value / monthlyIncome.monthTotal) * 100;
-            monthlyIncome.monthCategoryTotals[monthCategoryMatch].chartTitle = monthlyIncome.monthCategoryTotals[monthCategoryMatch].categoryName + `:\n£${monthlyIncome.monthCategoryTotals[monthCategoryMatch].value.toFixed(2)} | ${(monthlyIncome.monthCategoryTotals[monthCategoryMatch].percentage).toFixed(2)}%`;
+            monthlyIncome.monthIncomeTotals[monthCategoryMatch].value = monthlyIncome.monthIncomeTotals[monthCategoryMatch].value + incomeValue;
+            monthlyIncome.monthIncomeTotals[monthCategoryMatch].percentage = (monthlyIncome.monthIncomeTotals[monthCategoryMatch].value / monthlyIncome.monthTotal) * 100;
+            monthlyIncome.monthIncomeTotals[monthCategoryMatch].chartTitle = monthlyIncome.monthIncomeTotals[monthCategoryMatch].incomeType + `:\n£${monthlyIncome.monthIncomeTotals[monthCategoryMatch].value.toFixed(2)} | ${(monthlyIncome.monthIncomeTotals[monthCategoryMatch].percentage).toFixed(2)}%`;
         } else {
             // Logic for creating a new entry for monthlyCategoryTotals if the category doesn't already exist
-            newMonthCategoryTotal = {
+            newMonthIncomeTotal = {
                 percentage: (incomeValue / monthlyIncome.monthTotal) * 100,
                 chartTitle: incomeCategory + `:\n£${incomeValue.toFixed(2)} | ${((incomeValue / monthlyIncome.monthTotal) * 100).toFixed(2)}%`,
-                categoryName: incomeCategory,
+                incomeType: incomeCategory,
                 value: incomeValue
             }
-            monthlyIncome.monthCategoryTotals.push(newMonthCategoryTotal)
+            monthlyIncome.monthIncomeTotals.push(newMonthIncomeTotal)
         }
 
-        monthlyIncome.monthCategoryTotals.forEach((monthCategoryTotal) => {
-            monthCategoryTotal.percentage = (monthCategoryTotal.value / monthlyIncome.monthTotal) * 100;
-            monthCategoryTotal.chartTitle = monthCategoryTotal.categoryName + `:\n£${monthCategoryTotal.value.toFixed(2)} | ${(monthCategoryTotal.percentage).toFixed(2)}%`;
+        monthlyIncome.monthIncomeTotals.forEach((monthIncomeTotal) => {
+            monthIncomeTotal.percentage = (monthIncomeTotal.value / monthlyIncome.monthTotal) * 100;
+            monthIncomeTotal.chartTitle = monthIncomeTotal.incomeType + `:\n£${monthIncomeTotal.value.toFixed(2)} | ${(monthIncomeTotal.percentage).toFixed(2)}%`;
         })
 
         monthlyIncomeUpdate = {
             monthTotal: monthlyIncome.monthTotal,
-            monthCategoryTotals: monthlyIncome.monthCategoryTotals
+            monthIncomeTotals: monthlyIncome.monthIncomeTotals
         }
 
         await updateMonthlyIncomeAction(monthlyIncome.id, monthlyIncomeUpdate, "/")
     } else {
-        let monthCategoryTotals: monthCategoryTotal[] = [];
-        let newMonthCategoryTotal: monthCategoryTotal;
-        newMonthCategoryTotal = {
+        let monthCategoryTotals: monthIncomeTotal[] = [];
+        let newMonthIncomeTotal: monthIncomeTotal;
+        newMonthIncomeTotal = {
             percentage: 100,
             chartTitle: incomeCategory + `:\n£${incomeValue.toFixed(2)} | 100%`,
-            categoryName: incomeCategory,
+            incomeType: incomeCategory,
             value: incomeValue
         }
-        monthCategoryTotals.push(newMonthCategoryTotal)
+        monthCategoryTotals.push(newMonthIncomeTotal)
         await createMonthlyIncomeAction({ month: incomeDateMonthStart, monthTotal: incomeValue, monthCategoryTotals, path: "/", userId })
     }
 }
@@ -91,31 +91,31 @@ export async function calulateMonthlyIncomeUpdateForDeletedIncomes(deletedIncome
     if (monthlyIncome) {
         var monthlyIncomeUpdate: {
             monthTotal: number,
-            monthCategoryTotals: monthCategoryTotal[]
+            monthIncomeTotals: monthIncomeTotal[]
         }
 
         monthlyIncome.monthTotal = monthlyIncome.monthTotal - deletedIncomeValue;
 
         // If the category exists in the trends table update it
         // If not print an error message
-        const monthCategoryMatch = monthlyIncome.monthCategoryTotals.findIndex((monthCategoryTotal) => monthCategoryTotal.categoryName === deletedIncomeCategory);
+        const monthCategoryMatch = monthlyIncome.monthIncomeTotals.findIndex((monthIncomeTotal) => monthIncomeTotal.incomeType === deletedIncomeCategory);
         if (monthCategoryMatch >= 0) {
-            monthlyIncome.monthCategoryTotals[monthCategoryMatch].value = monthlyIncome.monthCategoryTotals[monthCategoryMatch].value - deletedIncomeValue;
-            monthlyIncome.monthCategoryTotals[monthCategoryMatch].percentage = (monthlyIncome.monthCategoryTotals[monthCategoryMatch].value / monthlyIncome.monthTotal) * 100;
-            monthlyIncome.monthCategoryTotals[monthCategoryMatch].chartTitle = monthlyIncome.monthCategoryTotals[monthCategoryMatch].categoryName + `:\n£${monthlyIncome.monthCategoryTotals[monthCategoryMatch].value.toFixed(2)} | ${(monthlyIncome.monthCategoryTotals[monthCategoryMatch].percentage).toFixed(2)}%`;
+            monthlyIncome.monthIncomeTotals[monthCategoryMatch].value = monthlyIncome.monthIncomeTotals[monthCategoryMatch].value - deletedIncomeValue;
+            monthlyIncome.monthIncomeTotals[monthCategoryMatch].percentage = (monthlyIncome.monthIncomeTotals[monthCategoryMatch].value / monthlyIncome.monthTotal) * 100;
+            monthlyIncome.monthIncomeTotals[monthCategoryMatch].chartTitle = monthlyIncome.monthIncomeTotals[monthCategoryMatch].incomeType + `:\n£${monthlyIncome.monthIncomeTotals[monthCategoryMatch].value.toFixed(2)} | ${(monthlyIncome.monthIncomeTotals[monthCategoryMatch].percentage).toFixed(2)}%`;
         } else {
             console.log("The category wasn't found")
         }
 
         // Recalculate the percentages for each of the items
-        monthlyIncome.monthCategoryTotals.forEach((monthCategoryTotal) => {
-            monthCategoryTotal.percentage = (monthCategoryTotal.value / monthlyIncome.monthTotal) * 100;
-            monthCategoryTotal.chartTitle = monthCategoryTotal.categoryName + `:\n£${monthCategoryTotal.value.toFixed(2)} | ${(monthCategoryTotal.percentage).toFixed(2)}%`;
+        monthlyIncome.monthIncomeTotals.forEach((monthIncomeTotal) => {
+            monthIncomeTotal.percentage = (monthIncomeTotal.value / monthlyIncome.monthTotal) * 100;
+            monthIncomeTotal.chartTitle = monthIncomeTotal.incomeType + `:\n£${monthIncomeTotal.value.toFixed(2)} | ${(monthIncomeTotal.percentage).toFixed(2)}%`;
         })
 
         monthlyIncomeUpdate = {
             monthTotal: monthlyIncome.monthTotal,
-            monthCategoryTotals: monthlyIncome.monthCategoryTotals
+            monthIncomeTotals: monthlyIncome.monthIncomeTotals
         }
 
         await updateMonthlyIncomeAction(monthlyIncome.id, monthlyIncomeUpdate, "/")
@@ -151,52 +151,52 @@ export async function calulateMonthlyIncomeUpdateForDeletedIncomes(deletedIncome
 // ______________________________________________________________________________________________________________________________________________________________________
 // ______________________________________________________________________________________________________________________________________________________________________
 
-async function getCategoryIncomeTotalBetweenDates(userId: string, startDate: Date, endDate: Date) {
-    const categoryIncomeRecord: Record<string, number> = {};
-    const { incomes } = await getIncomesBetweenDatesAction({ userId, startDate, endDate });
-    const monthTotal = calculateIncomeTotal(incomes);
+// async function getCategoryIncomeTotalBetweenDates(userId: string, startDate: Date, endDate: Date) {
+//     const categoryIncomeRecord: Record<string, number> = {};
+//     const { incomes } = await getIncomesBetweenDatesAction({ userId, startDate, endDate });
+//     const monthTotal = calculateIncomeTotal(incomes);
 
-    if (incomes) {
-        for (const income of incomes) {
-            var incomeCategory = income.incomeCategory;
-            const value = income.amount;
-            if (!categoryIncomeRecord[incomeCategory]) {
-                categoryIncomeRecord[incomeCategory] = 0;
-            }
-            categoryIncomeRecord[incomeCategory] += value;
-        }
-    }
+//     if (incomes) {
+//         for (const income of incomes) {
+//             var incomeCategory = income.incomeCategory;
+//             const value = income.amount;
+//             if (!categoryIncomeRecord[incomeCategory]) {
+//                 categoryIncomeRecord[incomeCategory] = 0;
+//             }
+//             categoryIncomeRecord[incomeCategory] += value;
+//         }
+//     }
 
-    const categoryIncomeData: monthCategoryTotal[] = Object.entries(categoryIncomeRecord).map(([incomeCategory, value]) => ({
-        chartTitle: incomeCategory + `:\n£${value.toFixed(2)} | ${((value / monthTotal) * 100).toFixed(2)}%`,
-        categoryName: incomeCategory,
-        value: value,
-        percentage: ((value / monthTotal) * 100),
-    }))
+//     const categoryIncomeData: monthCategoryTotal[] = Object.entries(categoryIncomeRecord).map(([incomeCategory, value]) => ({
+//         chartTitle: incomeCategory + `:\n£${value.toFixed(2)} | ${((value / monthTotal) * 100).toFixed(2)}%`,
+//         categoryName: incomeCategory,
+//         value: value,
+//         percentage: ((value / monthTotal) * 100),
+//     }))
 
-    return { categoryIncomeData, monthTotal }
-}
+//     return { categoryIncomeData, monthTotal }
+// }
 
 // ______________________________________________________________________________________________________________________________________________________________________
 // ______________________________________________________________________________________________________________________________________________________________________
 // ______________________________________________________________________________________________________________________________________________________________________
 
-export async function getYearOfCategoryIncome(userId: string, months: Date[]) {
-    var yearOfCategoryIncome: categorySplitPieProps[] = [];
-    const monthPromises = months.map(async (month) => {
-        const endDate = new Date(month.getFullYear(), month.getMonth() + 1, 0);
-        const { categoryIncomeData, monthTotal } = await getCategoryIncomeTotalBetweenDates(userId, month, endDate);
-        yearOfCategoryIncome.push({ monthSpendTotals: categoryIncomeData, month, monthTotal });
-    })
-    await Promise.all(monthPromises);
-    const results = yearOfCategoryIncome.length;
+// export async function getYearOfCategoryIncome(userId: string, months: Date[]) {
+//     var yearOfCategoryIncome: categorySplitPieProps[] = [];
+//     const monthPromises = months.map(async (month) => {
+//         const endDate = new Date(month.getFullYear(), month.getMonth() + 1, 0);
+//         const { categoryIncomeData, monthTotal } = await getCategoryIncomeTotalBetweenDates(userId, month, endDate);
+//         yearOfCategoryIncome.push({ monthSpendTotals: categoryIncomeData, month, monthTotal });
+//     })
+//     await Promise.all(monthPromises);
+//     const results = yearOfCategoryIncome.length;
 
-    yearOfCategoryIncome.sort((a, b) => {
-        return b.month.getTime() - a.month.getTime();
-    })
+//     yearOfCategoryIncome.sort((a, b) => {
+//         return b.month.getTime() - a.month.getTime();
+//     })
 
-    return { yearOfCategoryIncome, results };
-}
+//     return { yearOfCategoryIncome, results };
+// }
 
 // ______________________________________________________________________________________________________________________________________________________________________
 // ______________________________________________________________________________________________________________________________________________________________________

@@ -85,6 +85,9 @@ export default async function Transactions({
 
     return (
         <div className="container mx-auto max-w-screen-2xl p-4">
+            {listOfCategories?.map((category) => (
+                <p>{category.label}</p>
+            ))}
 
             <TransactionForm categories={listOfCategories} userId={userId} />
 

@@ -1,4 +1,4 @@
-import { MonthlyIncome } from "../models/MonthlyIncome";
+import { MonthlyIncome, monthIncomeTotal } from "../models/MonthlyIncome";
 import connectDB from "./mongoose-connect-db";
 import { stringToObjectId } from "./utils";
 import { startOfMonth, endOfMonth } from "date-fns";
@@ -124,13 +124,13 @@ export async function getMonthlyIncome(id: string) {
 export async function createMonthlyIncome(
     month: Date,
     monthTotal: number,
-    monthCategoryTotals: object,
+    monthIncomeTotals: monthIncomeTotal[],
     userId: string,
 ) {
     try {
         await connectDB();
 
-        const monthlyIncome = await MonthlyIncome.create({ month, monthTotal, monthCategoryTotals, userId });
+        const monthlyIncome = await MonthlyIncome.create({ month, monthTotal, monthIncomeTotals, userId });
 
         return {
             monthlyIncome
@@ -146,7 +146,7 @@ export async function createMonthlyIncome(
 
 export async function updateMonthlyIncome(
     id: string,
-    { month, monthTotal, monthCategoryTotals }: { month?: Date; monthTotal?: number; monthCategoryTotals?: object; }
+    { month, monthTotal, monthIncomeTotals }: { month?: Date; monthTotal?: number; monthIncomeTotals?: monthIncomeTotal[]; }
 ) {
     try {
         await connectDB();
@@ -159,7 +159,7 @@ export async function updateMonthlyIncome(
 
         const monthlyIncome = await MonthlyIncome.findByIdAndUpdate(
             parsedId,
-            { month, monthTotal, monthCategoryTotals },
+            { month, monthTotal, monthIncomeTotals },
             { new: true }
         )
             .lean()

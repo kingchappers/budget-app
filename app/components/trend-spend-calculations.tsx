@@ -20,7 +20,7 @@ export async function calulateMonthlySpendUpdateForNewTransactions(transactionVa
             monthSpendTotals: monthSpendTotal[]
         }
 
-        var newMonthCategoryTotal: monthSpendTotal;
+        var newMonthSpendTotal: monthSpendTotal;
         monthlySpend.monthTotal = monthlySpend.monthTotal + transactionValue;
 
         if (monthlySpend.monthSpendTotals.some((monthSpendTotal) => monthSpendTotal.spendType === transactionCategory)) {
@@ -32,13 +32,13 @@ export async function calulateMonthlySpendUpdateForNewTransactions(transactionVa
             monthlySpend.monthSpendTotals[monthCategoryMatch].chartTitle = monthlySpend.monthSpendTotals[monthCategoryMatch].spendType + `:\n£${monthlySpend.monthSpendTotals[monthCategoryMatch].value.toFixed(2)} | ${(monthlySpend.monthSpendTotals[monthCategoryMatch].percentage).toFixed(2)}%`;
         } else {
             // Logic for creating a new entry for monthlyCategoryTotals if the category doesn't already exist
-            newMonthCategoryTotal = {
+            newMonthSpendTotal = {
                 percentage: (transactionValue / monthlySpend.monthTotal) * 100,
                 chartTitle: transactionCategory + `:\n£${transactionValue.toFixed(2)} | ${((transactionValue / monthlySpend.monthTotal) * 100).toFixed(2)}%`,
                 spendType: transactionCategory,
                 value: transactionValue
             }
-            monthlySpend.monthSpendTotals.push(newMonthCategoryTotal)
+            monthlySpend.monthSpendTotals.push(newMonthSpendTotal)
         }
 
         monthlySpend.monthSpendTotals.forEach((monthSpendTotal) => {
@@ -54,14 +54,14 @@ export async function calulateMonthlySpendUpdateForNewTransactions(transactionVa
         await updateMonthlySpendAction(monthlySpend.id, monthlySpendUpdate, "/")
     } else {
         let monthSpendTotals: monthSpendTotal[] = [];
-        let monthSpendTotal: monthSpendTotal;
-        newMonthCategoryTotal = {
+        let newMonthSpendTotal: monthSpendTotal;
+        newMonthSpendTotal = {
             percentage: 100,
             chartTitle: transactionCategory + `:\n£${transactionValue.toFixed(2)} | 100%`,
             spendType: transactionCategory,
             value: transactionValue
         }
-        monthSpendTotals.push(newMonthCategoryTotal)
+        monthSpendTotals.push(newMonthSpendTotal)
         await createMonthlySpendAction({ month: transactionDateMonthStart, monthTotal: transactionValue, monthSpendTotals, path: "/", userId })
     }
 }
