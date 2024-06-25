@@ -54,7 +54,7 @@ export async function calulateMonthlyIncomeUpdateForNewIncomes(incomeValue: numb
 
         await updateMonthlyIncomeAction(monthlyIncome.id, monthlyIncomeUpdate, "/")
     } else {
-        let monthCategoryTotals: monthIncomeTotal[] = [];
+        let monthIncomeTotals: monthIncomeTotal[] = [];
         let newMonthIncomeTotal: monthIncomeTotal;
         newMonthIncomeTotal = {
             percentage: 100,
@@ -62,8 +62,8 @@ export async function calulateMonthlyIncomeUpdateForNewIncomes(incomeValue: numb
             incomeType: incomeCategory,
             value: incomeValue
         }
-        monthCategoryTotals.push(newMonthIncomeTotal)
-        await createMonthlyIncomeAction({ month: incomeDateMonthStart, monthTotal: incomeValue, monthCategoryTotals, path: "/", userId })
+        monthIncomeTotals.push(newMonthIncomeTotal)
+        await createMonthlyIncomeAction({ month: incomeDateMonthStart, monthTotal: incomeValue, monthIncomeTotals, path: "/", userId })
     }
 }
 
